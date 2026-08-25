@@ -4,8 +4,15 @@ Findings from building Limen that are defects or gaps in STRK20 itself rather th
 Limen. Each one was hit while building, reproduced deliberately, and reduced to the
 smallest case that still shows the behaviour.
 
-Nothing here is filed for the sake of filing. Two findings cost real debugging time and
-would cost the next team the same, and both have a reproduction anyone can run.
+Nothing here is filed for the sake of filing. Each one cost real debugging time and would
+cost the next team the same, each has a reproduction anyone can run, and each was checked
+against existing issues before being reported.
+
+| | Finding | Filed |
+| --- | --- | --- |
+| C-1 | Published `linux/amd64` prover image is built for `znver5` and SIGILLs elsewhere | [sequencer#15037](https://github.com/starkware-libs/sequencer/issues/15037) |
+| C-2 | Wallet API cannot express `ComputeAndInvoke`, so `identity_key` is unreachable | [types-js#77](https://github.com/starknet-io/types-js/issues/77) |
+| C-3 | Compatibility matrix links the prover README to a branch that no longer builds | [starknet-privacy#972](https://github.com/starkware-libs/starknet-privacy/issues/972) |
 
 ---
 
@@ -13,7 +20,8 @@ would cost the next team the same, and both have a reproduction anyone can run.
 
 **Component:** `ghcr.io/starkware-libs/starknet-privacy/transaction-prover`
 **Tag:** `PRIVACY-0.14.3-RC.2`
-**Status:** reproduced on three independent hosts, root cause confirmed in the Dockerfile
+**Status:** filed as [sequencer#15037](https://github.com/starkware-libs/sequencer/issues/15037)
+**Evidence:** reproduced on three independent hosts, root cause confirmed in the release workflow
 
 ### What happens
 
@@ -102,6 +110,35 @@ CPU. The failure mode is unusually expensive to diagnose:
 Anyone developing on Apple Silicon hits it immediately. Anyone deploying to a host
 without Zen 5-class CPUs hits it in production and has little to go on.
 
+### Prior art, and what is new here
+
+This is not the first sighting. **sequencer#14803**, "ci: publish a portable ARM64
+transaction prover image", opened 2026-07-13, describes the arm64 half exactly: the
+release is compiled for `neoverse-v2`, and on Apple Silicon it "exits with `SIGILL`
+before becoming healthy".
+
+Two things are worth noting about it:
+
+1. **It was closed unmerged, by the stale-bot**, not rejected on review. The only human
+   feedback was an automated low-risk assessment. The fix was forgotten rather than
+   declined.
+2. **It deliberately kept the amd64 pin**: "retain the existing `znver5` tuning for the
+   AMD64 artifact." So even had it merged, the failure reported here would remain.
+
+The amd64 case appears to be unreported, and it is the broader one. `neoverse-v2` mainly
+inconveniences developers on Apple Silicon. `znver5` restricts the published amd64 image
+to AMD Zen 5, which excludes most server hardware a team would rent today — including
+AMD EPYC parts that do have AVX-512.
+
+The matrix on `main` still reads:
+
+```yaml
+- platform: linux/amd64
+  target_cpu: znver5
+- platform: linux/arm64
+  target_cpu: neoverse-v2
+```
+
 ### Suggested fix
 
 Any one of these would have saved the diagnosis:
@@ -114,13 +151,29 @@ Any one of these would have saved the diagnosis:
    someone choosing a host will see it.
 4. Add a startup check that reports the missing CPU feature by name instead of faulting.
 
-### How Limen works around it
+### How Limen works around it, and that the workaround demonstrably works
 
-Limen rebuilds the prover from the pinned source with `TARGET_CPU` left at its default
-and runs that. The rebuild is not a fork: same commit, same crate, same feature flags,
-only without the microarchitecture pin. `infra/fly/README.md` documents it, and
-`infra/prover/setup.sh` refuses to start on a host where the published image is known
-not to run.
+Limen rebuilds the prover from `e6b6fd2` — the commit the published image names in its
+own labels — with `TARGET_CPU` left at its default. Not a fork: same commit, same crate,
+same `--features stwo_proving`, only without the microarchitecture pin.
+
+That build is in production use and the result is not theoretical:
+
+- it serves where the published image dies with `SIGILL`,
+- it produced a STARK proof in **43.5 s** on a 4 vCPU / 32 GB host,
+- and a proof from it was **accepted on Starknet mainnet** by the STRK20 pool in
+  transaction `0x71665639defcbc63083eb875040e7b81a723b4363ca2fea363eef22af3f0492`,
+  whose `validate_proof` checks the program variant, the base block and the proven
+  message hash before applying anything.
+
+So the portable build is not a degraded fallback. It is a working prover, which is the
+strongest argument for publishing one.
+
+One caveat worth recording for anyone else debugging this: building with
+`TARGET_CPU=x86-64-v4` also fails with `SIGILL` on Fly, even though `/proc/cpuinfo`
+advertises `avx512f/bw/cd/dq/vl`. Firecracker reports the CPUID bits without enabling
+the corresponding XSAVE state, so AVX-512 instructions still fault. On that platform the
+fully generic build is the correct one.
 
 ---
 
@@ -128,7 +181,7 @@ not to run.
 
 **Component:** Starknet Wallet API / `@starknet-io/types-js`
 **Version checked:** `0.10.3`
-**Status:** reproduced, report drafted
+**Status:** filed as [types-js#77](https://github.com/starknet-io/types-js/issues/77)
 
 ### What happens
 
@@ -217,7 +270,7 @@ DECISIONS.md D-013.
 ## C-3 — The branch the prover README links to does not build
 
 **Component:** `starkware-libs/sequencer`, branch `avi/privacy/configmap-docs`
-**Status:** reproduced
+**Status:** filed as [starknet-privacy#972](https://github.com/starkware-libs/starknet-privacy/issues/972)
 
 ### What happens
 
