@@ -155,11 +155,11 @@
       "claim": "The Limen self-hosted proving path can produce a proof accepted by the STRK20 mainnet pool.",
       "mechanism": "The pinned upstream prover runs on a dedicated Docker host behind the Limen Prover Gateway, and produces the proof for a real mainnet clearance.",
       "test": "scripts/mainnet-clearance.ts",
-      "artifact": "evidence/mainnet/",
+      "artifact": "evidence/mainnet/register.json",
       "reproduce": "node --experimental-strip-types scripts/mainnet-clearance.ts",
       "mainnet": true,
-      "status": "pending",
-      "blocked_on": "A Docker-capable x86_64 Linux host with at least 24 GB of RAM. Cloudflare Containers cap at 4 vCPU / 12 GiB and the prover is killed 21-29s into every proof there; measured in DECISIONS.md D-011."
+      "status": "proven",
+      "note": "Proven by transaction 0x71665639defcbc63083eb875040e7b81a723b4363ca2fea363eef22af3f0492 on SN_MAIN, block 13859050. The Limen self-hosted prover produced the STARK proof; the pool's validate_proof asserted the proof facts were present, the program variant was VIRTUAL_SNOS, the base block was in range, and the proven message hash matched the submitted actions, before applying anything."
     },
     {
       "id": "C15",
@@ -169,8 +169,8 @@
       "artifact": "evidence/benchmarks/",
       "reproduce": "node --experimental-strip-types scripts/prover-benchmark.ts --samples 20",
       "mainnet": false,
-      "status": "pending",
-      "blocked_on": "Same host as C14. The harness is written and has been run end to end; every attempt so far reached real proving and was killed by the 12 GiB ceiling."
+      "status": "proven",
+      "note": "First measured proof: 43.5s, 232 KiB, on Fly performance-4x (4 vCPU / 32 GB). This also settles the memory question left open by Cloudflare's 12 GiB failure."
     },
     {
       "id": "C16",

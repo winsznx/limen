@@ -5,3 +5,4 @@ export * from "./client.js";
 export * from "./clearance.js";
 export * from "./verify.js";
 export * from "./pool-views.js";
+export * from "./proving-provider.js";

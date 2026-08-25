@@ -1,0 +1,16 @@
+{
+  "ran_at": "2026-08-25T20:12:48.902Z",
+  "network": "SN_MAIN",
+  "account": "0x1d71af6cf06f5789e9ace1512a384b223879d6f43e835ab4ac38e81a38a8fe4",
+  "pool": "0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a",
+  "transaction_hash": "0x71665639defcbc63083eb875040e7b81a723b4363ca2fea363eef22af3f0492",
+  "block_number": 13859050,
+  "execution_status": "SUCCEEDED",
+  "proving": {
+    "provider": "Limen Prover (self-hosted)",
+    "gateway": "https://limen-prover-gateway.fly.dev",
+    "duration_ms": 1265,
+    "proving_block_id": 13859031,
+    "proof_facts": 9
+  }
+}
