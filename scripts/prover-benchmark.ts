@@ -27,6 +27,8 @@ function arg(name: string, fallback: string): string {
 }
 
 const SAMPLES = Number(arg("samples", "10"));
+/** Upper bound on replayed calldata size. See collectTransactions. */
+const MAX_CALLDATA_FELTS = Number(arg("max-calldata", "24"));
 const TIMEOUT_MS = Number(arg("timeout", "900000"));
 
 interface Sample {
@@ -60,8 +62,11 @@ async function collectTransactions(provider: RpcProvider, wanted: number) {
       if (found.length >= wanted) break;
       if (transaction.type !== "INVOKE" || transaction.version !== "0x3") continue;
       const calldata = transaction.calldata as string[] | undefined;
-      // Very large calldata makes for an unrepresentative outlier at this tier.
-      if (!calldata || calldata.length > 400) continue;
+      // Keep the sample close to the shape the prover is built for. A large multicall
+      // or a complex DeFi route produces a much bigger execution trace than a pool
+      // transaction, which the prover rejects with "Not enough twiddles!" — a statement
+      // about trace size, not about proving reliability.
+      if (!calldata || calldata.length > MAX_CALLDATA_FELTS) continue;
       found.push({
         hash: transaction.transaction_hash as string,
         blockNumber,

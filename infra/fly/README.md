@@ -84,7 +84,7 @@ fly secrets set -a limen-prover-gateway \
 fly deploy --config infra/fly/gateway.fly.toml --dockerfile infra/prover/Dockerfile.gateway
 ```
 
-Worth doing once, early: `fly deploy --config infra/fly/prover.fly.toml` to confirm a
+Worth doing once, early: `fly deploy --config infra/fly/prover.fly.toml --ha=false` to confirm a
 `performance-4x` is allowed on the account. New organisations are sometimes limited to
 smaller shapes, and that is much better to discover now than on the night.
 
@@ -123,3 +123,5 @@ and every mainnet transaction stays verifiable from chain with nothing running a
 | Gateway reports unhealthy with a connection error | The prover is destroyed, or the private IP was never allocated |
 | `could not find app` | `fly apps create` has not been run |
 | Deploy times out pulling the image | 1.12 GB image; `wait_timeout` is already 15m, retry |
+| Two machines appear after a deploy | Fly's HA default. Always deploy with `--ha=false`; at 32 GB the second machine doubles the bill |
+| A public IP was allocated | Say **no** to the dedicated-IP prompt. The prover must have no public route, and a dedicated v4 also costs $2/mo. Undo with `fly ips release <ip>` |

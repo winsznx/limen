@@ -12,7 +12,7 @@
  *   export $(grep -E '^(DEPLOYER_|STARKNET_)' .env.local | xargs)
  *   node --experimental-strip-types scripts/deploy.ts
  */
-import { Account, CallData, RpcProvider, hash, num, shortString } from "starknet";
+import { Account, CallData, RpcProvider, ec, hash, num, shortString } from "starknet";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 
@@ -97,27 +97,68 @@ async function main() {
 
   const account = new Account({ provider, address, signer: privateKey, cairoVersion: "1" });
 
+  // The account itself has to exist before it can declare anything. A funded address
+  // with no contract at it is a counterfactual account: the DEPLOY_ACCOUNT transaction
+  // is what brings it into being, and it pays its own fee from that balance.
+  let accountDeployed = true;
+  try {
+    await provider.getClassHashAt(address, "latest");
+  } catch {
+    accountDeployed = false;
+  }
+
+  if (!accountDeployed) {
+    console.log("\ndeploying the account itself…");
+    const publicKey = ec.starkCurve.getStarkKey(privateKey);
+    const { transaction_hash, contract_address } = await account.deployAccount(
+      {
+        classHash: process.env.DEPLOYER_CLASS_HASH ?? OZ_ACCOUNT_CLASS_HASH,
+        constructorCalldata: CallData.compile({ publicKey }),
+        addressSalt: publicKey,
+      },
+      { tip: 0n }
+    );
+    await provider.waitForTransaction(transaction_hash);
+    if (BigInt(contract_address) !== BigInt(address)) {
+      console.error(
+        `Refusing to continue: the deployed account landed at ${contract_address}, not ${address}.`
+      );
+      process.exit(1);
+    }
+    console.log(`  ${transaction_hash}`);
+  } else {
+    console.log("\naccount already deployed");
+  }
+
   const anonymizerArtifact = loadArtifact("limen_anonymizer_LimenAnonymizer");
   const gateArtifact = loadArtifact("limen_capital_gate_CapitalGate");
 
   console.log("\ndeclaring LimenAnonymizer…");
-  const anonymizerClass = await declare(account, anonymizerArtifact);
+  const anonymizerClass = await declare(provider, account, anonymizerArtifact);
   console.log(`  class ${anonymizerClass}`);
 
   console.log("declaring CapitalGate…");
-  const gateClass = await declare(account, gateArtifact);
+  const gateClass = await declare(provider, account, gateArtifact);
   console.log(`  class ${gateClass}`);
 
   console.log("\ndeploying LimenAnonymizer…");
-  const anonymizer = await deploy(account, anonymizerClass, CallData.compile({ pool: POOL }));
+  const anonymizerDeploy = await deploy(
+    provider,
+    account,
+    anonymizerClass,
+    CallData.compile({ pool: POOL })
+  );
+  const anonymizer = anonymizerDeploy.address;
   console.log(`  ${anonymizer}`);
 
   console.log("deploying CapitalGate…");
-  const capitalGate = await deploy(
+  const gateDeploy = await deploy(
+    provider,
     account,
     gateClass,
     CallData.compile({ limen: anonymizer, required_token: STRK, min_amount: GATE_MIN_AMOUNT })
   );
+  const capitalGate = gateDeploy.address;
   console.log(`  ${capitalGate}`);
 
   // A denylisted anonymizer cannot credit open notes, so every clearance would revert.
@@ -171,10 +212,14 @@ async function main() {
   console.log(`  wrangler secret put LIMEN_CAPITAL_GATE_ADDRESS # ${capitalGate}`);
 }
 
-async function declare(account: Account, artifact: Artifact): Promise<string> {
+async function declare(
+  provider: RpcProvider,
+  account: Account,
+  artifact: Artifact
+): Promise<string> {
   const classHash = num.toHex(hash.computeContractClassHash(artifact.sierra));
   try {
-    await account.getClassByHash(classHash);
+    await provider.getClass(classHash);
     console.log("  already declared, reusing");
     return classHash;
   } catch {
@@ -184,18 +229,23 @@ async function declare(account: Account, artifact: Artifact): Promise<string> {
     { contract: artifact.sierra as never, casm: artifact.casm as never },
     { tip: 0n }
   );
-  await account.waitForTransaction(result.transaction_hash);
+  await provider.waitForTransaction(result.transaction_hash);
+  console.log(`  tx ${result.transaction_hash}`);
   return num.toHex(result.class_hash ?? classHash);
 }
 
 async function deploy(
+  provider: RpcProvider,
   account: Account,
   classHash: string,
   constructorCalldata: string[]
-): Promise<string> {
+): Promise<{ address: string; transactionHash: string }> {
   const result = await account.deployContract({ classHash, constructorCalldata }, { tip: 0n });
-  await account.waitForTransaction(result.transaction_hash);
-  return num.toHex(result.contract_address);
+  await provider.waitForTransaction(result.transaction_hash);
+  return {
+    address: num.toHex(result.contract_address),
+    transactionHash: result.transaction_hash,
+  };
 }
 
 function gitCommit(): string {
@@ -207,6 +257,15 @@ function gitCommit(): string {
 }
 
 void main().catch((error) => {
-  console.error(error);
+  // Starknet RPC errors echo the request, and a DECLARE request contains the entire
+  // sierra program. Print only what identifies the failure.
+  const rpc = error as { baseError?: { code?: number; message?: string; data?: unknown } };
+  const base = rpc?.baseError;
+  if (base) {
+    console.error(`\n  RPC error ${base.code ?? "?"}: ${base.message ?? ""}`);
+    if (base.data) console.error(`  ${JSON.stringify(base.data).slice(0, 600)}`);
+  } else {
+    console.error(`\n  ${(error as Error)?.message?.slice(0, 600) ?? String(error).slice(0, 600)}`);
+  }
   process.exit(1);
 });

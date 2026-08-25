@@ -49,7 +49,9 @@ up)
     fly secrets set -a $PROVER_APP RPC_URL='https://starknet-mainnet.g.alchemy.com/starknet/version/rpc/v0_10/<KEY>'"
 
   note "deploying the pinned prover image (1.12 GB, first pull is slow)…"
-  fly deploy --config infra/fly/prover.fly.toml --app "$PROVER_APP" --yes
+  # --ha=false: Fly otherwise creates a second machine for high availability, which
+  # at 32 GB silently doubles the hourly cost for no benefit to a batch prover.
+  fly deploy --config infra/fly/prover.fly.toml --app "$PROVER_APP" --ha=false --yes
 
   note "waiting for the prover to answer through the gateway…"
   GATEWAY_URL="https://${GATEWAY_APP}.fly.dev"

@@ -14,19 +14,28 @@
 # Upstream recommends 48 vCPU / 96 GB. Fly caps memory at 8 GB per performance CPU, so
 # performance-4x is the smallest shape that reaches 32 GB. See DECISIONS.md D-011.
 #
-#   fly deploy --config infra/fly/prover.fly.toml
+#   fly deploy --config infra/fly/prover.fly.toml --ha=false
+#
+# --ha=false matters: without it Fly launches a second machine for high
+# availability, which at 32 GB doubles the hourly cost and buys a batch prover
+# nothing. Decline the dedicated IP prompt too — this app must have no public route.
 #
 # This app costs real money while it runs. Destroy it when a session ends:
 #   fly machine destroy --force -a limen-prover <id>
 
 app = "limen-prover"
-primary_region = "iad"
+primary_region = "ord"
 
 [build]
   # Pinned by digest, not tag, so a redeploy cannot silently change the binary.
   # linux/amd64 explicitly: the published arm64 variant aborts with SIGILL on generic
   # aarch64 hosts (CONTRIBUTIONS.md C-1). Fly machines are amd64, so this is satisfied.
-  image = "ghcr.io/starkware-libs/starknet-privacy/transaction-prover@sha256:a62e7764e034ea25d84d4a235f1f683f7c5f03f88f6646a744599171bf5ca58c"
+  # Limen's own portable build of the pinned upstream prover. Same commit, same crate,
+  # same `--features stwo_proving`; the only build-level deltas are `TARGET_CPU` left at
+  # its default and `cargo install cargo-chef --locked`. The published image is compiled
+  # for a specific microarchitecture and dies with SIGILL on Fly's CPUs — see
+  # CONTRIBUTIONS.md C-1 and C-3, and infra/prover/prover-portable.Dockerfile.
+  image = "registry.fly.io/limen-prover:limen-portable-v2"
 
 [env]
   CHAIN_ID = "SN_MAIN"

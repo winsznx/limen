@@ -2,31 +2,44 @@
 #
 # Built from the repository so the gateway a host runs is the gateway in the tree, not
 # a separately published artefact that could drift from it.
+#
+# The gateway is bundled to a single file. It has no third-party runtime dependencies —
+# only Limen's own `@limen/proving-core` — so bundling removes `node_modules` from the
+# runtime image entirely, along with the workspace-symlink resolution that a pnpm
+# workspace otherwise drags into a container.
 FROM node:24-alpine AS build
 
 RUN corepack enable
 WORKDIR /repo
 
+# Every workspace member's manifest, because the root package.json references them and
+# pnpm resolves the whole workspace graph before it can filter. Only the two packages
+# the gateway needs have their sources copied below, so a change to the SDK or the web
+# app does not invalidate this layer.
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml tsconfig.base.json ./
 COPY packages/proving-core/package.json packages/proving-core/
 COPY packages/prover-gateway/package.json packages/prover-gateway/
+COPY packages/limen-sdk/package.json packages/limen-sdk/
+COPY packages/protocol-config/package.json packages/protocol-config/
+COPY apps/web/package.json apps/web/
 
 RUN pnpm install --frozen-lockfile --filter @limen/prover-gateway...
 
 COPY packages/proving-core packages/proving-core
 COPY packages/prover-gateway packages/prover-gateway
 
-RUN pnpm --filter @limen/proving-core build \
- && pnpm --filter @limen/prover-gateway build \
- && pnpm deploy --filter @limen/prover-gateway --prod /gateway
+# Typecheck first, then bundle. The typecheck is what catches a real mistake; the bundle
+# is only packaging.
+RUN pnpm --filter @limen/prover-gateway typecheck \
+ && pnpm --filter @limen/prover-gateway bundle
 
 FROM node:24-alpine AS runtime
 
-# The gateway handles proving requests that contain viewing-key material. It runs
-# unprivileged and owns nothing on disk.
+# The gateway handles proving requests whose calldata contains viewing-key material. It
+# runs unprivileged and owns nothing on disk.
 RUN addgroup -S limen && adduser -S -G limen limen
 WORKDIR /app
-COPY --from=build --chown=limen:limen /gateway ./
+COPY --from=build --chown=limen:limen /repo/packages/prover-gateway/dist/server.bundle.js ./server.js
 USER limen
 
 ENV NODE_ENV=production \
@@ -34,4 +47,4 @@ ENV NODE_ENV=production \
     HOST=0.0.0.0
 
 EXPOSE 8787
-CMD ["node", "dist/server.js"]
+CMD ["node", "server.js"]

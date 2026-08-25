@@ -9,18 +9,27 @@ would cost the next team the same, and both have a reproduction anyone can run.
 
 ---
 
-## C-1 — The published `linux/arm64` transaction-prover image aborts with SIGILL
+## C-1 — The published prover images are built for one microarchitecture, and nothing says so
 
 **Component:** `ghcr.io/starkware-libs/starknet-privacy/transaction-prover`
 **Tag:** `PRIVACY-0.14.3-RC.2`
-**arm64 manifest:** `sha256:9882d27692b420a9edae9b50bf8075103044230de0f83ee6bed3db19cace105f`
-**Status:** reproduced, minimal case below, report drafted
+**Status:** reproduced on three independent hosts, root cause confirmed in the Dockerfile
 
 ### What happens
 
-The image publishes a `linux/arm64` variant. On a generic aarch64 host — Apple Silicon,
-and by inspection any CPU without SVE — the prover binary dies with `SIGILL` before it
-does anything at all. Not during proving: on `--version`.
+The image publishes `linux/amd64` and `linux/arm64` manifests. On most hosts the prover
+binary dies with `SIGILL` — illegal instruction — before doing any work at all. Not
+during proving: on `--version`.
+
+| Host | Arch | Result |
+| --- | --- | --- |
+| Apple Silicon (M-series) | arm64 | `SIGILL`, exit 132 |
+| Fly.io `iad`, performance CPU | amd64 | `SIGILL`, exit 132 |
+| Fly.io `ord`, performance CPU | amd64 | `SIGILL`, exit 132 |
+| Cloudflare Containers | amd64 | runs normally |
+
+Same image, same digest. One amd64 host runs it and two do not, so this is a CPU
+capability difference rather than a broken image.
 
 ### Reproduction
 
@@ -31,50 +40,87 @@ docker run --rm --platform linux/arm64 \
   -c '/app/target/release/starknet_transaction_prover --version; echo "exit=$?"'
 ```
 
-Observed:
-
 ```
 Illegal instruction
 exit=132
 ```
 
-The container itself is fine — `sh` runs, `uname -m` prints `aarch64`, the binary is
-present and executable at 172 MB. Only the binary faults.
+The container itself is healthy — `sh` runs, `uname -m` prints the expected
+architecture, the 172 MB binary is present and executable. Only the binary faults.
 
-Host CPU features, from inside the same container:
+On the arm64 host, `/proc/cpuinfo` reports no `sve`, `sve2`, `bf16` or `i8mm`.
 
+### Root cause
+
+`crates/starknet_transaction_prover/Dockerfile` in `starkware-libs/sequencer`:
+
+```dockerfile
+ARG TARGET_CPU=""
 ```
-fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm jscvt
-fcma lrcpc dcpop sha3 asimddp sha512 asimdfhm dit uscat ilrcpc flagm sb paca pacg
-dcpodp flagm2 frint
+
+The default is a portable build. `TARGET_CPU` is then injected as
+`-C target-cpu=${TARGET_CPU}` through profile environment variables. The prover's README
+documents this as a performance option and gives `znver5` as the example, "optimized for
+AMD EPYC Turin (GKE c4d nodes)".
+
+So the published images are built **with** a CPU target — matching the hardware the
+project runs on — and that constraint appears nowhere a consumer would look: not in the
+tag, not in the README's compatibility matrix, not in the image labels, and not in the
+error the binary produces.
+
+The image records its own provenance, which makes this checkable rather than inferred:
+
+```sh
+docker image inspect ghcr.io/starkware-libs/starknet-privacy/transaction-prover:PRIVACY-0.14.3-RC.2 \
+  --format '{{json .Config.Labels}}'
 ```
 
-No `sve`, `sve2`, `bf16` or `i8mm`. The prover's own README documents `TARGET_CPU` as a
-build argument for CPU-specific builds and gives `znver5` as the x86 example, so the
-most likely cause is that the arm64 variant was built with a `-C target-cpu` implying
-SVE — correct for a Neoverse-class server, wrong for the generic `linux/arm64` platform
-tag it is published under.
+```json
+"org.opencontainers.image.revision": "e6b6fd2e9932909107833579e5b6efd6c75fa0af",
+"org.opencontainers.image.version": "PRIVACY-0.14.3-RC.2"
+```
+
+Building that exact commit with `TARGET_CPU` left at its default produces a binary that
+runs on hosts where the published one dies. Same source, same crate, same
+`--features stwo_proving` — the only difference is the microarchitecture pin.
+
+Note also what the labels do *not* record: there is no `TARGET_CPU`, so nothing in the
+image says which CPU it was built for.
 
 ### Why it matters
 
-`linux/arm64` is a promise about a platform, not about one CPU. A tag that only runs on
-some aarch64 machines fails at `--version` with an error naming neither architecture nor
-instruction set, which is a slow thing to diagnose. Anyone developing on Apple Silicon
-hits it immediately, and the failure looks like a broken image rather than a targeting
-mismatch.
+A `linux/amd64` tag is a promise about a platform, not about one vendor's newest server
+CPU. The failure mode is unusually expensive to diagnose:
+
+- it happens at process start, so there are no logs beyond `Illegal instruction`,
+- the message names neither the CPU nor the instruction set,
+- exit code 132 through a container runtime often surfaces as something vaguer, such as
+  a health check that never passes or a machine that restarts until it hits a cap,
+- and it looks identical to an out-of-memory kill, which is the failure teams running a
+  prover are primed to expect.
+
+Anyone developing on Apple Silicon hits it immediately. Anyone deploying to a host
+without Zen 5-class CPUs hits it in production and has little to go on.
 
 ### Suggested fix
 
-Build the published `linux/arm64` variant for a baseline `armv8-a`, and if a
-CPU-specific build is wanted, publish it under a distinct tag. Failing that, document
-the requirement in the README next to the existing `TARGET_CPU` note, or drop the arm64
-variant so the platform mismatch surfaces at pull time rather than at runtime.
+Any one of these would have saved the diagnosis:
+
+1. Publish the default portable build under the main tag, and CPU-optimised builds under
+   an explicit tag such as `PRIVACY-0.14.3-RC.2-znver5`. Portability is the reasonable
+   default for a published artefact; the optimisation is the special case.
+2. Record the target in an OCI label, so `docker inspect` answers the question.
+3. Note the requirement in the compatibility matrix next to the image reference, where
+   someone choosing a host will see it.
+4. Add a startup check that reports the missing CPU feature by name instead of faulting.
 
 ### How Limen works around it
 
-`infra/prover/docker-compose.yml` pins the `linux/amd64` manifest by digest, and
-`infra/prover/setup.sh` refuses to start on a non-x86_64 host with an error that names
-this issue.
+Limen rebuilds the prover from the pinned source with `TARGET_CPU` left at its default
+and runs that. The rebuild is not a fork: same commit, same crate, same feature flags,
+only without the microarchitecture pin. `infra/fly/README.md` documents it, and
+`infra/prover/setup.sh` refuses to start on a host where the published image is known
+not to run.
 
 ---
 
@@ -165,6 +211,47 @@ simply out of step.
 Clearances run through the key-holding SDK route. The limitation, and the fact that it
 is upstream rather than a Limen design choice, is stated in README limitations and in
 DECISIONS.md D-013.
+
+---
+
+## C-3 — The branch the prover README links to does not build
+
+**Component:** `starkware-libs/sequencer`, branch `avi/privacy/configmap-docs`
+**Status:** reproduced
+
+### What happens
+
+The prover's README — the one linked from the STRK20 compatibility matrix — lives on
+`avi/privacy/configmap-docs`, and that branch's Dockerfile fails in its base stage before
+compiling anything:
+
+```
+error: failed to compile `cargo-chef v0.1.78`
+Caused by:
+  rustc 1.90.0-nightly is not supported by the following package:
+    cargo-platform@0.3.3 requires rustc 1.91
+  Try re-running `cargo install` with `--locked`
+```
+
+The branch pins `nightly-2025-07-14` (rustc 1.90.0-nightly) in
+`crates/starknet_transaction_prover/rust-toolchain.toml`, then runs
+`cargo install cargo-chef` **unpinned**. Once cargo-chef's transitive dependencies raised
+their minimum supported rustc past that nightly, the build stopped working for everyone.
+
+### Reproduction
+
+```sh
+git clone --depth 1 --branch avi/privacy/configmap-docs \
+  https://github.com/starkware-libs/sequencer.git && cd sequencer
+docker build -f crates/starknet_transaction_prover/Dockerfile .
+```
+
+### Suggested fix
+
+`cargo install --locked cargo-chef`, exactly as the error advises. The release commit
+`e6b6fd2` already does this, so the fix is simply not present on the documentation
+branch. Since that branch is what the compatibility matrix links to, it is the copy most
+readers will try first.
 
 ---
 

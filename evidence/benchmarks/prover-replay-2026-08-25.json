@@ -1,5 +1,5 @@
 {
-  "ran_at": "2026-08-25T09:13:02.275Z",
+  "ran_at": "2026-08-25T20:02:00.913Z",
   "method": "Replayed real SN_MAIN Invoke V3 transactions against the block immediately before inclusion. No funds moved and nothing was submitted.",
   "prover": {
     "image": "ghcr.io/starkware-libs/starknet-privacy/transaction-prover:PRIVACY-0.14.3-RC.2@sha256:a62e7764e034ea25d84d4a235f1f683f7c5f03f88f6646a744599171bf5ca58c",
@@ -10,40 +10,56 @@
     "max_concurrent_requests": 1,
     "note": "Upstream recommends 48 vCPU / 96 GB for production throughput. These numbers describe this tier only and are not a STRK20 benchmark."
   },
-  "rpc_provider": "https://starknet-mainnet.g.alchemy.com/starknet/version/rpc/v0_10/demo",
+  "rpc_provider": "https://starknet-mainnet.g.alchemy.com/starknet/version/rpc/v0_10/<redacted>",
   "block_selection": "inclusion block minus one, finalized only",
-  "submitted": 1,
-  "succeeded": 0,
+  "submitted": 2,
+  "succeeded": 1,
   "failed": 1,
-  "p50_ms": null,
-  "p95_ms": null,
-  "min_ms": null,
-  "max_ms": null,
+  "p50_ms": 43547,
+  "p95_ms": 43547,
+  "min_ms": 43547,
+  "max_ms": 43547,
   "gateway_metrics": {
     "active": 0,
     "queued": 0,
-    "submitted": 0,
-    "succeeded": 0,
+    "submitted": 2,
+    "succeeded": 1,
     "failed": 1,
     "rejected": 0,
     "deduplicated": 0,
-    "durationsMs": [],
-    "p50Ms": null,
-    "p95Ms": null,
+    "recovered": 0,
+    "p50Ms": 42734,
+    "p95Ms": 42734,
+    "durationsMs": [
+      42734
+    ],
+    "uptimeSeconds": 679,
     "image": "ghcr.io/starkware-libs/starknet-privacy/transaction-prover:PRIVACY-0.14.3-RC.2@sha256:a62e7764e034ea25d84d4a235f1f683f7c5f03f88f6646a744599171bf5ca58c"
   },
   "samples": [
     {
-      "transactionHash": "0x5776e86cbb2c097bf6a0429a4b4ca9d8b036d3a0b79dc726616a9e9d608f06c",
-      "blockNumber": 13835571,
-      "provingBlock": 13835570,
-      "calldataFelts": 48,
+      "transactionHash": "0x68f7353f36c493e01077076d67b3bc77bd061add70e49f183aea623291aa131",
+      "blockNumber": 13858584,
+      "provingBlock": 13858583,
+      "calldataFelts": 10,
       "outcome": "failed",
       "errorCode": -32603,
-      "errorMessage": "Prover did not complete",
-      "errorDetail": "container response (500): Container suddenly disconnected, try again",
-      "durationMs": 28769,
+      "errorMessage": "Internal error",
+      "errorDetail": "Transaction execution failed: The `validate` entry point panicked with:\nError in contract (contract address: 0x023a568172883e475450f20910f0dc31a7c09d43d6b0ea2f3e5362bb8d95cd68, class hash: 0x036078334509b514626504edc9fb252328d1a240e4e948bef8d0c08dff45927f, selector: 0x0162da33a4585851fe8d3af3c2a9c60b557814e221e0d4f30ff0b2189d9c7775):\n0x4f7574206f6620676173 ('Out of gas').\n",
+      "durationMs": 2837,
       "queueWaitMs": 0
+    },
+    {
+      "transactionHash": "0x7fa6b0888912fb43c737a9d13a596a3e5cc5fe00184d35657f3b96883548ecb",
+      "blockNumber": 13858579,
+      "provingBlock": 13858578,
+      "calldataFelts": 7,
+      "outcome": "succeeded",
+      "durationMs": 43547,
+      "queueWaitMs": 0,
+      "proofBytes": 237321,
+      "proofFacts": 8,
+      "deduplicated": false
     }
   ]
 }

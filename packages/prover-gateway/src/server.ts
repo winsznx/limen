@@ -68,8 +68,17 @@ const server = createServer((request, response) => {
     const authorized = gateway.authorize(request.headers.authorization);
 
     try {
-      // Liveness is unauthenticated so an operator or a monitor can always see it. It
-      // exposes no request content.
+      // Liveness: is this process up. Deliberately independent of the prover, because
+      // the gateway is expected to outlive it — the prover exists only during a
+      // proving session. Conflating the two means the gateway can only be deployed
+      // while the expensive machine is already running.
+      if (url.pathname === "/live" && request.method === "GET") {
+        return send(response, 200, { alive: true, at: new Date().toISOString() });
+      }
+
+      // Readiness: can a proof actually be produced right now. Answers 503 when the
+      // prover is not serving, which is the honest answer and what the console renders
+      // as unreachable.
       if (url.pathname === "/health" && request.method === "GET") {
         const result = await gateway.health();
         return send(response, result.status, result.body);

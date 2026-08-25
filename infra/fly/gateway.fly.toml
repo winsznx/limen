@@ -46,12 +46,16 @@ primary_region = "iad"
     # resource Limen operates.
     idle_timeout = 900
 
+  # Checks /live, not /health. The gateway is alive whenever its process is up; the
+  # prover is a separate machine that exists only during a session, and /health
+  # correctly reports 503 without it. Pointing the platform check at /health would mean
+  # the gateway could never deploy unless the expensive machine were already running.
   [[http_service.checks]]
     grace_period = "20s"
     interval = "60s"
     method = "GET"
-    timeout = "10s"
-    path = "/health"
+    timeout = "5s"
+    path = "/live"
 
 [[vm]]
   size = "shared-cpu-1x"
