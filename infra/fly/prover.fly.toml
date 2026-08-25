@@ -1,0 +1,73 @@
+# The Limen Prover on Fly.io.
+#
+# Runs the pinned upstream STRK20 transaction prover, unmodified. Limen adds no code
+# inside this app on purpose: the proving binary is the part that has to be trustworthy,
+# and the smallest claim to make about it is "it is exactly the published artefact".
+#
+# This app has no public address. It is reachable only over the organisation's private
+# network, from the gateway, at `limen-prover.flycast:3000`. Everything Limen adds —
+# auth, validation, admission control, idempotency, health, metrics, redaction — lives
+# in the gateway app in front of it.
+#
+# Sizing is not a guess. Measured: at 12 GiB the prover is killed 21-29s into every
+# proof, and it is the Stwo prover core holding the memory, not tunable caches.
+# Upstream recommends 48 vCPU / 96 GB. Fly caps memory at 8 GB per performance CPU, so
+# performance-4x is the smallest shape that reaches 32 GB. See DECISIONS.md D-011.
+#
+#   fly deploy --config infra/fly/prover.fly.toml
+#
+# This app costs real money while it runs. Destroy it when a session ends:
+#   fly machine destroy --force -a limen-prover <id>
+
+app = "limen-prover"
+primary_region = "iad"
+
+[build]
+  # Pinned by digest, not tag, so a redeploy cannot silently change the binary.
+  # linux/amd64 explicitly: the published arm64 variant aborts with SIGILL on generic
+  # aarch64 hosts (CONTRIBUTIONS.md C-1). Fly machines are amd64, so this is satisfied.
+  image = "ghcr.io/starkware-libs/starknet-privacy/transaction-prover@sha256:a62e7764e034ea25d84d4a235f1f683f7c5f03f88f6646a744599171bf5ca58c"
+
+[env]
+  CHAIN_ID = "SN_MAIN"
+  PROVER_PORT = "3000"
+  # Bind all interfaces. Fly Proxy terminates the private Flycast address and forwards
+  # here, so the process itself does not need to know about 6PN.
+  PROVER_IP = "0.0.0.0"
+  # One proof at a time. The gateway does admission control, and oversubscribing four
+  # cores would turn one slow proof into several.
+  MAX_CONCURRENT_REQUESTS = "1"
+  MAX_CONNECTIONS = "8"
+  # Costs one extra simulation and cuts RPC calls during the proof itself.
+  PREFETCH_STATE = "true"
+  COMPILED_CLASS_CACHE_SIZE = "600"
+  RUST_LOG = "warn"
+  # Proving charges nothing, so the zero-fee requirement is a guard against wasted work
+  # rather than a safety property. Relaxing it lets the benchmark replay real signed
+  # mainnet transactions verbatim; rewriting their fee fields would change the
+  # transaction hash and make __validate__ reject them. Limen's own clearances still
+  # carry zero fee fields, because the pool's own __validate__ requires it.
+  SKIP_FEE_FIELD_VALIDATION = "true"
+
+# Private only. No [http_service] and no public IP: reached at limen-prover.flycast:3000
+# after `fly ips allocate-v6 --private -a limen-prover`.
+[[services]]
+  internal_port = 3000
+  protocol = "tcp"
+  # Never stop or start this from traffic. A proof takes minutes and the machine's
+  # lifetime is controlled deliberately by the session script, not by request patterns.
+  auto_stop_machines = "off"
+  auto_start_machines = false
+  min_machines_running = 0
+
+  [[services.ports]]
+    port = 3000
+
+[[vm]]
+  size = "performance-4x"
+  memory = "32gb"
+
+# The image is 1.12 GB and the first boot warms a compiled-class cache from the RPC
+# node, so the default 5-minute wait is not enough.
+[deploy]
+  wait_timeout = "15m"

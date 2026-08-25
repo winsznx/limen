@@ -1,0 +1,61 @@
+# The Limen Prover Gateway on Fly.io.
+#
+# Everything between a client and the proving binary: authentication, request
+# validation, admission control, idempotency, worker-failure detection, health, metrics
+# and redaction. Small and cheap, so it can stay reachable for the whole judging window
+# while the expensive prover exists only during a session.
+#
+# When the prover is destroyed this app answers honestly — `/health` reports unhealthy
+# with a reason rather than pretending. That is the intended behaviour, and the console
+# renders it as "unreachable" rather than inventing a green light.
+#
+#   fly deploy --config infra/fly/gateway.fly.toml --dockerfile infra/prover/Dockerfile.gateway
+#
+# Run from the repository root: the Dockerfile builds the gateway from this repo, so the
+# gateway a host runs is the gateway in the tree.
+
+app = "limen-prover-gateway"
+primary_region = "iad"
+
+[env]
+  # Fly's private networking. The prover has no public address at all.
+  PROVER_URL = "http://limen-prover.flycast:3000"
+  MAX_CONCURRENT = "1"
+  MAX_QUEUED = "4"
+  # A proof can take several minutes on this tier. Well above the expected worst case,
+  # because a timeout here wastes a whole proof.
+  PROVE_TIMEOUT_MS = "900000"
+  HEALTH_TIMEOUT_MS = "5000"
+  PROVER_IMAGE = "ghcr.io/starkware-libs/starknet-privacy/transaction-prover:PRIVACY-0.14.3-RC.2@sha256:a62e7764e034ea25d84d4a235f1f683f7c5f03f88f6646a744599171bf5ca58c"
+  PORT = "8787"
+  HOST = "0.0.0.0"
+
+[http_service]
+  internal_port = 8787
+  force_https = true
+  # Stop when idle and start on demand. The gateway is only touched when someone opens
+  # the console or a proof is submitted, so this keeps its cost to pennies over two
+  # weeks instead of running a machine continuously for no reason.
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [http_service.http_options]
+    # Proving holds the connection open for minutes. The default idle timeout would cut
+    # a proof in flight and the client would retry, doubling the cost of the scarcest
+    # resource Limen operates.
+    idle_timeout = 900
+
+  [[http_service.checks]]
+    grace_period = "20s"
+    interval = "60s"
+    method = "GET"
+    timeout = "10s"
+    path = "/health"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
+
+# Secrets, set with `fly secrets set -a limen-prover-gateway`. Never in this file.
+#   GATEWAY_TOKEN  Bearer token required on every proving request.

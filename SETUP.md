@@ -108,21 +108,35 @@ pool fees.
 
 ### 3. A machine to prove on
 
-A Docker-capable **x86_64** Linux host with at least **24 GB of RAM**. Both requirements
-are real and both were measured:
+**x86_64** with at least **24 GB of RAM**, ideally 32. Both requirements are real and
+both were measured: the published `linux/arm64` image aborts with `SIGILL` on generic
+aarch64, and at 12 GiB the prover is killed 21–29 s into every proof.
 
-- the published `linux/arm64` prover image aborts with `SIGILL` on generic aarch64,
-- at 12 GiB the prover is killed 21–29 s into every proof.
+Two supported paths.
 
-[infra/prover/README.md](infra/prover/README.md) is the runbook.
-`infra/prover/setup.sh` refuses to start below either threshold rather than letting you
-discover it as a proof dying partway through.
+**Fly.io** — recommended, and the cheapest. Proving is bursty, so the expensive machine
+exists only during a session and is destroyed afterwards. Roughly **$3.70 for a
+12-hour session**. Card required, no identity verification.
+
+```sh
+curl -fsSL https://fly.io/install.sh | sh
+fly auth login
+# then follow infra/fly/README.md
+./infra/fly/session.sh up      # …work…
+./infra/fly/session.sh down
+```
+
+**Your own Linux host** — if you already have one with the memory.
 
 ```sh
 cd infra/prover
 cp .env.example .env && $EDITOR .env
 ./setup.sh
 ```
+
+Both refuse to start below the thresholds rather than letting you discover them as a
+proof dying partway through. [infra/fly/README.md](infra/fly/README.md) and
+[infra/prover/README.md](infra/prover/README.md) are the runbooks.
 
 ---
 
