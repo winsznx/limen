@@ -1,0 +1,37 @@
+# The Limen Prover Gateway.
+#
+# Built from the repository so the gateway a host runs is the gateway in the tree, not
+# a separately published artefact that could drift from it.
+FROM node:24-alpine AS build
+
+RUN corepack enable
+WORKDIR /repo
+
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml tsconfig.base.json ./
+COPY packages/proving-core/package.json packages/proving-core/
+COPY packages/prover-gateway/package.json packages/prover-gateway/
+
+RUN pnpm install --frozen-lockfile --filter @limen/prover-gateway...
+
+COPY packages/proving-core packages/proving-core
+COPY packages/prover-gateway packages/prover-gateway
+
+RUN pnpm --filter @limen/proving-core build \
+ && pnpm --filter @limen/prover-gateway build \
+ && pnpm deploy --filter @limen/prover-gateway --prod /gateway
+
+FROM node:24-alpine AS runtime
+
+# The gateway handles proving requests that contain viewing-key material. It runs
+# unprivileged and owns nothing on disk.
+RUN addgroup -S limen && adduser -S -G limen limen
+WORKDIR /app
+COPY --from=build --chown=limen:limen /gateway ./
+USER limen
+
+ENV NODE_ENV=production \
+    PORT=8787 \
+    HOST=0.0.0.0
+
+EXPOSE 8787
+CMD ["node", "dist/server.js"]

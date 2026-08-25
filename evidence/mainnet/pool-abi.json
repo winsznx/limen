@@ -1,0 +1,525 @@
+{
+  "probed_at": "2026-08-25T08:03:30.586Z",
+  "pool_address": "0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a",
+  "class_hash": "0x67dddd89d80fedadc06b6f160798f94800a4a70164e5a24301cd0d6076b554d",
+  "function_names": [
+    "__execute__",
+    "__validate__",
+    "add_new_implementation",
+    "add_new_implementation_unsafe",
+    "apply_actions",
+    "channel_exists",
+    "compile_actions",
+    "compile_and_panic",
+    "disable_legacy_role_reclaim",
+    "get_auditor_public_key",
+    "get_channel_info",
+    "get_enc_private_key",
+    "get_fee_amount",
+    "get_fee_collector",
+    "get_impl_activation_time",
+    "get_note",
+    "get_num_of_channels",
+    "get_outgoing_channel_info",
+    "get_proof_validity_blocks",
+    "get_public_key",
+    "get_screener_public_key",
+    "get_subchannel_info",
+    "get_upgrade_delay",
+    "get_version",
+    "grant_role",
+    "has_role",
+    "is_open_note_depositor_blocked",
+    "is_paused",
+    "nullifier_exists",
+    "pause",
+    "reclaim_legacy_roles",
+    "reclaim_legacy_roles_for_accounts",
+    "remove_implementation",
+    "renounce",
+    "replace_to",
+    "revoke_role",
+    "set_auditor_public_key",
+    "set_fee_amount",
+    "set_fee_collector",
+    "set_open_note_depositor_blocked",
+    "set_proof_validity_blocks",
+    "set_screener_public_key",
+    "subchannel_exists",
+    "unpause",
+    "validate_upgradeability"
+  ],
+  "functions": [
+    {
+      "name": "__execute__",
+      "state_mutability": "external",
+      "inputs": [
+        "calls: core::array::Array::<core::starknet::account::Call>"
+      ],
+      "outputs": []
+    },
+    {
+      "name": "__validate__",
+      "state_mutability": "view",
+      "inputs": [
+        "calls: core::array::Array::<core::starknet::account::Call>"
+      ],
+      "outputs": [
+        "core::felt252"
+      ]
+    },
+    {
+      "name": "add_new_implementation",
+      "state_mutability": "external",
+      "inputs": [
+        "implementation_data: starkware_utils::components::replaceability::interface::ImplementationData"
+      ],
+      "outputs": []
+    },
+    {
+      "name": "add_new_implementation_unsafe",
+      "state_mutability": "external",
+      "inputs": [
+        "implementation_data: starkware_utils::components::replaceability::interface::ImplementationData"
+      ],
+      "outputs": []
+    },
+    {
+      "name": "apply_actions",
+      "state_mutability": "external",
+      "inputs": [
+        "actions: core::array::Span::<privacy::actions::ServerAction>",
+        "screening: core::option::Option::<privacy::snip12::ScreeningAttestation>"
+      ],
+      "outputs": []
+    },
+    {
+      "name": "channel_exists",
+      "state_mutability": "view",
+      "inputs": [
+        "channel_marker: core::felt252"
+      ],
+      "outputs": [
+        "core::bool"
+      ]
+    },
+    {
+      "name": "compile_actions",
+      "state_mutability": "view",
+      "inputs": [
+        "user_addr: core::starknet::contract_address::ContractAddress",
+        "user_private_key: core::felt252",
+        "client_actions: core::array::Span::<privacy::actions::ClientAction>"
+      ],
+      "outputs": [
+        "core::array::Span::<privacy::actions::ServerAction>"
+      ]
+    },
+    {
+      "name": "compile_and_panic",
+      "state_mutability": "external",
+      "inputs": [
+        "user_addr: core::starknet::contract_address::ContractAddress",
+        "user_private_key: core::felt252",
+        "client_actions: core::array::Span::<privacy::actions::ClientAction>"
+      ],
+      "outputs": []
+    },
+    {
+      "name": "disable_legacy_role_reclaim",
+      "state_mutability": "external",
+      "inputs": [],
+      "outputs": []
+    },
+    {
+      "name": "get_auditor_public_key",
+      "state_mutability": "view",
+      "inputs": [],
+      "outputs": [
+        "core::felt252"
+      ]
+    },
+    {
+      "name": "get_channel_info",
+      "state_mutability": "view",
+      "inputs": [
+        "recipient_addr: core::starknet::contract_address::ContractAddress",
+        "channel_index: core::integer::u64"
+      ],
+      "outputs": [
+        "privacy::objects::EncChannelInfo"
+      ]
+    },
+    {
+      "name": "get_enc_private_key",
+      "state_mutability": "view",
+      "inputs": [
+        "user_addr: core::starknet::contract_address::ContractAddress"
+      ],
+      "outputs": [
+        "privacy::objects::EncPrivateKey"
+      ]
+    },
+    {
+      "name": "get_fee_amount",
+      "state_mutability": "view",
+      "inputs": [],
+      "outputs": [
+        "core::integer::u128"
+      ]
+    },
+    {
+      "name": "get_fee_collector",
+      "state_mutability": "view",
+      "inputs": [],
+      "outputs": [
+        "core::starknet::contract_address::ContractAddress"
+      ]
+    },
+    {
+      "name": "get_impl_activation_time",
+      "state_mutability": "view",
+      "inputs": [
+        "implementation_data: starkware_utils::components::replaceability::interface::ImplementationData"
+      ],
+      "outputs": [
+        "core::integer::u64"
+      ]
+    },
+    {
+      "name": "get_note",
+      "state_mutability": "view",
+      "inputs": [
+        "note_id: core::felt252"
+      ],
+      "outputs": [
+        "privacy::objects::Note"
+      ]
+    },
+    {
+      "name": "get_num_of_channels",
+      "state_mutability": "view",
+      "inputs": [
+        "recipient_addr: core::starknet::contract_address::ContractAddress"
+      ],
+      "outputs": [
+        "core::integer::u64"
+      ]
+    },
+    {
+      "name": "get_outgoing_channel_info",
+      "state_mutability": "view",
+      "inputs": [
+        "outgoing_channel_id: core::felt252"
+      ],
+      "outputs": [
+        "privacy::objects::EncOutgoingChannelInfo"
+      ]
+    },
+    {
+      "name": "get_proof_validity_blocks",
+      "state_mutability": "view",
+      "inputs": [],
+      "outputs": [
+        "core::integer::u64"
+      ]
+    },
+    {
+      "name": "get_public_key",
+      "state_mutability": "view",
+      "inputs": [
+        "user_addr: core::starknet::contract_address::ContractAddress"
+      ],
+      "outputs": [
+        "core::felt252"
+      ]
+    },
+    {
+      "name": "get_screener_public_key",
+      "state_mutability": "view",
+      "inputs": [],
+      "outputs": [
+        "core::felt252"
+      ]
+    },
+    {
+      "name": "get_subchannel_info",
+      "state_mutability": "view",
+      "inputs": [
+        "subchannel_id: core::felt252"
+      ],
+      "outputs": [
+        "privacy::objects::EncSubchannelInfo"
+      ]
+    },
+    {
+      "name": "get_upgrade_delay",
+      "state_mutability": "view",
+      "inputs": [],
+      "outputs": [
+        "core::integer::u64"
+      ]
+    },
+    {
+      "name": "get_version",
+      "state_mutability": "view",
+      "inputs": [],
+      "outputs": [
+        "core::felt252"
+      ]
+    },
+    {
+      "name": "grant_role",
+      "state_mutability": "external",
+      "inputs": [
+        "role: starkware_utils::components::roles::interface::Role",
+        "account: core::starknet::contract_address::ContractAddress"
+      ],
+      "outputs": []
+    },
+    {
+      "name": "has_role",
+      "state_mutability": "view",
+      "inputs": [
+        "role: starkware_utils::components::roles::interface::Role",
+        "account: core::starknet::contract_address::ContractAddress"
+      ],
+      "outputs": [
+        "core::bool"
+      ]
+    },
+    {
+      "name": "is_open_note_depositor_blocked",
+      "state_mutability": "view",
+      "inputs": [
+        "depositor: core::starknet::contract_address::ContractAddress"
+      ],
+      "outputs": [
+        "core::bool"
+      ]
+    },
+    {
+      "name": "is_paused",
+      "state_mutability": "view",
+      "inputs": [],
+      "outputs": [
+        "core::bool"
+      ]
+    },
+    {
+      "name": "nullifier_exists",
+      "state_mutability": "view",
+      "inputs": [
+        "nullifier: core::felt252"
+      ],
+      "outputs": [
+        "core::bool"
+      ]
+    },
+    {
+      "name": "pause",
+      "state_mutability": "external",
+      "inputs": [],
+      "outputs": []
+    },
+    {
+      "name": "reclaim_legacy_roles",
+      "state_mutability": "external",
+      "inputs": [],
+      "outputs": []
+    },
+    {
+      "name": "reclaim_legacy_roles_for_accounts",
+      "state_mutability": "external",
+      "inputs": [
+        "accounts: core::array::Span::<core::starknet::contract_address::ContractAddress>"
+      ],
+      "outputs": []
+    },
+    {
+      "name": "remove_implementation",
+      "state_mutability": "external",
+      "inputs": [
+        "implementation_data: starkware_utils::components::replaceability::interface::ImplementationData"
+      ],
+      "outputs": []
+    },
+    {
+      "name": "renounce",
+      "state_mutability": "external",
+      "inputs": [
+        "role: starkware_utils::components::roles::interface::Role"
+      ],
+      "outputs": []
+    },
+    {
+      "name": "replace_to",
+      "state_mutability": "external",
+      "inputs": [
+        "implementation_data: starkware_utils::components::replaceability::interface::ImplementationData"
+      ],
+      "outputs": []
+    },
+    {
+      "name": "revoke_role",
+      "state_mutability": "external",
+      "inputs": [
+        "role: starkware_utils::components::roles::interface::Role",
+        "account: core::starknet::contract_address::ContractAddress"
+      ],
+      "outputs": []
+    },
+    {
+      "name": "set_auditor_public_key",
+      "state_mutability": "external",
+      "inputs": [
+        "auditor_public_key: core::felt252"
+      ],
+      "outputs": []
+    },
+    {
+      "name": "set_fee_amount",
+      "state_mutability": "external",
+      "inputs": [
+        "fee_amount: core::integer::u128"
+      ],
+      "outputs": []
+    },
+    {
+      "name": "set_fee_collector",
+      "state_mutability": "external",
+      "inputs": [
+        "fee_collector: core::starknet::contract_address::ContractAddress"
+      ],
+      "outputs": []
+    },
+    {
+      "name": "set_open_note_depositor_blocked",
+      "state_mutability": "external",
+      "inputs": [
+        "depositor: core::starknet::contract_address::ContractAddress",
+        "blocked: core::bool"
+      ],
+      "outputs": []
+    },
+    {
+      "name": "set_proof_validity_blocks",
+      "state_mutability": "external",
+      "inputs": [
+        "proof_validity_blocks: core::integer::u64"
+      ],
+      "outputs": []
+    },
+    {
+      "name": "set_screener_public_key",
+      "state_mutability": "external",
+      "inputs": [
+        "screener_public_key: core::felt252"
+      ],
+      "outputs": []
+    },
+    {
+      "name": "subchannel_exists",
+      "state_mutability": "view",
+      "inputs": [
+        "subchannel_marker: core::felt252"
+      ],
+      "outputs": [
+        "core::bool"
+      ]
+    },
+    {
+      "name": "unpause",
+      "state_mutability": "external",
+      "inputs": [],
+      "outputs": []
+    },
+    {
+      "name": "validate_upgradeability",
+      "state_mutability": "external",
+      "inputs": [
+        "implementation_data: starkware_utils::components::replaceability::interface::ImplementationData"
+      ],
+      "outputs": []
+    }
+  ],
+  "client_action_variants": [
+    "SetViewingKey: privacy::actions::SetViewingKeyInput",
+    "OpenChannel: privacy::actions::OpenChannelInput",
+    "OpenSubchannel: privacy::actions::OpenSubchannelInput",
+    "CreateEncNote: privacy::actions::CreateEncNoteInput",
+    "CreateOpenNote: privacy::actions::CreateOpenNoteInput",
+    "Deposit: privacy::actions::DepositInput",
+    "UseNote: privacy::actions::UseNoteInput",
+    "Withdraw: privacy::actions::WithdrawInput",
+    "InvokeExternal: privacy::actions::InvokeExternalInput",
+    "ComputeAndInvoke: privacy::actions::ComputeAndInvokeInput"
+  ],
+  "server_action_variants": [
+    "WriteOnce: privacy::actions::WriteOnceInput",
+    "Append: privacy::actions::AppendInput",
+    "TransferFrom: privacy::actions::TransferFromInput",
+    "TransferTo: privacy::actions::TransferToInput",
+    "EmitViewingKeySet: privacy::events::ViewingKeySet",
+    "EmitWithdrawal: privacy::events::Withdrawal",
+    "EmitDeposit: privacy::events::Deposit",
+    "EmitOpenNoteCreated: privacy::events::OpenNoteCreated",
+    "EmitEncNoteCreated: privacy::events::EncNoteCreated",
+    "EmitNoteUsed: privacy::events::NoteUsed",
+    "Invoke: privacy::actions::InvokeInput",
+    "InvokeWithComputation: privacy::actions::InvokeInput"
+  ],
+  "open_note_screening_policy": null,
+  "event_variants": null,
+  "structs": [
+    {
+      "name": "privacy::actions::CreateOpenNoteInput",
+      "members": [
+        "recipient_addr: core::starknet::contract_address::ContractAddress",
+        "recipient_public_key: core::felt252",
+        "token: core::starknet::contract_address::ContractAddress",
+        "index: core::integer::u32",
+        "random: core::felt252"
+      ]
+    },
+    {
+      "name": "privacy::actions::UseNoteInput",
+      "members": [
+        "channel_key: core::felt252",
+        "token: core::starknet::contract_address::ContractAddress",
+        "index: core::integer::u32"
+      ]
+    },
+    {
+      "name": "privacy::actions::WithdrawInput",
+      "members": [
+        "to_addr: core::starknet::contract_address::ContractAddress",
+        "token: core::starknet::contract_address::ContractAddress",
+        "amount: core::integer::u128",
+        "random: core::felt252"
+      ]
+    },
+    {
+      "name": "privacy::actions::InvokeExternalInput",
+      "members": [
+        "contract_address: core::starknet::contract_address::ContractAddress",
+        "calldata: core::array::Span::<core::felt252>"
+      ]
+    },
+    {
+      "name": "privacy::actions::ComputeAndInvokeInput",
+      "members": [
+        "contract_address: core::starknet::contract_address::ContractAddress",
+        "compute_additional_data: core::array::Span::<core::felt252>",
+        "invoke_additional_data: core::array::Span::<core::felt252>"
+      ]
+    },
+    {
+      "name": "privacy::snip12::ScreeningAttestation",
+      "members": [
+        "issued_at: core::integer::u64",
+        "signature: (core::felt252, core::felt252)"
+      ]
+    }
+  ]
+}

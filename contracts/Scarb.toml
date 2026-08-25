@@ -1,0 +1,22 @@
+[workspace]
+members = ["packages/limen_shared", "packages/limen_anonymizer", "packages/limen_capital_gate"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024_07"
+license = "Apache-2.0"
+
+[workspace.dependencies]
+starknet = "2.17.0"
+openzeppelin = "3.0.0"
+snforge_std = "0.59.0"
+assert_macros = "2.17.0"
+
+[workspace.tool.scarb]
+allow-prebuilt-plugins = ["snforge_std"]
+
+[workspace.tool.fmt]
+sort-module-level-items = true
+
+[profile.release.cairo]
+inlining-strategy = 250

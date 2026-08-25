@@ -1,0 +1,28 @@
+node_modules/
+dist/
+.next/
+out/
+build/
+target/
+.scarb/
+coverage/
+*.tsbuildinfo
+
+# Secrets. Nothing matching these may ever be committed.
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+secrets/
+.limen-keys/
+
+# Local tooling and upstream reference checkouts
+.upstream/
+.wrangler/
+.dev.vars
+.DS_Store
+
+# Prover working files
+infra/prover/.data/
+.vendor/

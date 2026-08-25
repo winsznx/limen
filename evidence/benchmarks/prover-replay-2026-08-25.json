@@ -1,0 +1,49 @@
+{
+  "ran_at": "2026-08-25T09:13:02.275Z",
+  "method": "Replayed real SN_MAIN Invoke V3 transactions against the block immediately before inclusion. No funds moved and nothing was submitted.",
+  "prover": {
+    "image": "ghcr.io/starkware-libs/starknet-privacy/transaction-prover:PRIVACY-0.14.3-RC.2@sha256:a62e7764e034ea25d84d4a235f1f683f7c5f03f88f6646a744599171bf5ca58c",
+    "host": "Cloudflare Containers",
+    "instance_type": "standard-4",
+    "vcpu": 4,
+    "memory_gib": 12,
+    "max_concurrent_requests": 1,
+    "note": "Upstream recommends 48 vCPU / 96 GB for production throughput. These numbers describe this tier only and are not a STRK20 benchmark."
+  },
+  "rpc_provider": "https://starknet-mainnet.g.alchemy.com/starknet/version/rpc/v0_10/demo",
+  "block_selection": "inclusion block minus one, finalized only",
+  "submitted": 1,
+  "succeeded": 0,
+  "failed": 1,
+  "p50_ms": null,
+  "p95_ms": null,
+  "min_ms": null,
+  "max_ms": null,
+  "gateway_metrics": {
+    "active": 0,
+    "queued": 0,
+    "submitted": 0,
+    "succeeded": 0,
+    "failed": 1,
+    "rejected": 0,
+    "deduplicated": 0,
+    "durationsMs": [],
+    "p50Ms": null,
+    "p95Ms": null,
+    "image": "ghcr.io/starkware-libs/starknet-privacy/transaction-prover:PRIVACY-0.14.3-RC.2@sha256:a62e7764e034ea25d84d4a235f1f683f7c5f03f88f6646a744599171bf5ca58c"
+  },
+  "samples": [
+    {
+      "transactionHash": "0x5776e86cbb2c097bf6a0429a4b4ca9d8b036d3a0b79dc726616a9e9d608f06c",
+      "blockNumber": 13835571,
+      "provingBlock": 13835570,
+      "calldataFelts": 48,
+      "outcome": "failed",
+      "errorCode": -32603,
+      "errorMessage": "Prover did not complete",
+      "errorDetail": "container response (500): Container suddenly disconnected, try again",
+      "durationMs": 28769,
+      "queueWaitMs": 0
+    }
+  ]
+}

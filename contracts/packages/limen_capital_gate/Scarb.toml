@@ -1,0 +1,26 @@
+[package]
+name = "limen_capital_gate"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[tool]
+fmt.workspace = true
+scarb.workspace = true
+
+[dependencies]
+starknet.workspace = true
+limen_shared = { path = "../limen_shared" }
+
+[dev-dependencies]
+assert_macros.workspace = true
+snforge_std.workspace = true
+
+[lib]
+
+[scripts]
+test = "snforge test"
+
+[[target.starknet-contract]]
+sierra = true
+casm = true

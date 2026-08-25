@@ -1,0 +1,21 @@
+[package]
+name = "limen_shared"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[tool]
+fmt.workspace = true
+scarb.workspace = true
+
+[dependencies]
+starknet.workspace = true
+
+[dev-dependencies]
+assert_macros.workspace = true
+snforge_std.workspace = true
+
+[lib]
+
+[scripts]
+test = "snforge test"

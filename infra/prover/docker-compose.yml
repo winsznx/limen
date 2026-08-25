@@ -1,0 +1,110 @@
+# The Limen Prover host.
+#
+# Three containers on one Docker-capable Linux machine:
+#
+#   prover      the pinned upstream STRK20 transaction prover, unmodified
+#   gateway     the Limen Prover Gateway: auth, validation, admission, idempotency,
+#               job accounting, health, metrics, redaction
+#   tunnel      a Cloudflare Tunnel, the only inbound path
+#
+# The prover has no published port. It is reachable only from the gateway over the
+# private compose network, so there is no public unauthenticated prover port at any
+# point — which is the requirement in PRD §7.4.
+#
+#   cp .env.example .env && $EDITOR .env
+#   ./setup.sh
+
+name: limen-prover
+
+services:
+  prover:
+    # Pinned by digest, not tag, so the image cannot change under a redeploy.
+    # linux/amd64 explicitly: the published arm64 variant aborts with SIGILL on
+    # generic aarch64 hosts. See CONTRIBUTIONS.md.
+    image: ghcr.io/starkware-libs/starknet-privacy/transaction-prover@sha256:a62e7764e034ea25d84d4a235f1f683f7c5f03f88f6646a744599171bf5ca58c
+    platform: linux/amd64
+    restart: unless-stopped
+    # No `ports:` on purpose. Only the compose network reaches it.
+    expose:
+      - "3000"
+    environment:
+      RPC_URL: ${PROVER_RPC_URL:?PROVER_RPC_URL is required}
+      CHAIN_ID: ${CHAIN_ID:-SN_MAIN}
+      PROVER_IP: 0.0.0.0
+      PROVER_PORT: "3000"
+      # One proof at a time. The gateway does admission control, and oversubscribing
+      # the host would turn one slow proof into several.
+      MAX_CONCURRENT_REQUESTS: ${PROVER_MAX_CONCURRENT:-1}
+      MAX_CONNECTIONS: "8"
+      PREFETCH_STATE: ${PROVER_PREFETCH_STATE:-true}
+      COMPILED_CLASS_CACHE_SIZE: ${PROVER_CLASS_CACHE:-600}
+      RUST_LOG: ${PROVER_LOG_LEVEL:-warn}
+    deploy:
+      resources:
+        limits:
+          # Upstream recommends 48 vCPU / 96 GB. Below roughly 24 GB the Stwo prover
+          # is killed mid-proof; measured numbers are in README.md. The limit is set
+          # explicitly so a proof that will not fit fails fast instead of dragging the
+          # whole host into swap.
+          memory: ${PROVER_MEMORY_LIMIT:-24G}
+    healthcheck:
+      # Health means "answers JSON-RPC", not "process exists".
+      test:
+        - CMD-SHELL
+        - >-
+          wget -qO- --post-data='{"jsonrpc":"2.0","id":1,"method":"starknet_specVersion","params":[]}'
+          --header='Content-Type: application/json' http://127.0.0.1:3000/ | grep -q result
+      interval: 30s
+      timeout: 10s
+      start_period: 180s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "3"
+
+  gateway:
+    build:
+      context: ../..
+      dockerfile: infra/prover/Dockerfile.gateway
+    restart: unless-stopped
+    depends_on:
+      prover:
+        condition: service_started
+    expose:
+      - "8787"
+    # Bound to loopback so the gateway is reachable from the host (for the tunnel and
+    # for local checks) but never directly from the network.
+    ports:
+      - "127.0.0.1:${GATEWAY_PORT:-8787}:8787"
+    environment:
+      PROVER_URL: http://prover:3000
+      GATEWAY_TOKEN: ${GATEWAY_TOKEN:?GATEWAY_TOKEN is required}
+      MAX_CONCURRENT: ${GATEWAY_MAX_CONCURRENT:-1}
+      MAX_QUEUED: ${GATEWAY_MAX_QUEUED:-4}
+      PROVE_TIMEOUT_MS: ${GATEWAY_PROVE_TIMEOUT_MS:-900000}
+      PROVER_IMAGE: ghcr.io/starkware-libs/starknet-privacy/transaction-prover:PRIVACY-0.14.3-RC.2@sha256:a62e7764e034ea25d84d4a235f1f683f7c5f03f88f6646a744599171bf5ca58c
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8787/health >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 10s
+      start_period: 30s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "3"
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    depends_on:
+      - gateway
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN:?CLOUDFLARE_TUNNEL_TOKEN is required}
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "2"
