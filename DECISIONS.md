@@ -336,6 +336,71 @@ mid-proof failure.
 
 ---
 
+## D-013 — Clearing runs through the key-holding SDK route, because the Wallet API cannot reach it
+
+**Date:** 2026-08-25
+**Status:** accepted, forced by upstream
+
+Limen's subject binding depends on the pool's `ComputeAndInvoke` action, which is the
+only thing that produces an unforgeable, address-free identity key. The Starknet Wallet
+API does not expose it. In `@starknet-io/types-js@0.10.3`:
+
+```ts
+export type STRK20_ACTION =
+  | STRK20_DEPOSIT_ACTION | STRK20_WITHDRAW_ACTION
+  | STRK20_TRANSFER_ACTION | STRK20_INVOKE_ACTION;   // -> privacy_invoke only
+```
+
+Four actions, none of them compute-and-invoke. So **no browser wallet can clear a Limen
+challenge**, and clearances run through the Privacy SDK route instead.
+
+Falling back to plain `privacy_invoke` was considered and rejected. Without a compute
+leg there is no protocol-derived subject and no proof-bound balance snapshot, so the
+subject would be whatever the caller put in calldata — which is not a subject, and the
+capital measurement would be forgeable. A weaker mechanism that still looked like the
+product would be worse than an honest limitation.
+
+**Cost:** the demo cannot be driven end to end from a judge's own wallet. The app states
+this plainly on the challenge page rather than hiding it, and the gap is filed upstream
+as CONTRIBUTIONS.md C-2 with a suggested action shape.
+
+---
+
+## D-014 — Notes are discovered from the pool contract, not from an indexer
+
+**Date:** 2026-08-25
+**Status:** accepted
+
+The SDK's production discovery backend is `IndexerDiscoveryProvider`, pointed at a
+discovery service. Limen uses `ContractDiscoveryProvider` against the pool directly,
+through a view adapter over JSON-RPC (`packages/limen-sdk/src/pool-views.ts`).
+
+Two reasons, and the second is the real one.
+
+**The mainnet discovery URL is not published.** The upstream demo's mainnet env template
+leaves `VITE_INDEXER_URL` as a TODO, and the docs pages that would carry it were not
+reachable. Depending on an endpoint that is not documented would make a clean-room
+reproduction impossible.
+
+**A discovery request carries viewing-key material, and the service decrypts it.** The
+SDK README says so outright: even with OHTTP, the discovery service still processes the
+decrypted request content. Reading the pool directly means nothing about the account's
+activity leaves the client at all, which is a strictly better privacy position for a
+product whose entire claim is about not disclosing more than necessary.
+
+The trade is scan cost, which grows with the account's own activity rather than pool
+volume. Limen's dedicated account holds a handful of notes, so this is cheap. An
+integration with thousands of notes should use the indexer, and the provider is a
+constructor argument precisely so that swap is a one-line change.
+
+`ContractDiscoveryProvider` is built but not re-exported from the SDK's package root, so
+Limen imports it from the built internal path of its own pinned vendored build. That is
+a deliberate use of an unexported internal, pinned to a commit, and it would break on an
+SDK upgrade — which is acceptable because the upgrade would need re-verification anyway.
+The view adapter is verified against mainnet, not assumed.
+
+---
+
 ## D-010 — Bearer challenges are supported, and labelled
 
 **Date:** 2026-08-25
