@@ -7,9 +7,7 @@ use limen_capital_gate::interface::{
     ACTION_REGISTER_ALLOCATION, ICapitalGateDispatcher, ICapitalGateDispatcherTrait,
 };
 use limen_shared::target::{ILimenTargetDispatcher, ILimenTargetDispatcherTrait, LimenClearance};
-use snforge_std::{
-    CheatSpan, ContractClassTrait, DeclareResultTrait, cheat_caller_address, declare,
-};
+use snforge_std::{CheatSpan, ContractClassTrait, DeclareResultTrait, cheat_caller_address, declare};
 use starknet::ContractAddress;
 
 const ONE_TOKEN: u128 = 1_000_000_000_000_000_000;

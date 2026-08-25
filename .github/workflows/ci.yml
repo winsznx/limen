@@ -1,0 +1,218 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# Every job here runs without credentials. Anything needing a key, funds, or the prover
+# host is deliberately out of CI: a pipeline that cannot run on a fork is not a check
+# anyone else can trust.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  SCARB_VERSION: 2.17.0
+  FOUNDRY_VERSION: 0.59.0
+
+jobs:
+  typescript:
+    name: TypeScript
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Vendor the pinned STRK20 Privacy SDK
+        # Not on the public npm registry, so it is built from the pinned upstream
+        # revision. See DECISIONS.md D-001.
+        run: ./scripts/vendor-sdk.sh
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm -r --filter './packages/*' build
+      - run: pnpm -r typecheck
+      - run: pnpm -r test
+
+  cairo:
+    name: Cairo
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install Scarb
+        run: |
+          curl -fsSL "https://github.com/software-mansion/scarb/releases/download/v${SCARB_VERSION}/scarb-v${SCARB_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
+            | tar xz -C "$HOME"
+          echo "$HOME/scarb-v${SCARB_VERSION}-x86_64-unknown-linux-gnu/bin" >> "$GITHUB_PATH"
+
+      - name: Install Starknet Foundry
+        run: |
+          curl -fsSL "https://github.com/foundry-rs/starknet-foundry/releases/download/v${FOUNDRY_VERSION}/starknet-foundry-v${FOUNDRY_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
+            | tar xz -C "$HOME"
+          echo "$HOME/starknet-foundry-v${FOUNDRY_VERSION}-x86_64-unknown-linux-gnu/bin" >> "$GITHUB_PATH"
+
+      - run: scarb fmt --check
+        working-directory: contracts
+
+      - run: scarb build
+        working-directory: contracts
+
+      - name: Run the full suite, including the 100-case campaign
+        run: snforge test
+        working-directory: contracts
+
+  campaign:
+    name: Adversarial campaign
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install Scarb
+        run: |
+          curl -fsSL "https://github.com/software-mansion/scarb/releases/download/v${SCARB_VERSION}/scarb-v${SCARB_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
+            | tar xz -C "$HOME"
+          echo "$HOME/scarb-v${SCARB_VERSION}-x86_64-unknown-linux-gnu/bin" >> "$GITHUB_PATH"
+
+      - name: Install Starknet Foundry
+        run: |
+          curl -fsSL "https://github.com/foundry-rs/starknet-foundry/releases/download/v${FOUNDRY_VERSION}/starknet-foundry-v${FOUNDRY_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
+            | tar xz -C "$HOME"
+          echo "$HOME/starknet-foundry-v${FOUNDRY_VERSION}-x86_64-unknown-linux-gnu/bin" >> "$GITHUB_PATH"
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Regenerate the campaign and check it is unchanged
+        # The vectors are seeded, so a diff here means someone edited generated output
+        # by hand or changed the generator without regenerating.
+        run: |
+          node --experimental-strip-types scripts/generate-campaign.ts
+          git diff --exit-code -- \
+            contracts/packages/limen_anonymizer/src/tests/campaign_generated.cairo \
+            evidence/campaigns/vectors.json
+
+      - name: Run the campaign
+        run: node --experimental-strip-types scripts/run-campaign.ts
+
+      - name: Assert the acceptance targets
+        run: |
+          node -e '
+            const r = require("./evidence/campaigns/security.json");
+            const failures = [];
+            if (r.total !== 100) failures.push(`total ${r.total}`);
+            if (r.valid_observed !== r.valid_expected) failures.push("valid cases did not all clear");
+            if (r.invalid_rejected !== r.invalid_expected) failures.push("adversarial cases were not all rejected");
+            if (r.false_clearances !== 0) failures.push(`false clearances ${r.false_clearances}`);
+            if (r.successful_replays !== 0) failures.push(`replays ${r.successful_replays}`);
+            if (r.funds_stranded !== 0) failures.push(`funds stranded ${r.funds_stranded}`);
+            if (r.missing_cases !== 0) failures.push(`missing cases ${r.missing_cases}`);
+            if (failures.length) { console.error(failures.join("; ")); process.exit(1); }
+            console.log(`campaign clean: ${r.total} cases, 0 false clearances`);
+          '
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: campaign-results
+          path: evidence/campaigns/
+
+  protocol-drift:
+    name: Protocol drift
+    runs-on: ubuntu-latest
+    # Reads mainnet through a public endpoint. It can fail for reasons outside the
+    # repository, so it reports without blocking a merge.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install Scarb
+        run: |
+          curl -fsSL "https://github.com/software-mansion/scarb/releases/download/v${SCARB_VERSION}/scarb-v${SCARB_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
+            | tar xz -C "$HOME"
+          echo "$HOME/scarb-v${SCARB_VERSION}-x86_64-unknown-linux-gnu/bin" >> "$GITHUB_PATH"
+
+      - run: pnpm install --frozen-lockfile
+      - run: ./scripts/vendor-sdk.sh
+
+      - name: The pinned revision must still be what mainnet runs
+        # If this fails, every interface assumption in Limen is suspect: the pool has
+        # been upgraded and the protocol map needs re-deriving before anything ships.
+        run: node --experimental-strip-types tools/verify-pool-source.ts
+
+      - name: Record live pool parameters
+        run: node --experimental-strip-types tools/probe-mainnet.ts
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mainnet-probe
+          path: evidence/mainnet/
+
+  web:
+    name: Web build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: ./scripts/vendor-sdk.sh
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm -r --filter './packages/*' build
+      - run: pnpm --filter @limen/web exec next build
+
+  secrets:
+    name: No secrets committed
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Scan tracked files for key material
+        run: |
+          # Signing keys, viewing keys and RPC credentials must never reach the tree.
+          # Documentation and .env.example templates are allowed to name the variables.
+          if git ls-files -z \
+            | grep -zv -E '\.md$|\.env\.example$|^\.github/' \
+            | xargs -0 grep -nEI \
+                -e 'DEPLOYER_PRIVATE_KEY=0x[0-9a-fA-F]{16,}' \
+                -e 'VIEWING_KEY=[0-9]{16,}' \
+                -e 'GATEWAY_TOKEN=[A-Za-z0-9_-]{20,}' \
+                -e 'alchemy\.com/[A-Za-z0-9_-]{20,}' \
+            ; then
+            echo "::error::Possible credential in tracked files"
+            exit 1
+          fi
+          echo "no credentials found in tracked files"
+
+      - name: .env files must not be tracked
+        run: |
+          if git ls-files | grep -E '(^|/)\.env(\.|$)' | grep -v '\.env\.example$'; then
+            echo "::error::A .env file is tracked"
+            exit 1
+          fi
+          echo "no .env files tracked"

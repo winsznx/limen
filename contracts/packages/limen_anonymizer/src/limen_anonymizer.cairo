@@ -36,8 +36,7 @@ pub mod LimenAnonymizer {
         Map, StoragePathEntry, StoragePointerReadAccess, StoragePointerWriteAccess,
     };
     use starknet::{
-        ContractAddress, get_block_timestamp, get_caller_address, get_contract_address,
-        get_tx_info,
+        ContractAddress, get_block_timestamp, get_caller_address, get_contract_address, get_tx_info,
     };
 
     #[storage]
@@ -180,7 +179,9 @@ pub mod LimenAnonymizer {
             self
                 .challenge_status
                 .entry(challenge_id)
-                .write(ChallengeStatus { consumed_by: subject, consumed_at: get_block_timestamp() });
+                .write(
+                    ChallengeStatus { consumed_by: subject, consumed_at: get_block_timestamp() },
+                );
             self.cleared_count.write(self.cleared_count.read() + 1);
 
             ILimenTargetDispatcher { contract_address: challenge.target }

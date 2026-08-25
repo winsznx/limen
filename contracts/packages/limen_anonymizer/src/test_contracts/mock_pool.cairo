@@ -126,10 +126,7 @@ pub mod MockPool {
             let erc20 = IMockERC20Dispatcher { contract_address: token };
             if withdraw_amount != 0 {
                 erc20.transfer(recipient: anonymizer, amount: withdraw_amount.into());
-                self
-                    .emit(
-                        Withdrawal { to_addr: anonymizer, token, amount: withdraw_amount },
-                    );
+                self.emit(Withdrawal { to_addr: anonymizer, token, amount: withdraw_amount });
             }
 
             let mut calldata: Array<felt252> = array![];
@@ -170,7 +167,8 @@ pub mod MockPool {
             withdraw_amount: u128,
             note_id: felt252,
         ) -> Span<OpenNoteDeposit> {
-            let compute_result = self.compile(anonymizer, user_addr, user_private_key, challenge_id);
+            let compute_result = self
+                .compile(anonymizer, user_addr, user_private_key, challenge_id);
             self.apply(anonymizer, token, withdraw_amount, compute_result, [note_id].span())
         }
 
@@ -178,9 +176,7 @@ pub mod MockPool {
             ref self: ContractState, anonymizer: ContractAddress, calldata: Span<felt252>,
         ) -> Span<felt252> {
             call_contract_syscall(
-                address: anonymizer,
-                entry_point_selector: selector!("privacy_invoke"),
-                :calldata,
+                address: anonymizer, entry_point_selector: selector!("privacy_invoke"), :calldata,
             )
                 .unwrap_syscall()
         }

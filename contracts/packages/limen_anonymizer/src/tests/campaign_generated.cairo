@@ -15,151 +15,176 @@ use super::campaign_harness::{
     run_wrong_subject, run_wrong_target, run_wrong_token,
 };
 
-/// Correct subject, token, target, action and exact threshold. Must clear and register the allocation.
+/// Correct subject, token, target, action and exact threshold. Must clear and register the
+/// allocation.
 #[test]
 fn case_001_valid() {
     run_valid(20, 0x1001, 2);
 }
 
-/// Correct subject, token, target, action and exact threshold. Must clear and register the allocation.
+/// Correct subject, token, target, action and exact threshold. Must clear and register the
+/// allocation.
 #[test]
 fn case_002_valid() {
     run_valid(32, 0x1002, 1936);
 }
 
-/// Correct subject, token, target, action and exact threshold. Must clear and register the allocation.
+/// Correct subject, token, target, action and exact threshold. Must clear and register the
+/// allocation.
 #[test]
 fn case_003_valid() {
     run_valid(51, 0x1003, 457);
 }
 
-/// Correct subject, token, target, action and exact threshold. Must clear and register the allocation.
+/// Correct subject, token, target, action and exact threshold. Must clear and register the
+/// allocation.
 #[test]
 fn case_004_valid() {
     run_valid(43, 0x1004, 96);
 }
 
-/// Correct subject, token, target, action and exact threshold. Must clear and register the allocation.
+/// Correct subject, token, target, action and exact threshold. Must clear and register the
+/// allocation.
 #[test]
 fn case_005_valid() {
     run_valid(27, 0x1005, 671);
 }
 
-/// Correct subject, token, target, action and exact threshold. Must clear and register the allocation.
+/// Correct subject, token, target, action and exact threshold. Must clear and register the
+/// allocation.
 #[test]
 fn case_006_valid() {
     run_valid(39, 0x1006, 250);
 }
 
-/// Correct subject, token, target, action and exact threshold. Must clear and register the allocation.
+/// Correct subject, token, target, action and exact threshold. Must clear and register the
+/// allocation.
 #[test]
 fn case_007_valid() {
     run_valid(24, 0x1007, 2829);
 }
 
-/// Correct subject, token, target, action and exact threshold. Must clear and register the allocation.
+/// Correct subject, token, target, action and exact threshold. Must clear and register the
+/// allocation.
 #[test]
 fn case_008_valid() {
     run_valid(48, 0x1008, 1);
 }
 
-/// Correct subject, token, target, action and exact threshold. Must clear and register the allocation.
+/// Correct subject, token, target, action and exact threshold. Must clear and register the
+/// allocation.
 #[test]
 fn case_009_valid() {
     run_valid(17, 0x1009, 51);
 }
 
-/// Correct subject, token, target, action and exact threshold. Must clear and register the allocation.
+/// Correct subject, token, target, action and exact threshold. Must clear and register the
+/// allocation.
 #[test]
 fn case_010_valid() {
     run_valid(16, 0x100a, 1745);
 }
 
-/// Correct subject, token, target, action and exact threshold. Must clear and register the allocation.
+/// Correct subject, token, target, action and exact threshold. Must clear and register the
+/// allocation.
 #[test]
 fn case_011_valid() {
     run_valid(31, 0x100b, 1238);
 }
 
-/// Correct subject, token, target, action and exact threshold. Must clear and register the allocation.
+/// Correct subject, token, target, action and exact threshold. Must clear and register the
+/// allocation.
 #[test]
 fn case_012_valid() {
     run_valid(42, 0x100c, 1277);
 }
 
-/// Correct subject, token, target, action and exact threshold. Must clear and register the allocation.
+/// Correct subject, token, target, action and exact threshold. Must clear and register the
+/// allocation.
 #[test]
 fn case_013_valid() {
     run_valid(36, 0x100d, 157);
 }
 
-/// Correct subject, token, target, action and exact threshold. Must clear and register the allocation.
+/// Correct subject, token, target, action and exact threshold. Must clear and register the
+/// allocation.
 #[test]
 fn case_014_valid() {
     run_valid(34, 0x100e, 2841);
 }
 
-/// Correct subject, token, target, action and exact threshold. Must clear and register the allocation.
+/// Correct subject, token, target, action and exact threshold. Must clear and register the
+/// allocation.
 #[test]
 fn case_015_valid() {
     run_valid(49, 0x100f, 716);
 }
 
-/// Correct subject, token, target, action and exact threshold. Must clear and register the allocation.
+/// Correct subject, token, target, action and exact threshold. Must clear and register the
+/// allocation.
 #[test]
 fn case_016_valid() {
     run_valid(24, 0x1010, 2403);
 }
 
-/// Correct subject, token, target, action and exact threshold. Must clear and register the allocation.
+/// Correct subject, token, target, action and exact threshold. Must clear and register the
+/// allocation.
 #[test]
 fn case_017_valid() {
     run_valid(33, 0x1011, 2302);
 }
 
-/// Correct subject, token, target, action and exact threshold. Must clear and register the allocation.
+/// Correct subject, token, target, action and exact threshold. Must clear and register the
+/// allocation.
 #[test]
 fn case_018_valid() {
     run_valid(37, 0x1012, 1346);
 }
 
-/// Correct subject, token, target, action and exact threshold. Must clear and register the allocation.
+/// Correct subject, token, target, action and exact threshold. Must clear and register the
+/// allocation.
 #[test]
 fn case_019_valid() {
     run_valid(31, 0x1013, 2880);
 }
 
-/// Correct subject, token, target, action and exact threshold. Must clear and register the allocation.
+/// Correct subject, token, target, action and exact threshold. Must clear and register the
+/// allocation.
 #[test]
 fn case_020_valid() {
     run_valid(45, 0x1014, 1237);
 }
 
-/// Correct subject, token, target, action and exact threshold. Must clear and register the allocation.
+/// Correct subject, token, target, action and exact threshold. Must clear and register the
+/// allocation.
 #[test]
 fn case_021_valid() {
     run_valid(40, 0x1015, 2285);
 }
 
-/// Correct subject, token, target, action and exact threshold. Must clear and register the allocation.
+/// Correct subject, token, target, action and exact threshold. Must clear and register the
+/// allocation.
 #[test]
 fn case_022_valid() {
     run_valid(26, 0x1016, 2173);
 }
 
-/// Correct subject, token, target, action and exact threshold. Must clear and register the allocation.
+/// Correct subject, token, target, action and exact threshold. Must clear and register the
+/// allocation.
 #[test]
 fn case_023_valid() {
     run_valid(42, 0x1017, 2654);
 }
 
-/// Correct subject, token, target, action and exact threshold. Must clear and register the allocation.
+/// Correct subject, token, target, action and exact threshold. Must clear and register the
+/// allocation.
 #[test]
 fn case_024_valid() {
     run_valid(38, 0x1018, 2442);
 }
 
-/// Correct subject, token, target, action and exact threshold. Must clear and register the allocation.
+/// Correct subject, token, target, action and exact threshold. Must clear and register the
+/// allocation.
 #[test]
 fn case_025_valid() {
     run_valid(59, 0x1019, 1969);

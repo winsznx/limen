@@ -66,17 +66,9 @@ pub fn compute_challenge_id(
 ) -> felt252 {
     poseidon_hash_span(
         [
-            CHALLENGE_TAG,
-            chain_id,
-            limen.into(),
-            params.token.into(),
-            params.threshold.into(),
-            params.target.into(),
-            params.action,
-            params.subject,
-            params.issuer.into(),
-            params.expires_at.into(),
-            params.nonce,
+            CHALLENGE_TAG, chain_id, limen.into(), params.token.into(), params.threshold.into(),
+            params.target.into(), params.action, params.subject, params.issuer.into(),
+            params.expires_at.into(), params.nonce,
         ]
             .span(),
     )

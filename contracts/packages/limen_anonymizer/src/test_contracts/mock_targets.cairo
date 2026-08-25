@@ -1,4 +1,3 @@
-
 #[starknet::interface]
 pub trait ITargetProbe<T> {
     fn last_subject(self: @T) -> felt252;
@@ -94,9 +93,7 @@ pub mod ReentrantTarget {
             call_contract_syscall(
                 address: self.anonymizer.read(),
                 entry_point_selector: selector!("privacy_invoke_with_computation"),
-                calldata: [
-                    clearance.subject, clearance.challenge_id, 0, self.note_id.read(),
-                ]
+                calldata: [clearance.subject, clearance.challenge_id, 0, self.note_id.read()]
                     .span(),
             )
                 .unwrap_syscall();

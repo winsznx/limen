@@ -35,9 +35,9 @@ fn challenge_id_matches_the_pinned_cross_language_vector() {
 fn challenge_id_is_bound_to_the_chain() {
     let sepolia = 0x534e5f5345504f4c4941;
     assert!(
-        compute_challenge_id(SN_MAIN, address(LIMEN), sample_params()) != compute_challenge_id(
-            sepolia, address(LIMEN), sample_params(),
-        ),
+        compute_challenge_id(
+            SN_MAIN, address(LIMEN), sample_params(),
+        ) != compute_challenge_id(sepolia, address(LIMEN), sample_params()),
         "a challenge issued for one chain must not be presentable on another",
     );
 }
@@ -45,9 +45,9 @@ fn challenge_id_is_bound_to_the_chain() {
 #[test]
 fn challenge_id_is_bound_to_the_limen_deployment() {
     assert!(
-        compute_challenge_id(SN_MAIN, address(LIMEN), sample_params()) != compute_challenge_id(
-            SN_MAIN, address(LIMEN + 1), sample_params(),
-        ),
+        compute_challenge_id(
+            SN_MAIN, address(LIMEN), sample_params(),
+        ) != compute_challenge_id(SN_MAIN, address(LIMEN + 1), sample_params()),
         "a challenge issued for one Limen deployment must not be presentable to another",
     );
 }

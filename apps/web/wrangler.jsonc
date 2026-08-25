@@ -1,0 +1,25 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "limen",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-08-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "observability": { "enabled": true },
+
+  "vars": {
+    "LIMEN_NETWORK": "mainnet"
+    // Deployment addresses are injected at deploy time by scripts/deploy.ts once the
+    // contracts are on chain, so the repository never carries a placeholder address
+    // that could be mistaken for a real one.
+  }
+
+  // Secrets, set with `wrangler secret put`. None of these are NEXT_PUBLIC: every one
+  // is read server-side only.
+  //   STARKNET_RPC_URL     Credentialed mainnet RPC, used for server-side chain reads.
+  //   LIMEN_GATEWAY_URL    Public hostname of the Cloudflare Tunnel to the prover host.
+  //   LIMEN_GATEWAY_TOKEN  Bearer token for that gateway.
+}

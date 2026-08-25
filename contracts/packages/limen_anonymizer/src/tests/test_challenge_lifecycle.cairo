@@ -46,7 +46,9 @@ fn a_challenge_cannot_be_attributed_to_another_verifier() {
     let fixture = setup();
     let params = base_params(fixture);
     cheat_block_timestamp(fixture.limen.contract_address, NOW, CheatSpan::TargetCalls(1));
-    cheat_caller_address(fixture.limen.contract_address, address(0x1770), CheatSpan::TargetCalls(1));
+    cheat_caller_address(
+        fixture.limen.contract_address, address(0x1770), CheatSpan::TargetCalls(1),
+    );
     fixture.limen.create_challenge(params);
 }
 
@@ -103,7 +105,9 @@ fn is_challenge_open_tracks_creation_expiry_and_consumption() {
     cheat_block_timestamp(fixture.limen.contract_address, NOW, CheatSpan::TargetCalls(1));
     assert!(fixture.limen.is_challenge_open(challenge_id), "open right after creation");
 
-    cheat_block_timestamp(fixture.limen.contract_address, EXPIRES_AT + 1, CheatSpan::TargetCalls(1));
+    cheat_block_timestamp(
+        fixture.limen.contract_address, EXPIRES_AT + 1, CheatSpan::TargetCalls(1),
+    );
     assert!(!fixture.limen.is_challenge_open(challenge_id), "closed once expired");
 
     clear(fixture, challenge_id);

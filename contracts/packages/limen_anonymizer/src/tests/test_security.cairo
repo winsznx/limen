@@ -3,9 +3,7 @@
 //! shapes at scale; this file is the readable version.
 
 use limen_anonymizer::interface::ILimenAnonymizerDispatcherTrait;
-use limen_anonymizer::test_contracts::mock_erc20::{
-    IMockERC20Dispatcher, IMockERC20DispatcherTrait,
-};
+use limen_anonymizer::test_contracts::mock_erc20::{IMockERC20Dispatcher, IMockERC20DispatcherTrait};
 use limen_anonymizer::test_contracts::mock_pool::{IMockPoolDispatcherTrait, MockPool};
 use limen_capital_gate::interface::{ICapitalGateDispatcher, ICapitalGateDispatcherTrait};
 use limen_shared::target::{ILimenTargetDispatcher, ILimenTargetDispatcherTrait, LimenClearance};
@@ -285,9 +283,7 @@ fn a_direct_call_cannot_clear_a_challenge() {
     let challenge_id = create(fixture, base_params(fixture));
 
     cheat_caller_address(fixture.limen.contract_address, address(0xbad), CheatSpan::TargetCalls(1));
-    fixture
-        .limen
-        .privacy_invoke_with_computation(fixture.subject, challenge_id, 0, NOTE_ID);
+    fixture.limen.privacy_invoke_with_computation(fixture.subject, challenge_id, 0, NOTE_ID);
 }
 
 /// Even with a correct subject and a truthful snapshot, a non-pool caller is refused
@@ -300,9 +296,7 @@ fn the_issuer_itself_cannot_clear_its_own_challenge_directly() {
     let params = base_params(fixture);
 
     cheat_caller_address(fixture.limen.contract_address, params.issuer, CheatSpan::TargetCalls(1));
-    fixture
-        .limen
-        .privacy_invoke_with_computation(fixture.subject, challenge_id, 0, NOTE_ID);
+    fixture.limen.privacy_invoke_with_computation(fixture.subject, challenge_id, 0, NOTE_ID);
 }
 
 /// Limen implements no plain `privacy_invoke`, so the pool's non-computing invoke path
@@ -316,8 +310,7 @@ fn the_plain_invoke_entry_point_does_not_exist() {
     fixture
         .pool
         .plain_invoke(
-            fixture.limen.contract_address,
-            [fixture.subject, challenge_id, 0, NOTE_ID].span(),
+            fixture.limen.contract_address, [fixture.subject, challenge_id, 0, NOTE_ID].span(),
         );
 }
 

@@ -1,12 +1,10 @@
 use limen_anonymizer::interface::{ILimenAnonymizerDispatcher, ILimenAnonymizerDispatcherTrait};
-use limen_anonymizer::test_contracts::mock_erc20::{
-    IMockERC20Dispatcher, IMockERC20DispatcherTrait,
-};
+use limen_anonymizer::test_contracts::mock_erc20::{IMockERC20Dispatcher, IMockERC20DispatcherTrait};
 use limen_anonymizer::test_contracts::mock_pool::{IMockPoolDispatcher, IMockPoolDispatcherTrait};
 use limen_shared::challenge::ChallengeParams;
 use snforge_std::{
-    ContractClassTrait, DeclareResultTrait, cheat_block_timestamp, cheat_caller_address,
-    declare, CheatSpan,
+    CheatSpan, ContractClassTrait, DeclareResultTrait, cheat_block_timestamp, cheat_caller_address,
+    declare,
 };
 use starknet::ContractAddress;
 
@@ -91,9 +89,7 @@ pub fn create(fixture: Fixture, params: ChallengeParams) -> felt252 {
 }
 
 /// Runs the whole pool sandwich at `timestamp`: compute, withdraw, invoke, pull.
-pub fn clear_at(
-    fixture: Fixture, challenge_id: felt252, withdraw_amount: u128, timestamp: u64,
-) {
+pub fn clear_at(fixture: Fixture, challenge_id: felt252, withdraw_amount: u128, timestamp: u64) {
     cheat_block_timestamp(fixture.limen.contract_address, timestamp, CheatSpan::TargetCalls(4));
     cheat_block_timestamp(fixture.gate, timestamp, CheatSpan::TargetCalls(2));
     fixture

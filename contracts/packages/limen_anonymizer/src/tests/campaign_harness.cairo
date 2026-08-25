@@ -7,16 +7,14 @@
 //! it started with.
 
 use limen_anonymizer::interface::ILimenAnonymizerDispatcherTrait;
-use limen_anonymizer::test_contracts::mock_erc20::{
-    IMockERC20Dispatcher, IMockERC20DispatcherTrait,
-};
+use limen_anonymizer::test_contracts::mock_erc20::{IMockERC20Dispatcher, IMockERC20DispatcherTrait};
 use limen_anonymizer::test_contracts::mock_pool::IMockPoolDispatcherTrait;
 use limen_capital_gate::interface::{ICapitalGateDispatcher, ICapitalGateDispatcherTrait};
 use limen_shared::challenge::ChallengeParams;
 use snforge_std::{CheatSpan, cheat_block_timestamp, cheat_caller_address};
 use super::fixtures::{
-    EXPIRES_AT, Fixture, NOTE_ID, NOW, ONE_TOKEN, USER_PRIVATE_KEY, address, base_params,
-    create, deploy, setup, user,
+    EXPIRES_AT, Fixture, NOTE_ID, NOW, ONE_TOKEN, USER_PRIVATE_KEY, address, base_params, create,
+    deploy, setup, user,
 };
 
 fn tokens(amount: u128) -> u128 {
@@ -67,8 +65,7 @@ pub fn run_valid(threshold_tokens: u128, nonce: felt252, clear_offset: u64) {
         'CAMPAIGN_NO_ALLOCATION',
     );
     assert(
-        fixture.token.balance_of(fixture.limen.contract_address) == 0,
-        'CAMPAIGN_FUNDS_STRANDED',
+        fixture.token.balance_of(fixture.limen.contract_address) == 0, 'CAMPAIGN_FUNDS_STRANDED',
     );
     assert(
         fixture.token.balance_of(fixture.pool.contract_address) == pool_before,
@@ -162,7 +159,9 @@ pub fn run_direct_call(threshold_tokens: u128, nonce: felt252) {
     // Fund the anonymizer first, so the attempt fails on access control rather than
     // on an empty balance. The point is that the pool path cannot be bypassed even
     // when the capital is genuinely there.
-    fixture.token.mint(recipient: fixture.limen.contract_address, amount: tokens(threshold_tokens).into());
+    fixture
+        .token
+        .mint(recipient: fixture.limen.contract_address, amount: tokens(threshold_tokens).into());
 
     cheat_caller_address(fixture.limen.contract_address, address(0xbad), CheatSpan::TargetCalls(1));
     fixture.limen.privacy_invoke_with_computation(fixture.subject, challenge_id, 0, NOTE_ID);

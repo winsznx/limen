@@ -1,6 +1,6 @@
 {
-  "ran_at": "2026-08-25T10:52:08.282Z",
-  "commit": "unknown",
+  "ran_at": "2026-08-25T11:11:00.432Z",
+  "commit": "071bbeace64678fd2713f8c4b5aadfe2de3183b7",
   "contract_artifact_hash": "sha256:de6c64bb301f242ed6eca5e7d07d0af008dac7a5110e4f9003a637173c441dad",
   "seed": "0x4c494d454e",
   "generator": "scripts/generate-campaign.ts",
