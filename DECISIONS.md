@@ -336,6 +336,47 @@ mid-proof failure.
 
 ---
 
+## D-015 — The pool fee is charged to shielded value on a relayed transfer
+
+**Date:** 2026-08-27
+**Status:** accepted, learned the expensive way
+
+The pool's `collect_fee` pulls STRK from `get_caller_address()`. Reading only the
+contract, the natural conclusion is that the fee comes out of the submitter's public
+balance, in addition to whatever is being shielded or sent.
+
+That is right for a transaction you submit yourself, and wrong for a wallet flow.
+**Private transactions are relayed**, so the caller is the relayer's account, not the
+user's. The relayer settles the fee out of the value moving through the pool. In Ready
+this surfaces as:
+
+```
+shield 10 STRK   →  6 fee  →   4 lands shielded
+send   4 STRK    →  6 fee  →   "insufficient funds", the send cannot cover its own fee
+```
+
+So the effective cost of getting private capital is **amount + 6 per pool operation**,
+and the fee is drawn from the shielded side rather than the public side.
+
+Practical consequences, which are not in the upstream docs:
+
+- To land N privately at a destination through shield-then-transfer, shield **N + 12**:
+  one fee for the shield, one for the transfer.
+- Doing it in two shields costs a third fee. Shield once, as large as needed.
+- A shielded balance below the fee cannot be moved privately at all. It is not stuck —
+  it can still be spent by an account that submits its own transactions, which is what
+  Limen does — but a wallet cannot relay it.
+
+Limen's own clearances are unaffected: they are submitted directly from the Limen
+account, so the caller really is that account and the fee comes from its public balance.
+The rule only bites on the wallet bootstrap path.
+
+**Cost of learning this:** roughly 6 STRK of avoidable fees during bootstrap, because
+the shield was sized as though the fee came from elsewhere and had to be repeated.
+SETUP.md now states the `amount + 6` rule directly.
+
+---
+
 ## D-013 — Clearing runs through the key-holding SDK route, because the Wallet API cannot reach it
 
 **Date:** 2026-08-25

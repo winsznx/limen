@@ -21,8 +21,8 @@ this much of this token through the STRK20 pool, and the bound action ran.*
    └───────────────┬──────────────────────┬───────┘
                    │                      │
      bearer over   │                      │  server-side
-     Cloudflare    │                      │  chain reads
-     Tunnel        ▼                      ▼
+     HTTPS         │                      │  chain reads
+                   ▼                      ▼
    ┌───────────────────────────┐   ┌──────────────────────────┐
    │  Limen Prover Gateway     │   │  Starknet Mainnet        │
    │  auth · validation ·      │   │                          │
@@ -32,20 +32,26 @@ this much of this token through the STRK20 pool, and the bound action ran.*
    └───────────────┬───────────┘   │        │ privacy_invoke_ │
                    │               │        │ with_computation│
       private      │               │        ▼                 │
-      compose net  ▼               │   Limen Anonymizer       │
+      network      ▼               │   Limen Anonymizer       │
    ┌───────────────────────────┐   │        │                 │
    │  Limen Prover             │   │        ├──► target app   │
    │  pinned upstream image    │   │        └──► shielded     │
    │  no published port        │   │             open note    │
    └───────────────────────────┘   └──────────────────────────┘
-        dedicated Linux host
+     dedicated Linux host (Fly.io)
 ```
 
 Two things about this diagram are load-bearing.
 
-**The prover is never inside a Worker.** Proving is minutes of a whole machine. It runs
-as a real Linux container on a dedicated host, and the only inbound path is a tunnel
-terminating at the gateway.
+**The prover is never inside a Worker.** Proving is minutes of a whole machine — measured
+at 51.6 s and 56.0 s for the mainnet clearances, on 4 vCPU and 32 GB. It runs as a real
+Linux container on a dedicated host with no public address of its own, reachable only
+from the gateway across a private network.
+
+It also runs a **rebuild** of the pinned upstream prover rather than the published image,
+because the published one is compiled for a single microarchitecture and aborts with
+`SIGILL` on ordinary hardware. Same commit, same crate, same features; only the CPU pin
+differs. CONTRIBUTIONS.md C-1.
 
 **The web app holds no signing key.** It reads chain state, serves challenges, and relays
 to the gateway. Users clear challenges with their own keys. A compromised edge worker can
@@ -121,7 +127,8 @@ usable as a general-purpose call proxy while it is holding capital.
 | `proving-core` | The `LimenProvingProvider` seam, failure classification, retry policy, redaction |
 | `limen-sdk` | Challenge and subject derivation, clearance planning and validation, the transaction verifier |
 | `prover-gateway` | Everything between a client and the proving binary |
-| `apps/web` | The product |
+| `apps/web` | The product, on Cloudflare Workers |
+| `infra/fly` | The prover host: two apps, private networking, per-session lifecycle |
 
 ### The proving seam
 

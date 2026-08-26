@@ -26,36 +26,54 @@ notes, not your address.
 
 ## Status
 
-Limen is mid-sprint and this section is the honest version.
+Live on Starknet Mainnet.
 
 | | |
 | --- | --- |
-| Protocol map verified against the deployed mainnet pool | done, reproducible |
-| Contracts written, audited by tests | 166 Cairo tests passing |
-| Adversarial campaign | 100/100 cases as specified, 0 false clearances |
-| SDK, prover gateway, web app | 70 TypeScript tests passing, app deployed |
-| Contracts deployed to mainnet | not yet, awaiting funding |
-| Mainnet clearance through the Limen prover | not yet, awaiting a prover host |
+| Protocol map verified against the deployed pool class | reproducible, byte-identical |
+| Contracts deployed to mainnet | anonymizer + reference gate |
+| **Capital challenge cleared on mainnet** | **twice, both fully verified** |
+| Proven by Limen's own self-hosted prover | 51.6 s and 56.0 s |
+| Adversarial campaign | 100/100 as specified, 0 false clearances |
+| Tests | 166 Cairo + 70 TypeScript, 0 failures |
 
-`evidence/claims.json` is the full ledger: every claim, the artefact that proves it, and
-the command to regenerate that artefact. Claims that are not yet demonstrated say so and
-name what they are waiting on.
+`evidence/claims.json` is the full ledger: 14 claims, each with the artefact that proves
+it and the command to regenerate that artefact.
 
 ## Mainnet evidence
 
-`strk20.json` is empty. It is populated only by `scripts/verify-mainnet.ts`, which
-independently re-reads each transaction from chain and refuses any hash whose events do
-not reconstruct the whole mechanism. Publishing a hash before that passes would make the
-file decorative, so it stays empty until it is not.
-
-What *is* verified on mainnet today:
-
-```sh
-node --experimental-strip-types tools/verify-pool-source.ts
+```
+anonymizer    0x53a90767664a1ff4421d0782f97b6ccb6248c1a1c80112f2e91460f015652b1
+capital gate  0x10004102d54305e99a6c7da1c795c785ae21800577634d9f5b1995dc6e25b0c
 ```
 
-This compiles the pinned upstream revision and compares the result against the class
-actually deployed at the STRK20 pool. They match exactly:
+| Transaction | What it is |
+| --- | --- |
+| [`0x6e597fbe…`](https://voyager.online/tx/0x6e597fbed2be9e4d829f62d456bf762c69a6845add766deecfebbda725dd4aa) | Canonical Limen clearance |
+| [`0x6f155afb…`](https://voyager.online/tx/0x6f155afb8098972a32feee8ab7059177e7dff17bd57bca1b1909b87d0a2ec54) | Second Limen clearance |
+| [`0x00cb8b3a…`](https://voyager.online/tx/0x00cb8b3a041ecede42a3e3fd6a4b74832b4ca98d86c1b456f0f4c0c96d76e2c7) | Bootstrap private transfer into the Limen account |
+
+Nothing here is self-reported. `scripts/verify-mainnet.ts` re-reads each receipt and
+reconstructs the mechanism from pool and contract events, refusing any hash whose events
+do not. Both clearances pass every check:
+
+```
+ok  STRK20 pool touched
+ok  anonymizer invoked via privacy_invoke_with_computation
+ok  challenge cleared
+ok  target action executed
+ok  capital returned to a shielded note
+ok  returned amount equals the threshold
+ok  funded entirely from private notes
+```
+
+```sh
+node --experimental-strip-types scripts/verify-mainnet.ts \
+  0x6e597fbed2be9e4d829f62d456bf762c69a6845add766deecfebbda725dd4aa
+```
+
+The protocol map is checkable too — the pinned upstream revision compiles to exactly the
+class deployed at the pool:
 
 ```
 upstream commit   74841caf0466d122117945e28ed983e2864c8fc1
@@ -63,9 +81,8 @@ computed class    0x67dddd89d80fedadc06b6f160798f94800a4a70164e5a24301cd0d6076b5
 deployed class    0x67dddd89d80fedadc06b6f160798f94800a4a70164e5a24301cd0d6076b554d
 ```
 
-That matters because the monorepo's `main` branch is at pool version 2.1 while mainnet
-runs 2.0, and they differ in ways that decide whether a third-party anonymizer can exist
-at all. Every interface assumption in Limen is read from the deployed class.
+That matters because the monorepo's `main` is at pool version 2.1 while mainnet runs 2.0,
+and they differ in ways that decide whether a third-party anonymizer can exist at all.
 
 ## The privacy boundary
 
@@ -128,8 +145,8 @@ browser
 Limen web ─────────────────► Starknet Mainnet
 Cloudflare Workers           STRK20 pool
    │                              │
-   │  bearer over Cloudflare      │  privacy_compute
-   │  Tunnel                      │  privacy_invoke_with_computation
+   │  bearer over HTTPS           │  privacy_compute
+   │                              │  privacy_invoke_with_computation
    ▼                              ▼
 Limen Prover Gateway         Limen Anonymizer ──► target application
    │  auth, validation,           │
@@ -137,7 +154,7 @@ Limen Prover Gateway         Limen Anonymizer ──► target application
    │  health, redaction
    ▼
 Limen Prover                 dedicated Linux host
-pinned upstream image        never inside a Worker
+rebuilt upstream image       never inside a Worker
 ```
 
 | Path | What it is |
@@ -148,7 +165,8 @@ pinned upstream image        never inside a Worker
 | [`packages/proving-core/`](packages/proving-core/) | The provider seam, retry classification, redaction |
 | [`packages/protocol-config/`](packages/protocol-config/) | Live chain reads and the upstream pins |
 | [`apps/web/`](apps/web/) | The product, deployed to Cloudflare Workers |
-| [`infra/prover/`](infra/prover/) | The prover host: compose, preflight, runbook |
+| [`infra/prover/`](infra/prover/) | Self-hosted prover: compose, preflight, runbook |
+| [`infra/fly/`](infra/fly/) | The hosted prover: per-session lifecycle and cost control |
 
 [ARCHITECTURE.md](ARCHITECTURE.md) has the detail.
 
@@ -177,32 +195,45 @@ that fails for the wrong reason counts as a failure rather than a pass.
 
 ## Limitations
 
-- **Contracts are not on mainnet yet.** Everything is written and tested; deployment
-  needs funding for the dedicated account.
-- **No mainnet clearance yet.** The Limen prover needs a Docker-capable x86_64 host with
-  at least 24 GB of RAM. Cloudflare Containers cap at 4 vCPU / 12 GiB, where the prover
-  is killed 21–29 s into every proof. Measured, with the raw numbers, in
-  [DECISIONS.md](DECISIONS.md) D-011.
 - **Clearing needs a key-holding client.** Subject binding requires the pool's
   `ComputeAndInvoke` action, and the Wallet API (0.10.3) exposes four STRK20 actions,
-  none of which is compute-and-invoke. So no browser wallet can clear a Limen challenge
-  today. This is an upstream gap, written up in [CONTRIBUTIONS.md](CONTRIBUTIONS.md) C-2.
+  none of which is compute-and-invoke. No browser wallet can clear a Limen challenge
+  today. Upstream gap, filed as [types-js#77](https://github.com/starknet-io/types-js/issues/77).
 - **Public capital can substitute for private capital.** The disclosed boundary above.
-  Publicly checkable per transaction, not prevented on chain.
+  Publicly checkable per transaction, not prevented on chain. DECISIONS.md D-007.
+- **The published prover image does not run on ordinary hardware.** It is compiled for
+  one microarchitecture and aborts with `SIGILL` elsewhere, so Limen rebuilds it from the
+  commit the image names in its own labels. Filed as
+  [sequencer#15037](https://github.com/starkware-libs/sequencer/issues/15037).
+- **The prover is not continuously online.** Proving is bursty and a 32 GB machine costs
+  real money, so it runs per session. The console reports it unreachable when it is down
+  rather than faking a green light, and every published transaction stays verifiable from
+  chain with nothing running.
+- **Not audited.** Coverage is thorough and adversarial; that is not an audit. The
+  contracts are immutable with no owner, so a finding means a new deployment, not a patch.
 - **The pool may upgrade.** Mainnet runs v2.0. Under v2.1 a third-party anonymizer would
-  need a screening attestation over its own address, which Limen cannot self-issue.
-  `tools/probe-mainnet.ts` re-checks this and CI fails if it changes.
+  need a screening attestation over its own address, which Limen cannot self-issue. CI
+  fails if the deployed class stops matching.
 - **One reference target.** `CapitalGate` exists to prove Limen can authorise a real
   contract action, not to be a second product.
+- **Thresholds are small.** The mainnet clearances use 4 STRK, sized by what the
+  bootstrap delivered. The mechanism is identical at any amount.
 
 ## Upstream contributions
 
-Two findings from building this, both reproduced and reduced to a minimal case, in
-[CONTRIBUTIONS.md](CONTRIBUTIONS.md):
+Three findings from building this, each reproduced, reduced to a minimal case, checked
+against prior art, and filed. Details in [CONTRIBUTIONS.md](CONTRIBUTIONS.md).
 
-- the published `linux/arm64` prover image aborts with `SIGILL` on generic aarch64,
-- the Wallet API cannot reach the pool's `ComputeAndInvoke` path, so the only unforgeable
-  address-free user identity in STRK20 is unavailable to the route the docs recommend.
+| | Finding | Filed |
+| --- | --- | --- |
+| C-1 | Published prover images are built for one microarchitecture, and nothing says so | [sequencer#15037](https://github.com/starkware-libs/sequencer/issues/15037) |
+| C-2 | Wallet API cannot express `ComputeAndInvoke`, so `identity_key` is unreachable | [types-js#77](https://github.com/starknet-io/types-js/issues/77) |
+| C-3 | The compatibility matrix links a prover README on a branch that will not build | [starknet-privacy#972](https://github.com/starkware-libs/starknet-privacy/issues/972) |
+
+The first is the substantial one. A prior PR had reported the arm64 half and was closed
+unmerged by the stale-bot, while explicitly proposing to keep the amd64 pin — the case we
+actually hit. Limen's report credits that PR and covers what is new, with a portable
+rebuild that produced a mainnet-accepted proof as the argument.
 
 ## Documentation
 
