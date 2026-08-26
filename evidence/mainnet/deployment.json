@@ -14,6 +14,18 @@
     }
   },
   "capital_gate": {
+    "address": "0x10004102d54305e99a6c7da1c795c785ae21800577634d9f5b1995dc6e25b0c",
+    "class_hash": "0x32903568d92fc2a3845221491416dabed291ffccf4b873410ec8c7e28da88a8",
+    "constructor": {
+      "limen": "0x53a90767664a1ff4421d0782f97b6ccb6248c1a1c80112f2e91460f015652b1",
+      "required_token": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+      "min_amount": "2000000000000000000"
+    },
+    "deploy_tx": "0x786d9832a87751b00dcd4fd22924aa80b089bd33db31838fa16f2fa36df3801",
+    "note": "Second instance with a 2 STRK minimum. The first had 5 STRK, above what the bootstrap delivered."
+  },
+  "open_note_deposits_permitted": true,
+  "capital_gate_v1": {
     "address": "0x3e819da3f9a50d9343f0f43d934e73859e6d3793ef73ddd6eefab87b170b206",
     "class_hash": "0x32903568d92fc2a3845221491416dabed291ffccf4b873410ec8c7e28da88a8",
     "constructor": {
@@ -21,6 +33,5 @@
       "required_token": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
       "min_amount": "5000000000000000000"
     }
-  },
-  "open_note_deposits_permitted": true
+  }
 }

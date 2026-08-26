@@ -40,6 +40,8 @@ interface Sample {
   errorCode?: number;
   errorMessage?: string;
   errorDetail?: string;
+  /** The replay itself was invalid, so this says nothing about the prover. */
+  replayInvalid?: boolean;
   durationMs: number;
   queueWaitMs: number;
   proofBytes?: number;
@@ -58,9 +60,17 @@ async function collectTransactions(provider: RpcProvider, wanted: number) {
     const block = (await provider.getBlockWithTxs(blockNumber)) as unknown as {
       transactions: Array<Record<string, unknown>>;
     };
+    // Only the first transaction from a given sender in a block can be replayed: a
+    // later one carries a higher nonce than the account holds at block N-1, and the OS
+    // rejects it with "Unexpected nonce". That is a property of the replay method, not
+    // of the prover, so those are excluded rather than counted as failures.
+    const sendersSeenInBlock = new Set<string>();
     for (const transaction of block.transactions) {
       if (found.length >= wanted) break;
       if (transaction.type !== "INVOKE" || transaction.version !== "0x3") continue;
+      const sender = String(transaction.sender_address ?? "");
+      if (sendersSeenInBlock.has(sender)) continue;
+      sendersSeenInBlock.add(sender);
       const calldata = transaction.calldata as string[] | undefined;
       // Keep the sample close to the shape the prover is built for. A large multicall
       // or a complex DeFi route produces a much bigger execution trace than a pool
@@ -152,8 +162,12 @@ async function main() {
         transaction,
         `bench-${entry.hash}`
       );
+      const isReplayArtifact = /Unexpected nonce/i.test(
+        `${payload.error?.message ?? ""} ${payload.error?.data ?? ""}`
+      );
       if (payload.error) {
         samples.push({
+          replayInvalid: isReplayArtifact,
           transactionHash: entry.hash,
           blockNumber: entry.blockNumber,
           provingBlock,
@@ -202,6 +216,10 @@ async function main() {
   }
 
   const succeeded = samples.filter((sample) => sample.outcome === "succeeded");
+  const invalidReplays = samples.filter((sample) => sample.replayInvalid);
+  // Reliability is measured over replays that were actually valid; an invalid one never
+  // reached the proving stage.
+  const attempted = samples.length - invalidReplays.length;
   const durations = succeeded.map((sample) => sample.durationMs).sort((a, b) => a - b);
   const percentile = (fraction: number) =>
     durations.length ? durations[Math.min(durations.length - 1, Math.floor(fraction * durations.length))] : null;
@@ -227,8 +245,13 @@ async function main() {
     rpc_provider: RPC.replace(/\/[A-Za-z0-9_-]{20,}$/, "/<redacted>"),
     block_selection: "inclusion block minus one, finalized only",
     submitted: samples.length,
+    invalid_replays: invalidReplays.length,
+    invalid_replay_note:
+      "Transactions the sender's nonce at the proving base could not accept. A property of replaying historical transactions, not a prover failure: they are rejected before proving begins.",
+    valid_attempts: attempted,
     succeeded: succeeded.length,
-    failed: samples.length - succeeded.length,
+    failed: attempted - succeeded.length,
+    success_rate: attempted > 0 ? `${((succeeded.length / attempted) * 100).toFixed(1)}%` : "n/a",
     p50_ms: percentile(0.5),
     p95_ms: percentile(0.95),
     min_ms: durations[0] ?? null,
@@ -241,7 +264,8 @@ async function main() {
   const path = `evidence/benchmarks/prover-replay-${new Date().toISOString().slice(0, 10)}.json`;
   writeFileSync(path, JSON.stringify(report, null, 2) + "\n");
   console.log(
-    `\n${succeeded.length}/${samples.length} proved. p50 ${report.p50_ms}ms p95 ${report.p95_ms}ms → ${path}`
+    `\n${succeeded.length}/${attempted} valid replays proved (${invalidReplays.length} excluded).` +
+      ` p50 ${report.p50_ms}ms p95 ${report.p95_ms}ms → ${path}`
   );
 }
 

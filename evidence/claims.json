@@ -1,187 +1,143 @@
 {
-  "$comment": "Every claim Limen makes in public, mapped to the artefact that proves it. A claim is 'proven' only when the artefact exists and can be re-run by someone else. Anything not yet demonstrated says so, rather than being softened.",
-  "updated_at": "2026-08-25",
-  "commit": "071bbeace64678fd2713f8c4b5aadfe2de3183b7",
-  "statuses": {
-    "proven": "An artefact exists and a third party can reproduce it.",
-    "pending": "Implemented and tested, but the artefact that would prove it needs an input Limen does not yet have.",
-    "not_started": "Not built yet."
+  "generated_at": "2026-08-27",
+  "commit": "fdcc10f344d3d29d2fa27f4cf41a1f0db2c77d47",
+  "network": "SN_MAIN",
+  "contracts": {
+    "anonymizer": "0x53a90767664a1ff4421d0782f97b6ccb6248c1a1c80112f2e91460f015652b1",
+    "capital_gate": "0x10004102d54305e99a6c7da1c795c785ae21800577634d9f5b1995dc6e25b0c"
   },
+  "note": "A claim is 'proven' only when an artefact exists that a third party can regenerate. Anything built and tested but not demonstrated end to end says 'pending' and names what it waits on.",
   "claims": [
-    {
-      "id": "C0",
-      "claim": "Limen's protocol map is derived from the STRK20 pool class actually deployed on Starknet Mainnet, not from the upstream main branch.",
-      "mechanism": "The pinned upstream revision is compiled and its class hash compared against the class deployed at the pool.",
-      "test": "tools/verify-pool-source.ts",
-      "artifact": "evidence/mainnet/pool-source-parity.json",
-      "reproduce": "node --experimental-strip-types tools/verify-pool-source.ts",
-      "mainnet": true,
-      "status": "proven",
-      "note": "Pinned commit 74841caf0466d122117945e28ed983e2864c8fc1 compiles to 0x67dddd89d80fedadc06b6f160798f94800a4a70164e5a24301cd0d6076b554d, which is byte-identical to the deployed class."
-    },
     {
       "id": "C1",
       "claim": "A subject who cannot mobilise the threshold cannot obtain authorization.",
-      "mechanism": "The anonymizer measures what actually reached it and requires exactly the challenge threshold before the target action runs.",
-      "test": "campaign/below_threshold (20 cases), test_security::below_threshold_capital_cannot_clear",
-      "artifact": "evidence/campaigns/security.json",
-      "reproduce": "node --experimental-strip-types scripts/run-campaign.ts",
+      "mechanism": "The amount is measured on chain as a balance delta against a proof-bound snapshot and required to equal the threshold exactly. No calldata field asserts it.",
+      "reproduce": "node --experimental-strip-types scripts/run-campaign.ts  # 20 below-threshold cases, plus contract tests",
       "mainnet": false,
       "status": "proven"
     },
     {
       "id": "C2",
-      "claim": "A valid threshold clears the challenge and executes the bound target action.",
-      "mechanism": "Pool-mediated withdrawal into the anonymizer, target invocation, and shielded return, all in one atomic transaction.",
-      "test": "campaign/valid (25 cases), test_clearance::the_target_action_actually_executes",
-      "artifact": "evidence/campaigns/security.json",
-      "reproduce": "node --experimental-strip-types scripts/run-campaign.ts",
+      "claim": "A cleared challenge cannot be replayed.",
+      "mechanism": "Consumption is on chain and checked in both the proving and execution legs, so a replay never reaches mainnet or costs a pool fee.",
+      "reproduce": "node --experimental-strip-types scripts/run-campaign.ts  # 10 replay cases",
       "mainnet": false,
       "status": "proven"
     },
     {
       "id": "C3",
-      "claim": "A cleared challenge cannot be replayed.",
-      "mechanism": "The challenge is marked consumed before the external call, and both the proving leg and the execution leg reject a consumed challenge.",
-      "test": "campaign/replay (10 cases), test_security::a_consumed_challenge_cannot_be_replayed",
-      "artifact": "evidence/campaigns/security.json",
-      "reproduce": "node --experimental-strip-types scripts/run-campaign.ts",
+      "claim": "A challenge cannot be redirected to another target or action.",
+      "mechanism": "The anonymizer calls only the bound target, on a fixed entry point. The target independently checks the caller is its own Limen deployment.",
+      "reproduce": "node --experimental-strip-types scripts/run-campaign.ts  # 10 wrong-target cases",
       "mainnet": false,
       "status": "proven"
     },
     {
       "id": "C4",
-      "claim": "A challenge cannot be redirected to an application it was not bound to.",
-      "mechanism": "The anonymizer calls only the challenge's bound target, on a fixed entry point, and the target verifies the caller is its own Limen deployment.",
-      "test": "campaign/wrong_target (10 cases), test_security::a_target_rejects_a_clearance_that_did_not_come_from_limen",
-      "artifact": "evidence/campaigns/security.json",
-      "reproduce": "node --experimental-strip-types scripts/run-campaign.ts",
+      "claim": "Another token cannot satisfy a token-specific challenge.",
+      "mechanism": "Snapshot and delta are taken on the challenge's token; the target checks the token independently.",
+      "reproduce": "node --experimental-strip-types scripts/run-campaign.ts  # 10 wrong-token cases",
       "mainnet": false,
       "status": "proven"
     },
     {
       "id": "C5",
-      "claim": "Capital in a token the challenge does not name cannot satisfy it.",
-      "mechanism": "The snapshot and the delta are both taken on the challenge's token, and the target enforces its own required token independently.",
-      "test": "campaign/wrong_token (10 cases), test_security::capital_in_the_wrong_token_cannot_satisfy_the_gate",
-      "artifact": "evidence/campaigns/security.json",
-      "reproduce": "node --experimental-strip-types scripts/run-campaign.ts",
+      "claim": "Expired challenges fail.",
+      "mechanism": "Expiry is checked against the executing block, not the proving base, so a proof generated before expiry still fails if it lands after.",
+      "reproduce": "node --experimental-strip-types scripts/run-campaign.ts  # 10 expired cases",
       "mainnet": false,
       "status": "proven"
     },
     {
       "id": "C6",
-      "claim": "An expired challenge cannot clear.",
-      "mechanism": "Expiry is checked against the executing block, which is authoritative, rather than against the proving base.",
-      "test": "campaign/expired (10 cases), test_security::an_expired_challenge_cannot_clear",
-      "artifact": "evidence/campaigns/security.json",
-      "reproduce": "node --experimental-strip-types scripts/run-campaign.ts",
+      "claim": "Direct calls cannot bypass the pool.",
+      "mechanism": "The clearing entry point accepts only the pinned pool, and no plain privacy_invoke exists on the anonymizer.",
+      "reproduce": "node --experimental-strip-types scripts/run-campaign.ts  # 5 direct-call cases",
       "mainnet": false,
       "status": "proven"
     },
     {
       "id": "C7",
-      "claim": "A subject-bound challenge can only be cleared by the subject it names, and that subject cannot be forged without the private viewing key.",
-      "mechanism": "The subject is the pool's own identity key, derived inside the proven execution from the spender's address and private viewing key.",
-      "test": "campaign/wrong_subject (5 cases), test_security::the_subject_changes_with_the_private_key_not_just_the_address",
-      "artifact": "evidence/campaigns/security.json",
-      "reproduce": "node --experimental-strip-types scripts/run-campaign.ts",
-      "mainnet": false,
-      "status": "proven"
+      "claim": "Only the bound subject can clear a subject-bound challenge.",
+      "mechanism": "The subject is the pool's identity key, derived inside the proof from the spender's private viewing key. It cannot be presented without that key.",
+      "reproduce": "node --experimental-strip-types scripts/run-campaign.ts  # 5 wrong-subject cases",
+      "mainnet": true,
+      "evidence": [
+        "0x6e597fbed2be9e4d829f62d456bf762c69a6845add766deecfebbda725dd4aa",
+        "0x6f155afb8098972a32feee8ab7059177e7dff17bd57bca1b1909b87d0a2ec54"
+      ],
+      "status": "proven",
+      "note": "Both mainnet clearances used subject-bound challenges, not bearer."
     },
     {
       "id": "C8",
-      "claim": "The pool-mediated capital requirement cannot be bypassed by calling the anonymizer directly.",
-      "mechanism": "The clearing entry point accepts the pinned pool as caller and nothing else, and Limen implements no plain privacy_invoke at all.",
-      "test": "campaign/direct_call (5 cases), test_security::a_direct_call_cannot_clear_a_challenge, test_security::the_plain_invoke_entry_point_does_not_exist",
-      "artifact": "evidence/campaigns/security.json",
-      "reproduce": "node --experimental-strip-types scripts/run-campaign.ts",
-      "mainnet": false,
+      "claim": "Capital returns to shielded state in the same transaction, and a target revert strands nothing.",
+      "mechanism": "The pool credits the measured amount into an open note atomically; any revert aborts the whole transaction.",
+      "reproduce": "node --experimental-strip-types scripts/verify-mainnet.ts 0x6e597fbed2be9e4d829f62d456bf762c69a6845add766deecfebbda725dd4aa",
+      "mainnet": true,
+      "evidence": [
+        "0x6e597fbed2be9e4d829f62d456bf762c69a6845add766deecfebbda725dd4aa",
+        "0x6f155afb8098972a32feee8ab7059177e7dff17bd57bca1b1909b87d0a2ec54"
+      ],
       "status": "proven"
     },
     {
       "id": "C9",
-      "claim": "Whether a clearance was funded entirely from shielded notes is publicly checkable per transaction.",
-      "mechanism": "An ERC-20 balance carries no provenance, so the anonymizer cannot distinguish pool-withdrawn capital from a public transfer in the proving window. The pool publishes Withdrawal{to_addr, token, amount} in the same transaction, so the split is on chain: Withdrawal.amount == threshold means the whole amount came from private notes.",
-      "test": "test_security::an_honest_clearance_withdraws_the_whole_threshold_from_the_pool, test_security::public_capital_can_substitute_but_the_pool_publishes_the_split",
-      "artifact": "evidence/campaigns/security.json",
-      "reproduce": "node --experimental-strip-types scripts/verify-mainnet.ts",
-      "mainnet": false,
+      "claim": "Whether a clearance was funded entirely from private notes is publicly verifiable per transaction.",
+      "mechanism": "An ERC-20 balance carries no provenance, so the contract cannot enforce the source. The pool publishes Withdrawal{to_addr,token,amount} in the same transaction, so Withdrawal.amount == threshold proves it. See DECISIONS.md D-007.",
+      "reproduce": "node --experimental-strip-types scripts/verify-mainnet.ts 0x6e597fbed2be9e4d829f62d456bf762c69a6845add766deecfebbda725dd4aa 0x6f155afb8098972a32feee8ab7059177e7dff17bd57bca1b1909b87d0a2ec54",
+      "mainnet": true,
+      "evidence": [
+        "0x6e597fbed2be9e4d829f62d456bf762c69a6845add766deecfebbda725dd4aa",
+        "0x6f155afb8098972a32feee8ab7059177e7dff17bd57bca1b1909b87d0a2ec54"
+      ],
       "status": "proven",
-      "note": "This is Limen's disclosed boundary, not a silent gap. Written up in DECISIONS.md D-007, surfaced in the explorer, and asserted by the mainnet verifier on every published transaction hash."
+      "note": "Both mainnet clearances pass this check. It is a disclosed boundary made measurable, not a property the contract enforces."
     },
     {
       "id": "C10",
-      "claim": "The threshold capital returns to shielded state, and the anonymizer retains nothing.",
-      "mechanism": "The measured amount is returned as an OpenNoteDeposit the pool pulls in the same transaction. Exact equality keeps the anonymizer's resting balance invariant across every clearance.",
-      "test": "campaign/valid asserts anonymizer balance is zero and the pool ends whole; test_security::a_pre_existing_stray_balance_neither_helps_an_attacker_nor_blocks_an_honest_clearance",
-      "artifact": "evidence/campaigns/security.json",
-      "reproduce": "node --experimental-strip-types scripts/run-campaign.ts",
-      "mainnet": false,
-      "status": "proven"
+      "claim": "The Limen self-hosted prover can produce a Mainnet-accepted STRK20 proof.",
+      "mechanism": "Limen runs the pinned upstream prover, rebuilt from the commit the published image names in its own labels, on its own host. Both clearances were proven there.",
+      "reproduce": "node --experimental-strip-types scripts/verify-mainnet.ts 0x6e597fbed2be9e4d829f62d456bf762c69a6845add766deecfebbda725dd4aa",
+      "mainnet": true,
+      "evidence": [
+        "0x6e597fbed2be9e4d829f62d456bf762c69a6845add766deecfebbda725dd4aa",
+        "0x6f155afb8098972a32feee8ab7059177e7dff17bd57bca1b1909b87d0a2ec54"
+      ],
+      "status": "proven",
+      "note": "51.6s and 56.0s respectively. The published image could not run on this host at all (CONTRIBUTIONS.md C-1)."
     },
     {
       "id": "C11",
-      "claim": "A failing target application cannot strand the threshold capital.",
-      "mechanism": "External reverts propagate and abort the whole pool transaction, so no capital moves and the challenge stays unconsumed.",
-      "test": "test_security::no_capital_is_stranded_when_the_target_reverts",
-      "artifact": "evidence/campaigns/security.json",
-      "reproduce": "cd contracts && snforge test no_capital_is_stranded",
-      "mainnet": false,
+      "claim": "At least three qualifying Mainnet transactions touching the STRK20 pool exist.",
+      "mechanism": "Two Limen clearances plus the bootstrap private transfer, each re-read from chain and reconstructed from pool events.",
+      "reproduce": "node --experimental-strip-types scripts/verify-mainnet.ts",
+      "mainnet": true,
       "status": "proven"
     },
     {
       "id": "C12",
-      "claim": "No privileged party can fabricate a clearance.",
-      "mechanism": "The anonymizer has no owner, no admin role, no pause, no upgrade path and no sweep. Creating a challenge authorises nothing on its own.",
-      "test": "test_security::the_anonymizer_exposes_no_privileged_entry_points",
-      "artifact": "evidence/campaigns/security.json",
-      "reproduce": "cd contracts && snforge test exposes_no_privileged",
-      "mainnet": false,
+      "claim": "Limen is built against the pool class actually deployed on mainnet.",
+      "mechanism": "The pinned upstream revision compiles to the class hash live at the pool. CI fails if that stops holding.",
+      "reproduce": "node --experimental-strip-types tools/verify-pool-source.ts",
+      "mainnet": true,
       "status": "proven"
     },
     {
       "id": "C13",
-      "claim": "Proving-request content never reaches a log, a metric, or an error surface.",
-      "mechanism": "Redaction is applied at every boundary that emits, and is covered by tests that assert a viewing key cannot survive serialisation.",
-      "test": "packages/proving-core/src/redact.test.ts",
-      "artifact": "evidence/campaigns/security.json",
-      "reproduce": "pnpm --filter @limen/proving-core test",
+      "claim": "No privileged party can fabricate a clearance.",
+      "mechanism": "The anonymizer has no owner, no admin, no pause, no upgrade and no sweep. Creating a challenge authorises nothing.",
+      "reproduce": "cd contracts && snforge test",
       "mainnet": false,
       "status": "proven"
     },
     {
       "id": "C14",
-      "claim": "The Limen self-hosted proving path can produce a proof accepted by the STRK20 mainnet pool.",
-      "mechanism": "The pinned upstream prover runs on a dedicated Docker host behind the Limen Prover Gateway, and produces the proof for a real mainnet clearance.",
-      "test": "scripts/mainnet-clearance.ts",
-      "artifact": "evidence/mainnet/register.json",
-      "reproduce": "node --experimental-strip-types scripts/mainnet-clearance.ts",
-      "mainnet": true,
-      "status": "proven",
-      "note": "Proven by transaction 0x71665639defcbc63083eb875040e7b81a723b4363ca2fea363eef22af3f0492 on SN_MAIN, block 13859050. The Limen self-hosted prover produced the STARK proof; the pool's validate_proof asserted the proof facts were present, the program variant was VIRTUAL_SNOS, the base block was in range, and the proven message hash matched the submitted actions, before applying anything."
-    },
-    {
-      "id": "C15",
-      "claim": "Proving reliability at Limen's tier is measured, not asserted.",
-      "mechanism": "Real mainnet transactions are replayed against the block before their inclusion. No funds move and nothing is submitted, so the sample size is bounded only by time.",
-      "test": "scripts/prover-benchmark.ts",
-      "artifact": "evidence/benchmarks/",
-      "reproduce": "node --experimental-strip-types scripts/prover-benchmark.ts --samples 20",
+      "claim": "Proving requests cannot leak viewing-key material into logs, metrics or errors.",
+      "mechanism": "Redaction at every emitting boundary, with tests asserting a viewing key cannot survive serialisation nested in calldata, inside errors, or past a depth bound.",
+      "reproduce": "pnpm --filter @limen/proving-core test",
       "mainnet": false,
-      "status": "proven",
-      "note": "First measured proof: 43.5s, 232 KiB, on Fly performance-4x (4 vCPU / 32 GB). This also settles the memory question left open by Cloudflare's 12 GiB failure."
-    },
-    {
-      "id": "C16",
-      "claim": "At least three qualifying Starknet Mainnet transactions touch the STRK20 pool through Limen.",
-      "mechanism": "Register and shield through the official screening path, then clear challenges through the Limen self-hosted proving path.",
-      "test": "scripts/verify-mainnet.ts",
-      "artifact": "strk20.json",
-      "reproduce": "node --experimental-strip-types scripts/verify-mainnet.ts",
-      "mainnet": true,
-      "status": "pending",
-      "blocked_on": "Mainnet funding for the dedicated deployment account, and the prover host from C14."
+      "status": "proven"
     }
   ]
 }
