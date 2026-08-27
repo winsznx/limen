@@ -162,3 +162,92 @@ route the documentation recommends. Reproduced and written up as CONTRIBUTIONS.m
 
 Demo video, `docs/THREAT_MODEL.md` and the other `docs/` pages, clean-room
 reproduction run, filing the two upstream reports.
+
+---
+
+## 2026-08-26 — Session 2
+
+Everything above that was blocked is now done. Limen is live on mainnet and every
+mandatory gate is green.
+
+### The prover had to be rebuilt before anything else could happen
+
+Cloudflare Containers could not hold a proof: the Stwo core wants more than the 12 GiB
+ceiling and every run died 21–29 s in, unchanged after cutting caches. Moved to Fly
+Machines, `performance-4x` with 32 GB, no public IP, reachable only from the gateway over
+Flycast.
+
+That surfaced the finding worth the most. The published prover image aborts with `SIGILL`
+on both arm64 and amd64, because it is compiled for a single microarchitecture. A
+`x86-64-v4` rebuild also died despite CPUID advertising AVX-512, since Firecracker exposes
+the feature bits without the XSAVE state to back them. The generic build is the correct
+one, and the image that finally worked was built from the commit the published image names
+in its own OCI labels. Filed as C-1 with the mainnet-accepted proof as the argument, and
+crediting the earlier PR that had reported the arm64 half.
+
+Four other failures were mine to fix along the way: a gateway health-check deadlock where
+Fly probed a readiness endpoint that 503s while the prover is down, so the gateway could
+never deploy (`/live` and `/health` are now separate); `pnpm deploy` symlinks that do not
+survive a container, fixed by bundling the gateway with esbuild; a proof timing out at 30 s
+against the SDK's default; and a challenge created *after* the proving base, which the pool
+cannot see, so the script now waits for settlement first.
+
+### Mainnet
+
+```
+anonymizer     0x53a90767664a1ff4421d0782f97b6ccb6248c1a1c80112f2e91460f015652b1
+capital gate   0x10004102d54305e99a6c7da1c795c785ae21800577634d9f5b1995dc6e25b0c
+clearance 1    0x6e597fbed2be9e4d829f62d456bf762c69a6845add766deecfebbda725dd4aa   51.6 s
+clearance 2    0x6f155afb8098972a32feee8ab7059177e7dff17bd57bca1b1909b87d0a2ec54   56.0 s
+```
+
+Both proved by Limen's own prover and both pass all eight checks in
+`scripts/verify-mainnet.ts`, which rebuilds the mechanism from pool events and trusts
+nothing Limen produced — including the check that the capital came entirely from private
+notes.
+
+### The benchmark says less than the first run claimed
+
+The first corrected run reported 71.4%, which understated the prover: it counted every
+non-proof as a prover failure. Reading the stored error text back showed none of the four
+were flakes.
+
+```
+14  replayed
+ 2  replay-rejected     nonce or validate panic at the proving base, a sampling artefact
+ 2  unsupported-syscall GetBlockHash is not implemented in the prover's virtual mode
+10  provable → 10 proved, 0 prover failures     p50 49.1 s  p95 57.7 s
+```
+
+`classifyFailure` is now a pure function over the captured error text and
+`--reclassify` rebuilds the counters from a committed report, so the taxonomy is
+auditable against evidence rather than decided once at run time and lost. The
+`GetBlockHash` limit is deterministic, so it bounds the provable workload instead of
+measuring reliability.
+
+### The clean room caught a real defect
+
+`scripts/clean-room.sh` clones fresh, bootstraps, runs both suites, regenerates the
+campaign and re-verifies mainnet from chain. Its first run failed on the regenerate step:
+the campaign was not reproducible. Two causes, both mine. `vectors.json` carried a
+`generated_at` clock reading, and the committed Cairo had been formatted by `scarb fmt`
+while the generator emitted unformatted output. The generator now writes no timestamp and
+formats its own output, and regenerating twice produces no diff.
+
+That check existing is the point. A published campaign nobody can reproduce is a claim,
+not evidence.
+
+### Fee model, recorded because it cost real money
+
+I told the owner shielding 10 STRK would yield 10 shielded. Ready deducts its fee *from*
+the shielded amount, and a relayed private transfer also pays from shielded value rather
+than the public balance. Roughly 6 STRK of avoidable fees. D-015.
+
+### Current totals
+
+```
+166  Cairo tests        including the 100-case campaign
+ 70  TypeScript tests
+  0  failures
+  0  TypeScript errors
+```

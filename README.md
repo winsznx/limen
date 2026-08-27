@@ -35,9 +35,10 @@ Live on Starknet Mainnet.
 | **Capital challenge cleared on mainnet** | **twice, both fully verified** |
 | Proven by Limen's own self-hosted prover | 51.6 s and 56.0 s |
 | Adversarial campaign | 100/100 as specified, 0 false clearances |
+| Prover replay benchmark | 10/10 provable mainnet transactions, p50 49.1 s |
 | Tests | 166 Cairo + 70 TypeScript, 0 failures |
 
-`evidence/claims.json` is the full ledger: 14 claims, each with the artefact that proves
+`evidence/claims.json` is the full ledger: 16 claims, each with the artefact that proves
 it and the command to regenerate that artefact.
 
 ## Mainnet evidence
@@ -132,6 +133,15 @@ Then the evidence, which needs no keys, no funds and no network beyond a public 
 node --experimental-strip-types tools/verify-pool-source.ts   # pinned source == deployed class
 node --experimental-strip-types tools/probe-mainnet.ts        # live pool parameters
 node --experimental-strip-types scripts/run-campaign.ts       # 100-case adversarial campaign
+```
+
+Or check the whole thing at once. `scripts/clean-room.sh` clones into a fresh directory,
+proves no secret survived the clone or the git history, bootstraps, runs both suites,
+regenerates the campaign and requires a zero diff, and re-verifies both mainnet clearances
+from chain:
+
+```sh
+./scripts/clean-room.sh
 ```
 
 [SETUP.md](SETUP.md) covers the parts that need credentials.

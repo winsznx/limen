@@ -7,11 +7,36 @@
  * fails for the wrong reason counts as a failure.
  *
  * Vectors come from a seeded generator, so the same commit always produces the same
- * campaign and anyone can regenerate and diff it.
+ * campaign and anyone can regenerate and diff it. Nothing here may depend on the clock,
+ * the environment or the filesystem: a regenerate that produces a diff is a failure in
+ * `scripts/clean-room.sh`, which is the check that keeps the published campaign honest.
  *
  *   node --experimental-strip-types scripts/generate-campaign.ts
  */
+import { spawnSync } from "node:child_process";
 import { mkdirSync, writeFileSync } from "node:fs";
+
+/**
+ * Runs the generated Cairo through `scarb fmt`.
+ *
+ * Without this the committed file drifts from the generated one the moment anyone
+ * formats the workspace, and regenerating then reports a diff that is pure whitespace.
+ * Formatting here makes the generator's output the same artefact `scarb fmt` would
+ * produce, so the reproducibility check stays meaningful.
+ */
+function formatCairo(): void {
+  const result = spawnSync("scarb", ["fmt", OUT_CAIRO.replace(/^contracts\//, "")], {
+    cwd: "contracts",
+    encoding: "utf8",
+  });
+  if (result.error) {
+    console.warn("scarb not on PATH; generated Cairo left unformatted");
+    return;
+  }
+  if (result.status !== 0) {
+    throw new Error(`scarb fmt failed: ${result.stderr || result.stdout}`);
+  }
+}
 
 const SEED = 0x4c494d454e; // 'LIMEN'
 const OUT_CAIRO = "contracts/packages/limen_anonymizer/src/tests/campaign_generated.cairo";
@@ -172,10 +197,13 @@ use super::campaign_harness::{
 `;
 
   mkdirSync("evidence/campaigns", { recursive: true });
-  writeFileSync(OUT_CAIRO, header + cases.map(cairoFor).join("\n"));
 
+  writeFileSync(OUT_CAIRO, header + cases.map(cairoFor).join("\n"));
+  formatCairo();
+
+  // Deliberately no timestamp: the commit already dates this file, and a clock reading
+  // would make every regenerate produce a diff.
   const summary = {
-    generated_at: new Date().toISOString(),
     seed: `0x${SEED.toString(16)}`,
     generator: "scripts/generate-campaign.ts",
     total: cases.length,

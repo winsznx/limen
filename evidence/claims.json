@@ -138,6 +138,22 @@
       "reproduce": "pnpm --filter @limen/proving-core test",
       "mainnet": false,
       "status": "proven"
+    },
+    {
+      "id": "C15",
+      "claim": "Limen's self-hosted prover proves real STRK20 workloads reliably, and where it cannot the reason is stated.",
+      "mechanism": "Fourteen real mainnet transactions replayed against the block before inclusion. Failures are classified from the prover's own error text: two the sequencer refused at the proving base, two needing GetBlockHash which its virtual mode does not implement. All ten provable replays proved, p50 49.1 s, p95 57.7 s.",
+      "reproduce": "node --experimental-strip-types scripts/prover-benchmark.ts --reclassify evidence/benchmarks/prover-replay-2026-08-26.json",
+      "mainnet": true,
+      "status": "proven"
+    },
+    {
+      "id": "C16",
+      "claim": "Every deterministic artefact in this repository regenerates from a fresh clone with no credentials.",
+      "mechanism": "scripts/clean-room.sh clones, asserts no secret survived the clone or the history, bootstraps, runs both suites, regenerates the campaign and requires a zero diff, and re-verifies the mainnet clearances from chain using only a public RPC.",
+      "reproduce": "./scripts/clean-room.sh",
+      "mainnet": false,
+      "status": "proven"
     }
   ]
 }
