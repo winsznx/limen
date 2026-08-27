@@ -51,17 +51,13 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Install Scarb
-        run: |
-          curl -fsSL "https://github.com/software-mansion/scarb/releases/download/v${SCARB_VERSION}/scarb-v${SCARB_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
-            | tar xz -C "$HOME"
-          echo "$HOME/scarb-v${SCARB_VERSION}-x86_64-unknown-linux-gnu/bin" >> "$GITHUB_PATH"
+      - uses: software-mansion/setup-scarb@v1
+        with:
+          scarb-version: ${{ env.SCARB_VERSION }}
 
-      - name: Install Starknet Foundry
-        run: |
-          curl -fsSL "https://github.com/foundry-rs/starknet-foundry/releases/download/v${FOUNDRY_VERSION}/starknet-foundry-v${FOUNDRY_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
-            | tar xz -C "$HOME"
-          echo "$HOME/starknet-foundry-v${FOUNDRY_VERSION}-x86_64-unknown-linux-gnu/bin" >> "$GITHUB_PATH"
+      - uses: foundry-rs/setup-snfoundry@v4
+        with:
+          starknet-foundry-version: ${{ env.FOUNDRY_VERSION }}
 
       - run: scarb fmt --check
         working-directory: contracts
@@ -86,17 +82,13 @@ jobs:
           node-version: 24
           cache: pnpm
 
-      - name: Install Scarb
-        run: |
-          curl -fsSL "https://github.com/software-mansion/scarb/releases/download/v${SCARB_VERSION}/scarb-v${SCARB_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
-            | tar xz -C "$HOME"
-          echo "$HOME/scarb-v${SCARB_VERSION}-x86_64-unknown-linux-gnu/bin" >> "$GITHUB_PATH"
+      - uses: software-mansion/setup-scarb@v1
+        with:
+          scarb-version: ${{ env.SCARB_VERSION }}
 
-      - name: Install Starknet Foundry
-        run: |
-          curl -fsSL "https://github.com/foundry-rs/starknet-foundry/releases/download/v${FOUNDRY_VERSION}/starknet-foundry-v${FOUNDRY_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
-            | tar xz -C "$HOME"
-          echo "$HOME/starknet-foundry-v${FOUNDRY_VERSION}-x86_64-unknown-linux-gnu/bin" >> "$GITHUB_PATH"
+      - uses: foundry-rs/setup-snfoundry@v4
+        with:
+          starknet-foundry-version: ${{ env.FOUNDRY_VERSION }}
 
       - run: pnpm install --frozen-lockfile
 
@@ -150,11 +142,9 @@ jobs:
           node-version: 24
           cache: pnpm
 
-      - name: Install Scarb
-        run: |
-          curl -fsSL "https://github.com/software-mansion/scarb/releases/download/v${SCARB_VERSION}/scarb-v${SCARB_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
-            | tar xz -C "$HOME"
-          echo "$HOME/scarb-v${SCARB_VERSION}-x86_64-unknown-linux-gnu/bin" >> "$GITHUB_PATH"
+      - uses: software-mansion/setup-scarb@v1
+        with:
+          scarb-version: ${{ env.SCARB_VERSION }}
 
       - run: pnpm install --frozen-lockfile
       - run: ./scripts/vendor-sdk.sh
