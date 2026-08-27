@@ -97,7 +97,7 @@
     {
       "id": "C10",
       "claim": "The Limen self-hosted prover can produce a Mainnet-accepted STRK20 proof.",
-      "mechanism": "Limen runs the pinned upstream prover, rebuilt from the commit the published image names in its own labels, on its own host. Both clearances were proven there.",
+      "mechanism": "Limen runs the pinned upstream prover, rebuilt from the commit the published image names in its own labels, on its own host. All three clearances were proven there.",
       "reproduce": "node --experimental-strip-types scripts/verify-mainnet.ts 0x6e597fbed2be9e4d829f62d456bf762c69a6845add766deecfebbda725dd4aa",
       "mainnet": true,
       "evidence": [

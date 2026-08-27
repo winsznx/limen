@@ -32,8 +32,8 @@ Live on Starknet Mainnet.
 | --- | --- |
 | Protocol map verified against the deployed pool class | reproducible, byte-identical |
 | Contracts deployed to mainnet | anonymizer + reference gate |
-| **Capital challenge cleared on mainnet** | **twice, both fully verified** |
-| Proven by Limen's own self-hosted prover | 51.6 s and 56.0 s |
+| **Capital challenge cleared on mainnet** | **three times, all fully verified** |
+| Proven by Limen's own self-hosted prover | 51.6 s, 56.0 s, 80.8 s |
 | Adversarial campaign | 100/100 as specified, 0 false clearances |
 | Prover replay benchmark | 10/10 provable mainnet transactions, p50 49.1 s |
 | Tests | 166 Cairo + 70 TypeScript, 0 failures |
@@ -52,11 +52,11 @@ capital gate  0x10004102d54305e99a6c7da1c795c785ae21800577634d9f5b1995dc6e25b0c
 | --- | --- |
 | [`0x6e597fbe…`](https://voyager.online/tx/0x6e597fbed2be9e4d829f62d456bf762c69a6845add766deecfebbda725dd4aa) | Canonical Limen clearance |
 | [`0x6f155afb…`](https://voyager.online/tx/0x6f155afb8098972a32feee8ab7059177e7dff17bd57bca1b1909b87d0a2ec54) | Second Limen clearance |
-| [`0x00cb8b3a…`](https://voyager.online/tx/0x00cb8b3a041ecede42a3e3fd6a4b74832b4ca98d86c1b456f0f4c0c96d76e2c7) | Bootstrap private transfer into the Limen account |
+| [`0x2277d769…`](https://voyager.online/tx/0x2277d769273da51bcc30a5ac41d0bb3fc45906a0a59917202d22f83d383e566) | Third Limen clearance |
 
 Nothing here is self-reported. `scripts/verify-mainnet.ts` re-reads each receipt and
 reconstructs the mechanism from pool and contract events, refusing any hash whose events
-do not. Both clearances pass every check:
+do not. All three clearances pass every check:
 
 ```
 ok  STRK20 pool touched
@@ -137,7 +137,7 @@ node --experimental-strip-types scripts/run-campaign.ts       # 100-case adversa
 
 Or check the whole thing at once. `scripts/clean-room.sh` clones into a fresh directory,
 proves no secret survived the clone or the git history, bootstraps, runs both suites,
-regenerates the campaign and requires a zero diff, and re-verifies both mainnet clearances
+regenerates the campaign and requires a zero diff, and re-verifies every mainnet clearance
 from chain:
 
 ```sh

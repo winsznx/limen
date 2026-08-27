@@ -135,10 +135,11 @@ async function main() {
   }
 
   const fullyVerified = clearances.filter((entry) => entry.ok);
-  const qualifying = [
-    ...fullyVerified.map((entry) => entry.transactionHash),
-    ...touches.filter((entry) => entry.poolTouched).map((entry) => entry.transactionHash),
-  ];
+  // Only clearances go in the manifest. A declared transaction has to carry an event
+  // from one of this project's own contracts to count as the project running on
+  // mainnet, and a plain pool touch — the bootstrap transfer that funded this account —
+  // does not. Those stay in the evidence report below as context rather than a claim.
+  const qualifying = fullyVerified.map((entry) => entry.transactionHash);
 
   const report_ = {
     verified_at: new Date().toISOString(),

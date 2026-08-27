@@ -64,7 +64,7 @@ against a snapshot the proof carries, and required to equal the threshold exactl
 is no calldata field asserting the amount, so there is nothing to lie about.
 
 Verified: `below_threshold_capital_cannot_clear`, plus 20 campaign cases. Confirmed on
-mainnet — both clearances show `Withdrawal.amount == threshold`.
+mainnet — all three clearances show `Withdrawal.amount == threshold`.
 
 ### A2 — Replay attacker
 

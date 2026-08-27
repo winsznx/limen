@@ -1,7 +1,8 @@
 {
   "transactions": [
     "0x6e597fbed2be9e4d829f62d456bf762c69a6845add766deecfebbda725dd4aa",
-    "0x6f155afb8098972a32feee8ab7059177e7dff17bd57bca1b1909b87d0a2ec54"
+    "0x6f155afb8098972a32feee8ab7059177e7dff17bd57bca1b1909b87d0a2ec54",
+    "0x2277d769273da51bcc30a5ac41d0bb3fc45906a0a59917202d22f83d383e566"
   ],
   "runs": [
     {
@@ -33,6 +34,21 @@
       "provingBlockId": 13917271,
       "executionStatus": "SUCCEEDED",
       "blockNumber": 13917317
+    },
+    {
+      "at": "2026-08-27T08:32:45.468Z",
+      "challengeId": "0x6b295ed7d6ad2066b7976e9e528145fd4cbd19895bb31047823e05868e26952",
+      "subject": "0x7def6d5a1acf64a5d2160c19aa13da41b2b435949aabc91273044574f1f883f",
+      "anonymizer": "0x53a90767664a1ff4421d0782f97b6ccb6248c1a1c80112f2e91460f015652b1",
+      "gate": "0x10004102d54305e99a6c7da1c795c785ae21800577634d9f5b1995dc6e25b0c",
+      "thresholdFri": "4000000000000000000",
+      "challengeTx": "0x62494ea2800bf914edc885db776ba7e59d7d9a237c94eeea148444b1237c85a",
+      "clearanceTx": "0x2277d769273da51bcc30a5ac41d0bb3fc45906a0a59917202d22f83d383e566",
+      "provingMs": 80804,
+      "provenBy": "limen-self-hosted",
+      "provingBlockId": 13935808,
+      "executionStatus": "SUCCEEDED",
+      "blockNumber": 13935873
     }
   ]
 }
