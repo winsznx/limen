@@ -63,6 +63,18 @@ else
   fail "TypeScript tests failed — see /tmp/cleanroom-ts.log"
 fi
 
+if pnpm typecheck >/tmp/cleanroom-types.log 2>&1; then
+  pass "typecheck clean, including scripts and tools"
+else
+  fail "typecheck failed — see /tmp/cleanroom-types.log"
+fi
+
+if pnpm lint >/tmp/cleanroom-lint.log 2>&1; then
+  pass "lint clean"
+else
+  fail "lint failed — see /tmp/cleanroom-lint.log"
+fi
+
 if command -v snforge >/dev/null 2>&1; then
   if (cd contracts && snforge test) >/tmp/cleanroom-cairo.log 2>&1; then
     CAIRO_COUNT=$(grep -oE '[0-9]+ passed' /tmp/cleanroom-cairo.log | tail -1 | grep -oE '[0-9]+')
