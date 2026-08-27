@@ -14,7 +14,7 @@
  *
  * Raw results land in evidence/benchmarks/.
  */
-import { RpcProvider, num } from "starknet";
+import { RpcProvider } from "starknet";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 const RPC = process.env.STARKNET_MAINNET_RPC_URL ?? "https://rpc.starknet.lava.build";
@@ -95,7 +95,9 @@ async function collectTransactions(provider: RpcProvider, wanted: number) {
     for (const transaction of block.transactions) {
       if (found.length >= wanted) break;
       if (transaction.type !== "INVOKE" || transaction.version !== "0x3") continue;
-      const sender = String(transaction.sender_address ?? "");
+      // Felts arrive as hex strings; anything else means an unexpected transaction shape.
+      const sender =
+        typeof transaction.sender_address === "string" ? transaction.sender_address : "";
       if (sendersSeenInBlock.has(sender)) continue;
       sendersSeenInBlock.add(sender);
       const calldata = transaction.calldata as string[] | undefined;
@@ -128,7 +130,7 @@ function toProvingTransaction(raw: Record<string, unknown>): Record<string, unkn
     proof: _proof,
     proof_facts: _facts,
     ...rest
-  } = raw as Record<string, unknown>;
+  } = raw;
   return rest;
 }
 
@@ -258,7 +260,9 @@ function reclassify(path: string): void {
 async function main() {
   const reclassifyTarget = process.argv.indexOf("--reclassify");
   if (reclassifyTarget !== -1) {
-    reclassify(process.argv[reclassifyTarget + 1]);
+    const path = process.argv[reclassifyTarget + 1];
+    if (!path) throw new Error("--reclassify needs the path to a report");
+    reclassify(path);
     return;
   }
 

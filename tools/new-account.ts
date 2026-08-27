@@ -10,10 +10,7 @@
  */
 import { CallData, ec, hash, num, stark, RpcProvider } from "starknet";
 import { appendFileSync, existsSync, readFileSync, chmodSync, writeFileSync } from "node:fs";
-
-/** OpenZeppelin account v3, declared on Starknet mainnet. */
-const OZ_ACCOUNT_CLASS_HASH =
-  "0x00e2eb8f5672af4e6a4e8a8f1b44989685e668489b0a25437733756c5a34a1d6";
+import { OZ_ACCOUNT_CLASS_HASH } from "@limen/protocol-config";
 
 const ENV_PATH = ".env.local";
 
@@ -22,7 +19,7 @@ function readEnvLocal(): Record<string, string> {
   const entries: Record<string, string> = {};
   for (const line of readFileSync(ENV_PATH, "utf8").split("\n")) {
     const match = /^([A-Z0-9_]+)=(.*)$/.exec(line.trim());
-    if (match) entries[match[1]] = match[2];
+    if (match?.[1] !== undefined && match[2] !== undefined) entries[match[1]] = match[2];
   }
   return entries;
 }
@@ -62,7 +59,7 @@ async function main() {
   chmodSync(ENV_PATH, 0o600);
 
   const rpc = process.env.STARKNET_MAINNET_RPC_URL ?? "https://rpc.starknet.lava.build";
-  let classDeclared: boolean | string = "unknown";
+  let classDeclared: boolean | string;
   try {
     await new RpcProvider({ nodeUrl: rpc }).getClass(OZ_ACCOUNT_CLASS_HASH);
     classDeclared = true;

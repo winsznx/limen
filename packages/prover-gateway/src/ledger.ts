@@ -154,7 +154,7 @@ export class Ledger {
     this.jobs.length = Math.min(this.jobs.length, JOB_HISTORY);
   }
 
-  replay(key: string): unknown | null {
+  replay(key: string): unknown {
     this.sweep();
     const entry = this.results.get(key);
     if (!entry) return null;

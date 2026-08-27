@@ -13,8 +13,10 @@
  *   node --experimental-strip-types scripts/deploy.ts
  */
 import { Account, CallData, RpcProvider, ec, hash, num, shortString } from "starknet";
+import type { CompiledSierra, CompiledSierraCasm } from "starknet";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
+import { OZ_ACCOUNT_CLASS_HASH } from "@limen/protocol-config";
 
 const POOL = "0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a";
 const STRK = "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d";
@@ -28,8 +30,9 @@ const ARTIFACTS = "contracts/target/release";
 const OUT = "evidence/mainnet/deployment.json";
 
 interface Artifact {
-  sierra: Record<string, unknown>;
-  casm: Record<string, unknown>;
+  /** Typed as the SDK's own shapes so a malformed artefact fails here, not mid-declare. */
+  sierra: CompiledSierra;
+  casm: CompiledSierraCasm;
 }
 
 function loadArtifact(name: string): Artifact {
@@ -59,7 +62,7 @@ async function strkBalance(provider: RpcProvider, address: string): Promise<bigi
     contractAddress: STRK,
     entrypoint: "balance_of",
     calldata: [address],
-  })) as string[];
+  }));
   return BigInt(result[0] ?? "0x0") + (BigInt(result[1] ?? "0x0") << 128n);
 }
 
@@ -167,7 +170,7 @@ async function main() {
     contractAddress: POOL,
     entrypoint: "is_open_note_depositor_blocked",
     calldata: [anonymizer],
-  })) as string[];
+  }));
   const denylisted = BigInt(blocked[0] ?? "0x0") !== 0n;
   console.log(`\nopen-note deposits: ${denylisted ? "BLOCKED by the pool" : "permitted"}`);
   if (denylisted) {
@@ -226,7 +229,7 @@ async function declare(
     // Not declared yet, which is the normal path.
   }
   const result = await account.declare(
-    { contract: artifact.sierra as never, casm: artifact.casm as never },
+    { contract: artifact.sierra as never, casm: artifact.casm },
     { tip: 0n }
   );
   await provider.waitForTransaction(result.transaction_hash);

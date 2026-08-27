@@ -1,11 +1,11 @@
 {
-  "probed_at": "2026-08-25T08:02:32.488Z",
+  "probed_at": "2026-08-27T07:18:03.771Z",
   "rpc": {
     "url": "https://rpc.starknet.lava.build",
-    "spec_version": "0.10.2"
+    "spec_version": "0.8.1"
   },
   "chain_id": "SN_MAIN",
-  "block_number": 13833093,
+  "block_number": 13933506,
   "pool": {
     "address": "0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a",
     "class_hash": "0x67dddd89d80fedadc06b6f160798f94800a4a70164e5a24301cd0d6076b554d",
@@ -25,44 +25,44 @@
     "governance_configured_depositors": [],
     "recent_invoke_targets": [
       {
-        "target": "0x426dcd1ab5fa2f852f138d07cb37708b00a4db999677fe2d0c9a440702dbe5e",
-        "invocations": 15,
-        "selectors": [
-          "privacy_invoke"
-        ],
-        "policy": "{\"error\":\"RPC: starknet_call with params {\\n  \\\"request\\\": {\\n    \\\"contract_address\\\": \\\"0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a\\\",\\n    \\\"entry_point_selector\\\": \\\"0x19ffd9b0ff9d97560bf4426e5a7682651f5f7a4210dab7771376b52e6720e\\\",\\n    \\\"calldata\\\": [\\n      \\\"0x426dcd1ab5fa2f852f138d07cb37708b00a4\"}"
-      },
-      {
-        "target": "0x7d2bc74168a9af93bc6ead86968ad7bbd92627063a9f82a1dfc0f3c9b996b6e",
-        "invocations": 11,
-        "selectors": [
-          "privacy_invoke"
-        ],
-        "policy": "{\"error\":\"RPC: starknet_call with params {\\n  \\\"request\\\": {\\n    \\\"contract_address\\\": \\\"0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a\\\",\\n    \\\"entry_point_selector\\\": \\\"0x19ffd9b0ff9d97560bf4426e5a7682651f5f7a4210dab7771376b52e6720e\\\",\\n    \\\"calldata\\\": [\\n      \\\"0x7d2bc74168a9af93bc6ead86968ad7bbd926\"}"
-      },
-      {
-        "target": "0x6fed63d5a8a4af0d3edf59c01776883e29ee6730158a645a2c7204a0d93022c",
-        "invocations": 7,
-        "selectors": [
-          "privacy_invoke"
-        ],
-        "policy": "{\"error\":\"RPC: starknet_call with params {\\n  \\\"request\\\": {\\n    \\\"contract_address\\\": \\\"0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a\\\",\\n    \\\"entry_point_selector\\\": \\\"0x19ffd9b0ff9d97560bf4426e5a7682651f5f7a4210dab7771376b52e6720e\\\",\\n    \\\"calldata\\\": [\\n      \\\"0x6fed63d5a8a4af0d3edf59c01776883e29ee\"}"
-      },
-      {
         "target": "0x9067f35d2cab3cb933f3d78793660402026f8fa31e041ca2cab4a8e9a49092",
-        "invocations": 6,
+        "invocations": 24,
         "selectors": [
           "privacy_invoke"
         ],
         "policy": "{\"error\":\"RPC: starknet_call with params {\\n  \\\"request\\\": {\\n    \\\"contract_address\\\": \\\"0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a\\\",\\n    \\\"entry_point_selector\\\": \\\"0x19ffd9b0ff9d97560bf4426e5a7682651f5f7a4210dab7771376b52e6720e\\\",\\n    \\\"calldata\\\": [\\n      \\\"0x9067f35d2cab3cb933f3d78793660402026f\"}"
       },
       {
+        "target": "0x426dcd1ab5fa2f852f138d07cb37708b00a4db999677fe2d0c9a440702dbe5e",
+        "invocations": 13,
+        "selectors": [
+          "privacy_invoke"
+        ],
+        "policy": "{\"error\":\"RPC: starknet_call with params {\\n  \\\"request\\\": {\\n    \\\"contract_address\\\": \\\"0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a\\\",\\n    \\\"entry_point_selector\\\": \\\"0x19ffd9b0ff9d97560bf4426e5a7682651f5f7a4210dab7771376b52e6720e\\\",\\n    \\\"calldata\\\": [\\n      \\\"0x426dcd1ab5fa2f852f138d07cb37708b00a4\"}"
+      },
+      {
         "target": "0x3a7e7f34e530f8ec00b1ff7eaca90a136311d9da7cb17a73203f813b56c86cb",
-        "invocations": 6,
+        "invocations": 12,
         "selectors": [
           "privacy_invoke_with_computation"
         ],
         "policy": "{\"error\":\"RPC: starknet_call with params {\\n  \\\"request\\\": {\\n    \\\"contract_address\\\": \\\"0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a\\\",\\n    \\\"entry_point_selector\\\": \\\"0x19ffd9b0ff9d97560bf4426e5a7682651f5f7a4210dab7771376b52e6720e\\\",\\n    \\\"calldata\\\": [\\n      \\\"0x3a7e7f34e530f8ec00b1ff7eaca90a136311\"}"
+      },
+      {
+        "target": "0x4bde3263ff117f245f9ebea20670b363550951f61cf54f236c449f70181c01f",
+        "invocations": 9,
+        "selectors": [
+          "privacy_invoke"
+        ],
+        "policy": "{\"error\":\"RPC: starknet_call with params {\\n  \\\"request\\\": {\\n    \\\"contract_address\\\": \\\"0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a\\\",\\n    \\\"entry_point_selector\\\": \\\"0x19ffd9b0ff9d97560bf4426e5a7682651f5f7a4210dab7771376b52e6720e\\\",\\n    \\\"calldata\\\": [\\n      \\\"0x4bde3263ff117f245f9ebea20670b3635509\"}"
+      },
+      {
+        "target": "0x7d2bc74168a9af93bc6ead86968ad7bbd92627063a9f82a1dfc0f3c9b996b6e",
+        "invocations": 4,
+        "selectors": [
+          "privacy_invoke"
+        ],
+        "policy": "{\"error\":\"RPC: starknet_call with params {\\n  \\\"request\\\": {\\n    \\\"contract_address\\\": \\\"0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a\\\",\\n    \\\"entry_point_selector\\\": \\\"0x19ffd9b0ff9d97560bf4426e5a7682651f5f7a4210dab7771376b52e6720e\\\",\\n    \\\"calldata\\\": [\\n      \\\"0x7d2bc74168a9af93bc6ead86968ad7bbd926\"}"
       },
       {
         "target": "0x6ed9634d896c832c6cfe1570f772ab8e24ecc2d693b3aa801cadfd16742a599",
@@ -73,28 +73,76 @@
         "policy": "{\"error\":\"RPC: starknet_call with params {\\n  \\\"request\\\": {\\n    \\\"contract_address\\\": \\\"0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a\\\",\\n    \\\"entry_point_selector\\\": \\\"0x19ffd9b0ff9d97560bf4426e5a7682651f5f7a4210dab7771376b52e6720e\\\",\\n    \\\"calldata\\\": [\\n      \\\"0x6ed9634d896c832c6cfe1570f772ab8e24ec\"}"
       },
       {
-        "target": "0x1379a8daf18dfbb24b6ec80feb846b6445692090ab34ba0b286d49d1c04e1c5",
+        "target": "0x577ba8bf4fc66a108ef4b869308831f930d6522ddc7b1fd6ee85dd6475d44fe",
+        "invocations": 3,
+        "selectors": [
+          "privacy_invoke"
+        ],
+        "policy": "{\"error\":\"RPC: starknet_call with params {\\n  \\\"request\\\": {\\n    \\\"contract_address\\\": \\\"0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a\\\",\\n    \\\"entry_point_selector\\\": \\\"0x19ffd9b0ff9d97560bf4426e5a7682651f5f7a4210dab7771376b52e6720e\\\",\\n    \\\"calldata\\\": [\\n      \\\"0x577ba8bf4fc66a108ef4b869308831f930d6\"}"
+      },
+      {
+        "target": "0x23411a7dada7db578040d78970064fe7a0a48b1323e36874052eea6ab0ddcc4",
+        "invocations": 3,
+        "selectors": [
+          "privacy_invoke_with_computation"
+        ],
+        "policy": "{\"error\":\"RPC: starknet_call with params {\\n  \\\"request\\\": {\\n    \\\"contract_address\\\": \\\"0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a\\\",\\n    \\\"entry_point_selector\\\": \\\"0x19ffd9b0ff9d97560bf4426e5a7682651f5f7a4210dab7771376b52e6720e\\\",\\n    \\\"calldata\\\": [\\n      \\\"0x23411a7dada7db578040d78970064fe7a0a4\"}"
+      },
+      {
+        "target": "0x6277c357edf60e9acbbd5a9efaeb8fcb0d0b0daf1f06801ed94d4247a9b1e6a",
         "invocations": 2,
         "selectors": [
           "privacy_invoke"
         ],
-        "policy": "{\"error\":\"RPC: starknet_call with params {\\n  \\\"request\\\": {\\n    \\\"contract_address\\\": \\\"0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a\\\",\\n    \\\"entry_point_selector\\\": \\\"0x19ffd9b0ff9d97560bf4426e5a7682651f5f7a4210dab7771376b52e6720e\\\",\\n    \\\"calldata\\\": [\\n      \\\"0x1379a8daf18dfbb24b6ec80feb846b644569\"}"
+        "policy": "{\"error\":\"RPC: starknet_call with params {\\n  \\\"request\\\": {\\n    \\\"contract_address\\\": \\\"0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a\\\",\\n    \\\"entry_point_selector\\\": \\\"0x19ffd9b0ff9d97560bf4426e5a7682651f5f7a4210dab7771376b52e6720e\\\",\\n    \\\"calldata\\\": [\\n      \\\"0x6277c357edf60e9acbbd5a9efaeb8fcb0d0b\"}"
       },
       {
-        "target": "0x73d8af97693e5744fb46c994e1cfabf9815e3044cdca6253e239d922f9bae3",
+        "target": "0x1d66b83171db42b8c1bfda02d30149a4888a80e7cb6f84da9837943940df156",
         "invocations": 2,
         "selectors": [
           "privacy_invoke"
         ],
-        "policy": "{\"error\":\"RPC: starknet_call with params {\\n  \\\"request\\\": {\\n    \\\"contract_address\\\": \\\"0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a\\\",\\n    \\\"entry_point_selector\\\": \\\"0x19ffd9b0ff9d97560bf4426e5a7682651f5f7a4210dab7771376b52e6720e\\\",\\n    \\\"calldata\\\": [\\n      \\\"0x73d8af97693e5744fb46c994e1cfabf9815e\"}"
+        "policy": "{\"error\":\"RPC: starknet_call with params {\\n  \\\"request\\\": {\\n    \\\"contract_address\\\": \\\"0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a\\\",\\n    \\\"entry_point_selector\\\": \\\"0x19ffd9b0ff9d97560bf4426e5a7682651f5f7a4210dab7771376b52e6720e\\\",\\n    \\\"calldata\\\": [\\n      \\\"0x1d66b83171db42b8c1bfda02d30149a4888a\"}"
       },
       {
-        "target": "0x2aa15c67c706b6ca432def2f871c4c58918930a662bbdcc558f66abbaedcd4b",
+        "target": "0x18f6925422c85da8c9e0c1572adf4316a9821ffabc4b29db37d11c6a0c2844a",
         "invocations": 1,
         "selectors": [
           "privacy_invoke"
         ],
-        "policy": "{\"error\":\"RPC: starknet_call with params {\\n  \\\"request\\\": {\\n    \\\"contract_address\\\": \\\"0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a\\\",\\n    \\\"entry_point_selector\\\": \\\"0x19ffd9b0ff9d97560bf4426e5a7682651f5f7a4210dab7771376b52e6720e\\\",\\n    \\\"calldata\\\": [\\n      \\\"0x2aa15c67c706b6ca432def2f871c4c589189\"}"
+        "policy": "{\"error\":\"RPC: starknet_call with params {\\n  \\\"request\\\": {\\n    \\\"contract_address\\\": \\\"0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a\\\",\\n    \\\"entry_point_selector\\\": \\\"0x19ffd9b0ff9d97560bf4426e5a7682651f5f7a4210dab7771376b52e6720e\\\",\\n    \\\"calldata\\\": [\\n      \\\"0x18f6925422c85da8c9e0c1572adf4316a982\"}"
+      },
+      {
+        "target": "0x754b7550d47441539fc2264e689d584f67e8667965240a98656230534cf4618",
+        "invocations": 1,
+        "selectors": [
+          "privacy_invoke"
+        ],
+        "policy": "{\"error\":\"RPC: starknet_call with params {\\n  \\\"request\\\": {\\n    \\\"contract_address\\\": \\\"0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a\\\",\\n    \\\"entry_point_selector\\\": \\\"0x19ffd9b0ff9d97560bf4426e5a7682651f5f7a4210dab7771376b52e6720e\\\",\\n    \\\"calldata\\\": [\\n      \\\"0x754b7550d47441539fc2264e689d584f67e8\"}"
+      },
+      {
+        "target": "0x36be78d67d6e94b79d3a8a7891b67871d4f17342d4c323be8f6ed469c36c6b8",
+        "invocations": 1,
+        "selectors": [
+          "privacy_invoke"
+        ],
+        "policy": "{\"error\":\"RPC: starknet_call with params {\\n  \\\"request\\\": {\\n    \\\"contract_address\\\": \\\"0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a\\\",\\n    \\\"entry_point_selector\\\": \\\"0x19ffd9b0ff9d97560bf4426e5a7682651f5f7a4210dab7771376b52e6720e\\\",\\n    \\\"calldata\\\": [\\n      \\\"0x36be78d67d6e94b79d3a8a7891b67871d4f1\"}"
+      },
+      {
+        "target": "0x30dee638065962eb3642ca54aa48e9e2cd98536bc90b64b99bb306c1db30698",
+        "invocations": 1,
+        "selectors": [
+          "privacy_invoke"
+        ],
+        "policy": "{\"error\":\"RPC: starknet_call with params {\\n  \\\"request\\\": {\\n    \\\"contract_address\\\": \\\"0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a\\\",\\n    \\\"entry_point_selector\\\": \\\"0x19ffd9b0ff9d97560bf4426e5a7682651f5f7a4210dab7771376b52e6720e\\\",\\n    \\\"calldata\\\": [\\n      \\\"0x30dee638065962eb3642ca54aa48e9e2cd98\"}"
+      },
+      {
+        "target": "0x171e8e0bb905c899b9d1ad5c02aefe96a5d0b6d5f093f0ee80707b592417f8e",
+        "invocations": 1,
+        "selectors": [
+          "privacy_invoke"
+        ],
+        "policy": "{\"error\":\"RPC: starknet_call with params {\\n  \\\"request\\\": {\\n    \\\"contract_address\\\": \\\"0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a\\\",\\n    \\\"entry_point_selector\\\": \\\"0x19ffd9b0ff9d97560bf4426e5a7682651f5f7a4210dab7771376b52e6720e\\\",\\n    \\\"calldata\\\": [\\n      \\\"0x171e8e0bb905c899b9d1ad5c02aefe96a5d0\"}"
       }
     ],
     "recent_invoke_window_blocks": 100000

@@ -5,7 +5,7 @@
  * hardcoded, and the raw output is committed as G1 evidence. Run with:
  *   node --experimental-strip-types tools/probe-mainnet.ts
  */
-import { RpcProvider, hash, num, events as snEvents } from "starknet";
+import { RpcProvider, hash, num } from "starknet";
 import { writeFileSync, mkdirSync } from "node:fs";
 
 const POOL = "0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a";
@@ -41,6 +41,29 @@ function shortStringToFelt(value: string): string {
   return "0x" + Buffer.from(value, "ascii").toString("hex");
 }
 
+/**
+ * The single felt a pool view returned, or undefined if it answered with another shape.
+ *
+ * Every view read here is declared to return one felt. Surfacing undefined keeps a
+ * surprising answer visible in the report rather than printing 0x0 as though the pool
+ * had really said zero.
+ */
+function firstFelt(value: unknown): string | undefined {
+  return Array.isArray(value) ? (value[0] as string | undefined) : undefined;
+}
+
+/**
+ * A required field of an emitted event.
+ *
+ * The pool's event layouts are fixed, so a missing field means this probe is reading an
+ * event it does not understand, and saying so beats reporting a derived value.
+ */
+function eventFelt(values: string[], index: number, what: string): string {
+  const felt = values[index];
+  if (felt === undefined) throw new Error(`event is missing ${what} at index ${index}`);
+  return felt;
+}
+
 function feltToShortString(felt: string): string {
   const hex = num.toHex(felt).slice(2);
   const padded = hex.length % 2 ? "0" + hex : hex;
@@ -57,13 +80,18 @@ async function callView(
       contractAddress: POOL,
       entrypoint,
       calldata,
-    })) as string[];
+    }));
   } catch (error) {
     return { error: (error as Error).message.slice(0, 300) };
   }
 }
 
 const POLICY_NAMES = ["Required", "Exempt", "Delegated"];
+
+/** Names a screening policy felt, keeping an unrecognised value visible rather than guessed. */
+function policyName(felt: string): string {
+  return POLICY_NAMES[Number(BigInt(felt))] ?? `unknown(${felt})`;
+}
 
 async function main() {
   const { provider, url, spec } = await pickProvider();
@@ -91,7 +119,8 @@ async function main() {
   // Which depositors has governance explicitly configured? These are the anonymizers
   // that can currently return open-note deposits on mainnet without an attestation.
   const policyEventKey = num.toHex(hash.getSelectorFromName("OpenNoteScreeningPolicySet"));
-  const configuredPolicies: Array<{ depositor: string; policy: string; block: number }> = [];
+  const configuredPolicies: Array<{ depositor: string; policy: string; block: number | null }> =
+    [];
   let continuationToken: string | undefined;
   let pages = 0;
   do {
@@ -105,9 +134,9 @@ async function main() {
     });
     for (const event of page.events) {
       configuredPolicies.push({
-        depositor: num.toHex(event.keys[1]),
-        policy: POLICY_NAMES[Number(BigInt(event.data[0]))] ?? `unknown(${event.data[0]})`,
-        block: event.block_number,
+        depositor: num.toHex(eventFelt(event.keys, 1, "depositor")),
+        policy: policyName(eventFelt(event.data, 0, "policy")),
+        block: event.block_number ?? null,
       });
     }
     continuationToken = page.continuation_token;
@@ -125,10 +154,10 @@ async function main() {
   });
   const invokeTargets = new Map<string, { count: number; selectors: Set<string> }>();
   for (const event of recentInvokes.events) {
-    const target = num.toHex(event.keys[1]);
+    const target = num.toHex(eventFelt(event.keys, 1, "target"));
     const entry = invokeTargets.get(target) ?? { count: 0, selectors: new Set<string>() };
     entry.count += 1;
-    entry.selectors.add(num.toHex(event.keys[2]));
+    entry.selectors.add(num.toHex(eventFelt(event.keys, 2, "selector")));
     invokeTargets.set(target, entry);
   }
 
@@ -156,12 +185,21 @@ async function main() {
             ? "privacy_invoke_with_computation"
             : selector
       ),
-      policy: Array.isArray(policy)
-        ? (POLICY_NAMES[Number(BigInt(policy[0]))] ?? `unknown(${policy[0]})`)
-        : JSON.stringify(policy),
+      policy: (() => {
+        const felt = firstFelt(policy);
+        return felt === undefined ? JSON.stringify(policy) : policyName(felt);
+      })(),
     });
   }
   invokeTargetPolicies.sort((left, right) => right.invocations - left.invocations);
+
+  const versionFelt = firstFelt(views.get_version);
+  const feeFelt = firstFelt(views.get_fee_amount);
+  const collectorFelt = firstFelt(views.get_fee_collector);
+  const validityFelt = firstFelt(views.get_proof_validity_blocks);
+  const screenerFelt = firstFelt(views.get_screener_public_key);
+  const auditorFelt = firstFelt(views.get_auditor_public_key);
+  const unlistedFelt = firstFelt(unlistedPolicy);
 
   const report = {
     probed_at: new Date().toISOString(),
@@ -171,34 +209,21 @@ async function main() {
     pool: {
       address: POOL,
       class_hash: num.toHex(classHash),
-      version: Array.isArray(views.get_version)
-        ? feltToShortString((views.get_version as string[])[0])
-        : views.get_version,
-      fee_amount_fri: Array.isArray(views.get_fee_amount)
-        ? BigInt((views.get_fee_amount as string[])[0]).toString()
-        : views.get_fee_amount,
-      fee_amount_strk: Array.isArray(views.get_fee_amount)
-        ? (Number(BigInt((views.get_fee_amount as string[])[0])) / 1e18).toString()
-        : null,
-      fee_collector: Array.isArray(views.get_fee_collector)
-        ? num.toHex((views.get_fee_collector as string[])[0])
-        : views.get_fee_collector,
-      proof_validity_blocks: Array.isArray(views.get_proof_validity_blocks)
-        ? Number(BigInt((views.get_proof_validity_blocks as string[])[0]))
+      version: versionFelt ? feltToShortString(versionFelt) : views.get_version,
+      fee_amount_fri: feeFelt ? BigInt(feeFelt).toString() : views.get_fee_amount,
+      fee_amount_strk: feeFelt ? (Number(BigInt(feeFelt)) / 1e18).toString() : null,
+      fee_collector: collectorFelt ? num.toHex(collectorFelt) : views.get_fee_collector,
+      proof_validity_blocks: validityFelt
+        ? Number(BigInt(validityFelt))
         : views.get_proof_validity_blocks,
-      screener_public_key: Array.isArray(views.get_screener_public_key)
-        ? num.toHex((views.get_screener_public_key as string[])[0])
+      screener_public_key: screenerFelt
+        ? num.toHex(screenerFelt)
         : views.get_screener_public_key,
-      auditor_public_key: Array.isArray(views.get_auditor_public_key)
-        ? num.toHex((views.get_auditor_public_key as string[])[0])
-        : views.get_auditor_public_key,
+      auditor_public_key: auditorFelt ? num.toHex(auditorFelt) : views.get_auditor_public_key,
     },
     open_note_screening: {
       unlisted_address_probe: unlistedProbeAddress,
-      unlisted_address_policy: Array.isArray(unlistedPolicy)
-        ? (POLICY_NAMES[Number(BigInt((unlistedPolicy as string[])[0]))] ??
-          `unknown(${(unlistedPolicy as string[])[0]})`)
-        : unlistedPolicy,
+      unlisted_address_policy: unlistedFelt ? policyName(unlistedFelt) : unlistedPolicy,
       governance_configured_depositors: configuredPolicies,
       recent_invoke_targets: invokeTargetPolicies,
       recent_invoke_window_blocks: Math.min(blockNumber, 100_000),

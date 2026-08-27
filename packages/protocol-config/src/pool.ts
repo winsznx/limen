@@ -33,7 +33,7 @@ async function callSingle(
     contractAddress,
     entrypoint,
     calldata: [],
-  })) as string[];
+  }));
   const first = result[0];
   if (first === undefined) {
     throw new Error(`Pool view ${entrypoint} returned nothing`);
@@ -80,7 +80,7 @@ export async function isOpenNoteDepositorBlocked(
     contractAddress: config.poolAddress,
     entrypoint: "is_open_note_depositor_blocked",
     calldata: [depositor],
-  })) as string[];
+  }));
   return BigInt(result[0] ?? "0x0") !== 0n;
 }
 

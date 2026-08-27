@@ -80,7 +80,7 @@ export function createPoolViews(
         calldata: calldata.map((value) => num.toHex(value)),
       },
       blockIdentifier
-    )) as string[];
+    ));
   }
 
   const felt = (values: string[], index: number): string => num.toHex(values[index] ?? "0x0");

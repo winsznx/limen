@@ -38,7 +38,11 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm -r --filter './packages/*' build
-      - run: pnpm -r typecheck
+      # Covers scripts/ and tools/ as well as the packages: the mainnet clearance and
+      # the chain verifier live there, so leaving them unchecked would exempt the code
+      # that touches real funds.
+      - run: pnpm typecheck
+      - run: pnpm lint
       - run: pnpm -r test
 
   cairo:

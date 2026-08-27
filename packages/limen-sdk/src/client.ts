@@ -111,7 +111,7 @@ export class LimenReadClient {
       contractAddress: this.options.deployment.capitalGate,
       entrypoint: "is_qualified",
       calldata: [num.toHex(subject)],
-    })) as string[];
+    }));
     return BigInt(result[0] ?? "0x0") === 1n;
   }
 
@@ -144,7 +144,7 @@ export class LimenReadClient {
         contractAddress: this.options.deployment.anonymizer,
         entrypoint,
         calldata,
-      })) as string[];
+      }));
     } catch (error) {
       throw classifyFailure(error);
     }

@@ -66,7 +66,7 @@ async function main() {
     contractAddress: POOL,
     entrypoint: "get_public_key",
     calldata: [address],
-  })) as string[];
+  }));
   if (BigInt(existing[0] ?? "0x0") !== 0n) {
     console.log(`\n  Already registered. Public viewing key ${num.toHex(existing[0]!)}\n`);
     return;
@@ -77,14 +77,14 @@ async function main() {
     contractAddress: POOL,
     entrypoint: "get_fee_amount",
     calldata: [],
-  })) as string[];
+  }));
   const poolFee = BigInt(feeRaw[0] ?? "0x0");
 
   const allowanceRaw = (await provider.callContract({
     contractAddress: STRK,
     entrypoint: "allowance",
     calldata: [address, POOL],
-  })) as string[];
+  }));
   const allowance = BigInt(allowanceRaw[0] ?? "0x0") + (BigInt(allowanceRaw[1] ?? "0x0") << 128n);
 
   console.log(`\n  pool fee        ${Number(poolFee) / 1e18} STRK`);
@@ -116,14 +116,14 @@ async function main() {
 
   const transfers = createPrivateTransfers({
     account,
-    viewingKeyProvider: { getViewingKey: async () => viewingKey },
+    viewingKeyProvider: { getViewingKey: () => Promise.resolve(viewingKey) },
     provingProvider: new LimenProvingProvider(
       gatewayUrl.replace(/\/$/, ""),
       gatewayToken,
       constants.StarknetChainId.SN_MAIN,
       { nodeUrl: rpcUrl, poolAddress: POOL, idempotencyKey: `register-${address}-${provingBlockId}` }
     ) as never,
-    discoveryProvider: new ContractDiscoveryProvider(poolViews as never) as never,
+    discoveryProvider: new ContractDiscoveryProvider(poolViews),
     poolContractAddress: POOL,
   });
 
@@ -147,7 +147,7 @@ async function main() {
   const submitted = await account.execute(callAndProof.call as never, {
     tip: 0n,
     ...proofDetails,
-  } as never);
+  });
   console.log(`  tx              ${submitted.transaction_hash}`);
 
   const receipt = (await provider.waitForTransaction(submitted.transaction_hash)) as unknown as {

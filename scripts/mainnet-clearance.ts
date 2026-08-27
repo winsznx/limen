@@ -22,6 +22,7 @@ import { createServer } from "node:http";
 import { readFileSync, mkdirSync, writeFileSync, existsSync } from "node:fs";
 import { createPrivateTransfers, Open } from "../.vendor/starknet-privacy/sdk/dist/index.js";
 import { ContractDiscoveryProvider } from "../.vendor/starknet-privacy/sdk/dist/internal/contract-discovery.js";
+import type { InvokeCalldataBuilderArgs } from "../.vendor/starknet-privacy/sdk/dist/interfaces.js";
 import { computeChallengeId, createPoolViews, deriveSubject, randomNonce } from "@limen/sdk";
 
 const POOL = "0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a";
@@ -92,7 +93,7 @@ async function main() {
 
   // ---------------------------------------------------------------- inputs
 
-  const discovery = new ContractDiscoveryProvider(views as never);
+  const discovery = new ContractDiscoveryProvider(views);
   const discovered = (await discovery.discoverNotes(BigInt(address), viewingKey, {
     tokens: [BigInt(STRK)],
   })) as { notes: { get: (token: bigint) => Array<{ amount: bigint }> | undefined } };
@@ -105,7 +106,7 @@ async function main() {
   const threshold = BigInt(note.amount);
 
   const gateMin = BigInt(
-    ((await provider.callContract({ contractAddress: gate, entrypoint: "get_min_amount", calldata: [] })) as string[])[0] ?? "0x0"
+    ((await provider.callContract({ contractAddress: gate, entrypoint: "get_min_amount", calldata: [] })))[0] ?? "0x0"
   );
   if (threshold < gateMin) {
     throw new Error(`note holds ${threshold}, gate requires ${gateMin}`);
@@ -140,7 +141,7 @@ async function main() {
         STRK, num.toHex(threshold), gate, shortString.encodeShortString(ACTION),
         subject, address, num.toHex(params.expiresAt), params.nonce,
       ],
-    })) as string[])[0] ?? "0x0"
+    })))[0] ?? "0x0"
   );
   if (BigInt(onChainId) !== BigInt(challengeId)) {
     throw new Error(`challenge id mismatch: sdk ${challengeId}, contract ${onChainId}`);
@@ -166,7 +167,7 @@ async function main() {
       ((await provider.callContract({
         contractAddress: anonymizer, entrypoint: "is_challenge_open",
         calldata: [pending.challengeId],
-      })) as string[])[0] ?? "0x0"
+      })))[0] ?? "0x0"
     ) === 1n;
     if (stillOpen && pending.threshold === threshold.toString() &&
         BigInt(pending.gate) === BigInt(gate) && BigInt(pending.subject) === BigInt(subject)) {
@@ -196,7 +197,7 @@ async function main() {
   try {
     const transfers = createPrivateTransfers({
       account,
-      viewingKeyProvider: { getViewingKey: async () => viewingKey },
+      viewingKeyProvider: { getViewingKey: () => Promise.resolve(viewingKey) },
       provingProvider: {
         url: proxy.url,
         chainId: constants.StarknetChainId.SN_MAIN,
@@ -207,7 +208,7 @@ async function main() {
         // prover's own RPC codes. Retrying here would stack two policies.
         retry: { maxRetries: 0 },
       },
-      discoveryProvider: discovery as never,
+      discoveryProvider: discovery,
       poolContractAddress: POOL,
     });
 
@@ -231,7 +232,7 @@ async function main() {
     console.log(`\nproving against block ${provingBlockId} (challenge at ${createdBlock}) …`);
     const startedAt = Date.now();
 
-    const result = (await transfers
+    const result = await transfers
       .build({ autoSetup: true })
       .with(STRK, (token) =>
         token
@@ -240,19 +241,22 @@ async function main() {
           .withdraw({ recipient: anonymizer, amount: threshold })
           .transfer({ recipient: address, amount: Open })
       )
-      .computeAndInvoke(({ openNotes }: { openNotes: Array<{ noteId: string }> }) => ({
-        contractAddress: anonymizer,
-        computeAdditionalData: [reusedId],
-        invokeAdditionalData: [openNotes[0]!.noteId],
-      }))
-      .execute({ provingBlockId })) as {
-      callAndProof: { call: never; proof: { proofFacts?: string[]; data?: unknown } };
-      warnings?: unknown[];
-    };
+      .computeAndInvoke(({ openNotes }: InvokeCalldataBuilderArgs) => {
+        // The note the pool will credit the returned capital into. Its id is the only
+        // thing the anonymizer needs in order to hand the capital back.
+        const returnNote = openNotes[0];
+        if (!returnNote) throw new Error("no open note was planned for the return");
+        return {
+          contractAddress: anonymizer,
+          computeAdditionalData: [reusedId],
+          invokeAdditionalData: [num.toHex(returnNote.noteId)],
+        };
+      })
+      .execute({ provingBlockId });
 
     const provingMs = Date.now() - startedAt;
     console.log(`proof ready in ${(provingMs / 1000).toFixed(1)}s`);
-    if (result.warnings?.length) console.log(`warnings: ${JSON.stringify(result.warnings)}`);
+    if (result.warnings.length) console.log(`warnings: ${JSON.stringify(result.warnings)}`);
 
     // Omit the proof keys entirely when there are no facts: empty arrays serialize an
     // invalid v3 transaction.

@@ -11,8 +11,8 @@
   "packageManager": "pnpm@11.21.0",
   "scripts": {
     "build": "pnpm -r --filter './packages/*' build && pnpm --filter @limen/web build",
-    "typecheck": "pnpm -r typecheck",
-    "lint": "pnpm -r lint",
+    "typecheck": "tsc -p tsconfig.json --noEmit && pnpm -r typecheck",
+    "lint": "eslint .",
     "test": "pnpm -r test",
     "probe:mainnet": "node --experimental-strip-types tools/probe-mainnet.ts",
     "bootstrap": "./scripts/bootstrap.sh",
@@ -22,10 +22,13 @@
     "benchmark": "node --experimental-strip-types scripts/prover-benchmark.ts"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@limen/protocol-config": "workspace:*",
+    "@limen/sdk": "workspace:*",
     "@types/node": "^24.13.3",
+    "eslint": "^9.39.5",
     "starknet": "^10.7.1",
     "typescript": "^5.9.3",
-    "@limen/sdk": "workspace:*",
-    "@limen/protocol-config": "workspace:*"
+    "typescript-eslint": "^8.68.0"
   }
 }

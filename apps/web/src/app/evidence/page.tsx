@@ -14,7 +14,7 @@ type ClaimStatus = "proven" | "pending" | "not_started";
 export default async function EvidencePage() {
   const config = deploymentConfig();
   const pool = await poolSnapshot(config);
-  const transactions = strk20.transactions as string[];
+  const transactions = strk20.transactions;
 
   const proven = claims.claims.filter((claim) => claim.status === "proven").length;
 
@@ -170,7 +170,7 @@ export default async function EvidencePage() {
           {Object.entries(campaign.distribution).map(([kind, count]) => (
             <div key={kind} className="flex items-center justify-between text-[13px]">
               <span className="text-steel">{kind.replace(/_/g, " ")}</span>
-              <span className="mono text-charcoal">{count as number}</span>
+              <span className="mono text-charcoal">{count}</span>
             </div>
           ))}
         </div>
@@ -198,7 +198,7 @@ export default async function EvidencePage() {
             <p className="mb-3 text-[13px] leading-[1.55] text-fog">{claim.mechanism}</p>
             {"note" in claim && claim.note ? (
               <p className="mb-3 border-l-2 border-ash pl-3 text-[13px] leading-[1.55] text-steel">
-                {claim.note as string}
+                {claim.note}
               </p>
             ) : null}
             {"blocked_on" in claim && claim.blocked_on ? (

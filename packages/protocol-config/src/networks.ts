@@ -12,6 +12,17 @@ export interface NetworkConfig {
   readonly explorerContractUrl: (address: string) => string;
 }
 
+/**
+ * OpenZeppelin account v3, declared on Starknet mainnet.
+ *
+ * The default class for accounts Limen generates for deployment. Shared so the tool that
+ * derives a counterfactual address and the script that deploys it cannot disagree about
+ * which class the address was computed from — they would silently land on different
+ * addresses.
+ */
+export const OZ_ACCOUNT_CLASS_HASH =
+  "0x00e2eb8f5672af4e6a4e8a8f1b44989685e668489b0a25437733756c5a34a1d6";
+
 const VOYAGER_MAINNET = "https://voyager.online";
 const VOYAGER_SEPOLIA = "https://sepolia.voyager.online";
 

@@ -18,7 +18,7 @@
  *
  *   node --experimental-strip-types scripts/mainnet-session.ts [--dry-run] [--from <step>]
  */
-import { Account, RpcProvider, num, shortString } from "starknet";
+import { RpcProvider, num, shortString } from "starknet";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 
@@ -84,7 +84,7 @@ async function strkBalance(provider: RpcProvider, address: string): Promise<bigi
     contractAddress: STRK,
     entrypoint: "balance_of",
     calldata: [address],
-  })) as string[];
+  }));
   return BigInt(result[0] ?? "0x0") + (BigInt(result[1] ?? "0x0") << 128n);
 }
 
@@ -92,7 +92,7 @@ async function main() {
   const rpcUrl = required("STARKNET_MAINNET_RPC_URL");
   const address = required("DEPLOYER_ADDRESS");
   const gatewayUrl = required("LIMEN_GATEWAY_URL");
-  const gatewayToken = required("LIMEN_GATEWAY_TOKEN");
+  required("LIMEN_GATEWAY_TOKEN");
   required("DEPLOYER_PRIVATE_KEY");
 
   const provider = new RpcProvider({ nodeUrl: rpcUrl });
@@ -124,7 +124,7 @@ async function main() {
     contractAddress: POOL,
     entrypoint: "get_fee_amount",
     calldata: [],
-  })) as string[];
+  }));
   const poolFee = BigInt(feeRaw[0] ?? "0x0");
   note(`pool fee         ${Number(poolFee) / 1e18} STRK per pool transaction`);
 
@@ -147,7 +147,7 @@ async function main() {
     calldata: [state.steps.deploy?.detail
       ? (state.steps.deploy.detail as { anonymizer: string }).anonymizer
       : "0x1"],
-  })) as string[];
+  }));
   if (BigInt(blockedRaw[0] ?? "0x0") !== 0n) {
     fail("the pool has denylisted this anonymizer; clearances cannot work");
   }
