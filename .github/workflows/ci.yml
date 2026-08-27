@@ -23,9 +23,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+      # No version here on purpose: package.json's `packageManager` field pins pnpm
+      # exactly, and specifying both makes the action fail on the conflict.
       - uses: pnpm/action-setup@v4
-        with:
-          version: 11
       - uses: actions/setup-node@v5
         with:
           node-version: 24
@@ -78,9 +78,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+      # No version here on purpose: package.json's `packageManager` field pins pnpm
+      # exactly, and specifying both makes the action fail on the conflict.
       - uses: pnpm/action-setup@v4
-        with:
-          version: 11
       - uses: actions/setup-node@v5
         with:
           node-version: 24
@@ -142,9 +142,9 @@ jobs:
     continue-on-error: true
     steps:
       - uses: actions/checkout@v5
+      # No version here on purpose: package.json's `packageManager` field pins pnpm
+      # exactly, and specifying both makes the action fail on the conflict.
       - uses: pnpm/action-setup@v4
-        with:
-          version: 11
       - uses: actions/setup-node@v5
         with:
           node-version: 24
@@ -178,9 +178,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+      # No version here on purpose: package.json's `packageManager` field pins pnpm
+      # exactly, and specifying both makes the action fail on the conflict.
       - uses: pnpm/action-setup@v4
-        with:
-          version: 11
       - uses: actions/setup-node@v5
         with:
           node-version: 24
