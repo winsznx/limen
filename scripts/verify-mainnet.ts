@@ -45,10 +45,16 @@ function loadDeployment(): { anonymizer: string; capitalGate: string } | null {
   return anonymizer && capitalGate ? { anonymizer, capitalGate } : null;
 }
 
-/** Hashes to verify: argv, else every hash already recorded under evidence/mainnet. */
-function hashesToVerify(): string[] {
+/**
+ * Hashes to verify, and whether the run was scoped to specific ones.
+ *
+ * Naming hashes on the command line asks about those transactions. It must never
+ * republish the manifest, because verifying one hash would then delete every other
+ * published one — including on a machine that is only inspecting.
+ */
+function hashesToVerify(): { hashes: string[]; scoped: boolean } {
   const fromArgs = process.argv.slice(2).filter((arg) => /^0x[0-9a-fA-F]+$/.test(arg));
-  if (fromArgs.length > 0) return fromArgs;
+  if (fromArgs.length > 0) return { hashes: fromArgs, scoped: true };
 
   const collected = new Set<string>();
   for (const path of ["evidence/mainnet/clearances.json", "strk20.json"]) {
@@ -56,7 +62,7 @@ function hashesToVerify(): string[] {
     const parsed = JSON.parse(readFileSync(path, "utf8")) as { transactions?: string[] };
     for (const hash of parsed.transactions ?? []) collected.add(hash);
   }
-  return [...collected];
+  return { hashes: [...collected], scoped: false };
 }
 
 /** Classifies a pool-touching transaction that is not a clearance. */
@@ -99,7 +105,7 @@ async function main() {
     process.exit(1);
   }
 
-  const hashes = hashesToVerify();
+  const { hashes, scoped } = hashesToVerify();
   if (hashes.length === 0) {
     console.log("Nothing to verify yet. Pass transaction hashes as arguments, or record");
     console.log("clearances in evidence/mainnet/clearances.json first.");
@@ -173,6 +179,12 @@ async function main() {
     }
     writeFileSync(OUT, JSON.stringify(report_, null, 2) + "\n");
     process.exit(1);
+  }
+
+  if (scoped) {
+    console.log(`\n  ${OUT}`);
+    console.log("  Scoped to the hash(es) given, so strk20.json was left alone.");
+    return;
   }
 
   // Only now, with every clearance independently reconstructed from chain, are hashes
