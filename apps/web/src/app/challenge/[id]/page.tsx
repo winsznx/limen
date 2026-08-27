@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { formatAmount, findToken, STRK_MAINNET } from "@limen/protocol-config";
 import { disclosureFor } from "@limen/sdk";
 import { ClearancePanel } from "@/components/clearance-panel";
-import { Card, Dot, Field, Row, SectionHead, Tag, short } from "@/components/primitives";
+import { Card, Dot, Field, FeltLink, Row, SectionHead, Tag, short } from "@/components/primitives";
 import { deploymentConfig } from "@/lib/config";
 import { challengeSnapshot, poolSnapshot } from "@/lib/chain";
 import { proverHealth } from "@/lib/gateway";
@@ -76,11 +76,19 @@ export default async function ChallengePage({ params }: { params: Promise<{ id: 
 
           <Card className="mb-6 px-4">
             <Row label="Challenge">
+              {/* An identifier the anonymizer derives, not an on-chain address. */}
               <span className="felt text-[12px]">{challenge.challengeId}</span>
             </Row>
             <Row label="Token">
               <span className="mono">
-                {symbol} · {short(challenge.token, 6, 4)}
+                {symbol} ·{" "}
+                <FeltLink
+                  value={challenge.token}
+                  network={config.network}
+                  kind="contract"
+                  lead={6}
+                  tail={4}
+                />
               </span>
             </Row>
             <Row label="Threshold">
@@ -89,14 +97,7 @@ export default async function ChallengePage({ params }: { params: Promise<{ id: 
               </span>
             </Row>
             <Row label="Target">
-              <a
-                href={config.network.explorerContractUrl(challenge.target)}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="mono text-accent hover:underline"
-              >
-                {short(challenge.target, 8, 6)}
-              </a>
+              <FeltLink value={challenge.target} network={config.network} kind="contract" />
             </Row>
             <Row label="Action">
               <span className="mono">{challenge.action}</span>
@@ -105,18 +106,25 @@ export default async function ChallengePage({ params }: { params: Promise<{ id: 
               {BigInt(challenge.subject) === 0n ? (
                 <span className="text-fog">Any subject (bearer)</span>
               ) : (
-                <span className="mono">{short(challenge.subject, 8, 6)}</span>
+                /* A pseudonym scoped to this anonymizer. It is not an address, so it
+                   deliberately does not link anywhere. */
+                <span className="mono" title={challenge.subject}>
+                  {short(challenge.subject, 8, 6)}
+                </span>
               )}
             </Row>
             <Row label="Issuer">
-              <span className="mono">{short(challenge.issuer, 8, 6)}</span>
+              <FeltLink value={challenge.issuer} network={config.network} kind="contract" />
             </Row>
             <Row label="Expires">
               {new Date(challenge.expiresAt * 1000).toISOString().replace("T", " ").slice(0, 19)} UTC
             </Row>
             {challenge.consumedBy ? (
               <Row label="Cleared by">
-                <span className="mono">{short(challenge.consumedBy, 8, 6)}</span>
+                {/* The subject that cleared it, again a pseudonym rather than an address. */}
+                <span className="mono" title={challenge.consumedBy}>
+                  {short(challenge.consumedBy, 8, 6)}
+                </span>
               </Row>
             ) : null}
           </Card>

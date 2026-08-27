@@ -159,6 +159,8 @@ function ChallengeCard({ challenge }: { challenge: Challenge }) {
         </div>
         <div className="grid grid-cols-2 gap-3">
           <Field label="Action" value={challenge.action} mono />
+          {/* No explorer link here: the whole card is already a link to the challenge,
+              and an anchor inside an anchor is invalid. The detail page links it. */}
           <Field label="Target" value={short(challenge.target, 6, 4)} mono />
           <Field
             label="Subject"

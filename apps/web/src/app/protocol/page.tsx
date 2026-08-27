@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Card, Dot, SectionHead, Tag } from "@/components/primitives";
-import { UPSTREAM_PINS } from "@limen/protocol-config";
+import { MAINNET, UPSTREAM_PINS } from "@limen/protocol-config";
 
 export const metadata: Metadata = { title: "Protocol" };
 
@@ -132,15 +132,27 @@ fn limen_execute(ref self: T, clearance: LimenClearance);`}
       <Card className="px-4">
         <div className="flex items-start justify-between gap-6 border-b border-ash py-3">
           <span className="text-[13px] text-steel">Pool class, mainnet</span>
-          <span className="felt text-right text-[12px] text-charcoal">
+          <a
+            href={MAINNET.explorerClassUrl(UPSTREAM_PINS.poolClassHashMainnet)}
+            target="_blank"
+            rel="noreferrer noopener"
+            title={UPSTREAM_PINS.poolClassHashMainnet}
+            className="felt text-right text-[12px] text-charcoal underline decoration-ash underline-offset-2 transition-colors hover:decoration-accent"
+          >
             {UPSTREAM_PINS.poolClassHashMainnet}
-          </span>
+          </a>
         </div>
         <div className="flex items-start justify-between gap-6 border-b border-ash py-3">
           <span className="text-[13px] text-steel">Upstream revision</span>
-          <span className="felt text-right text-[12px] text-charcoal">
+          <a
+            href={`https://github.com/starkware-libs/starknet-privacy/commit/${UPSTREAM_PINS.poolSourceCommit}`}
+            target="_blank"
+            rel="noreferrer noopener"
+            title={UPSTREAM_PINS.poolSourceTag}
+            className="felt text-right text-[12px] text-charcoal underline decoration-ash underline-offset-2 transition-colors hover:decoration-accent"
+          >
             {UPSTREAM_PINS.poolSourceCommit}
-          </span>
+          </a>
         </div>
         <div className="flex items-start justify-between gap-6 border-b border-ash py-3">
           <span className="text-[13px] text-steel">Pool version</span>

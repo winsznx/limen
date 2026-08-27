@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Limen System Architecture",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "clearance-path",
+        "label": "The clearance path",
+        "focus": [
+          "browser",
+          "pool",
+          "anonymizer",
+          "target"
+        ],
+        "note": "One atomic pool transaction: the threshold is withdrawn, the bound action runs, and the capital returns to a shielded note."
+      },
+      {
+        "id": "proving",
+        "label": "Proving infrastructure",
+        "focus": [
+          "web",
+          "gateway",
+          "prover"
+        ],
+        "note": "Proving is minutes of a whole machine, so it runs on a dedicated Linux host reachable only from the gateway."
+      },
+      {
+        "id": "trust",
+        "label": "What holds a key",
+        "focus": [
+          "browser",
+          "web",
+          "gateway",
+          "anonymizer"
+        ],
+        "note": "The subject's client holds every key. The web app holds none, so a compromised edge cannot mint a clearance."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "browser",
+      "type": "external",
+      "label": "Subject's client",
+      "sublabel": "holds signing + viewing key",
+      "pos": [
+        60,
+        90
+      ],
+      "size": [
+        150,
+        68
+      ]
+    },
+    {
+      "id": "web",
+      "type": "frontend",
+      "label": "Limen web",
+      "sublabel": "Cloudflare Workers",
+      "tag": "no signing key",
+      "pos": [
+        300,
+        90
+      ],
+      "size": [
+        160,
+        68
+      ]
+    },
+    {
+      "id": "gateway",
+      "type": "security",
+      "label": "Prover Gateway",
+      "sublabel": "auth \u00b7 validation \u00b7 admission",
+      "tag": "redaction",
+      "pos": [
+        575,
+        90
+      ],
+      "size": [
+        160,
+        68
+      ]
+    },
+    {
+      "id": "prover",
+      "type": "backend",
+      "label": "Limen Prover",
+      "sublabel": "pinned upstream image",
+      "tag": "no published port",
+      "pos": [
+        840,
+        90
+      ],
+      "size": [
+        160,
+        68
+      ]
+    },
+    {
+      "id": "pool",
+      "type": "external",
+      "label": "STRK20 pool",
+      "sublabel": "v2.0, upstream",
+      "pos": [
+        300,
+        330
+      ],
+      "size": [
+        160,
+        68
+      ]
+    },
+    {
+      "id": "anonymizer",
+      "type": "backend",
+      "label": "Limen Anonymizer",
+      "sublabel": "measures the balance delta",
+      "tag": "no owner",
+      "pos": [
+        670,
+        330
+      ],
+      "size": [
+        190,
+        68
+      ]
+    },
+    {
+      "id": "target",
+      "type": "external",
+      "label": "Target application",
+      "sublabel": "implements limen_execute",
+      "pos": [
+        1010,
+        330
+      ],
+      "size": [
+        175,
+        68
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Fly.io \u00b7 dedicated Linux host",
+      "wraps": [
+        "gateway",
+        "prover"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "Starknet Mainnet \u00b7 one atomic transaction",
+      "wraps": [
+        "pool",
+        "anonymizer",
+        "target"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "client-submits",
+      "from": "browser",
+      "to": "pool",
+      "label": "apply_actions",
+      "variant": "emphasis"
+    },
+    {
+      "id": "client-uses-web",
+      "from": "browser",
+      "to": "web",
+      "label": "HTTPS"
+    },
+    {
+      "id": "web-reads-chain",
+      "from": "web",
+      "to": "pool",
+      "label": "chain reads",
+      "variant": "dashed",
+      "labelDy": 100
+    },
+    {
+      "id": "web-to-gateway",
+      "from": "web",
+      "to": "gateway",
+      "label": "bearer over HTTPS",
+      "variant": "security"
+    },
+    {
+      "id": "gateway-to-prover",
+      "from": "gateway",
+      "to": "prover",
+      "label": "private network"
+    },
+    {
+      "id": "pool-invokes",
+      "from": "pool",
+      "to": "anonymizer",
+      "label": "privacy_invoke_with_computation",
+      "variant": "emphasis"
+    },
+    {
+      "id": "anonymizer-executes",
+      "from": "anonymizer",
+      "to": "target",
+      "label": "limen_execute",
+      "variant": "emphasis"
+    },
+    {
+      "id": "anonymizer-returns",
+      "from": "anonymizer",
+      "to": "pool",
+      "label": "OpenNoteDeposit \u2192 shielded note",
+      "fromSide": "bottom",
+      "toSide": "bottom"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Off chain",
+      "items": [
+        "The web app holds no signing key and cannot mint a clearance",
+        "Proving never runs inside a Worker",
+        "No request content reaches a log, a metric, or an error"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "On chain",
+      "items": [
+        "The subject comes from the pool, not from calldata",
+        "The amount is a measured balance delta, required to equal the threshold exactly",
+        "A revert anywhere moves no capital and consumes no challenge"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Immutable",
+      "items": [
+        "No owner, no admin, no pause, no upgrade, no sweep",
+        "The target selector is fixed, never caller-supplied"
+      ]
+    }
+  ]
+}

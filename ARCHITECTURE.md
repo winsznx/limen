@@ -11,40 +11,15 @@ this much of this token through the STRK20 pool, and the bound action ran.*
 
 ## The shape
 
-```
-                          browser
-                             │
-                             ▼
-   ┌──────────────────────────────────────────────┐
-   │  Limen web              Cloudflare Workers   │
-   │  server-rendered, holds no signing key       │
-   └───────────────┬──────────────────────┬───────┘
-                   │                      │
-     bearer over   │                      │  server-side
-     HTTPS         │                      │  chain reads
-                   ▼                      ▼
-   ┌───────────────────────────┐   ┌──────────────────────────┐
-   │  Limen Prover Gateway     │   │  Starknet Mainnet        │
-   │  auth · validation ·      │   │                          │
-   │  admission · idempotency  │   │   STRK20 pool            │
-   │  health · metrics ·       │   │        │                 │
-   │  redaction                │   │        │ privacy_compute │
-   └───────────────┬───────────┘   │        │ privacy_invoke_ │
-                   │               │        │ with_computation│
-      private      │               │        ▼                 │
-      network      ▼               │   Limen Anonymizer       │
-   ┌───────────────────────────┐   │        │                 │
-   │  Limen Prover             │   │        ├──► target app   │
-   │  pinned upstream image    │   │        └──► shielded     │
-   │  no published port        │   │             open note    │
-   └───────────────────────────┘   └──────────────────────────┘
-     dedicated Linux host (Fly.io)
-```
+![Limen system architecture](docs/diagrams/limen-architecture.png)
+
+*[Open the interactive version](docs/diagrams/limen-architecture.html)* — guided views for the
+clearance path, the proving infrastructure, and what holds a key.
 
 Two things about this diagram are load-bearing.
 
 **The prover is never inside a Worker.** Proving is minutes of a whole machine — measured
-at 51.6 s and 56.0 s for the mainnet clearances, on 4 vCPU and 32 GB. It runs as a real
+at 51.6 s, 56.0 s and 80.8 s for the mainnet clearances, on 4 vCPU and 32 GB. It runs as a real
 Linux container on a dedicated host with no public address of its own, reachable only
 from the gateway across a private network.
 
@@ -175,27 +150,16 @@ serialised.
 
 ## Data flow, one clearance
 
-```
-1  verifier   create_challenge(params)              → challenge id, public
-2  client     read the challenge, check freshness   → refuse early rather than pay a fee
-3  client     select mature notes covering T
-4  client     build the action list                 → UseNote, CreateOpenNote,
-                                                      Withdraw, ComputeAndInvoke
-5  prover     starknet_proveTransaction             → proof + proof facts
-6  client     apply_actions(actions, None)          → submitted to Starknet
-7  pool       compile, verify proof, apply
-8  pool       Withdraw T → anonymizer               → Withdrawal event, public
-9  anonymizer verify, measure, consume, call target
-10 target     limen_execute                         → application state changes
-11 pool       pull T from anonymizer                → OpenNoteDeposited, credited shielded
-```
+![One Limen clearance](docs/diagrams/limen-clearance.png)
 
-Step 6 passes no screening attestation, because a clearance contains no `Deposit` action.
-That is what lets the Limen self-hosted prover produce the whole thing: only the initial
-shielding deposit needs the official screening path.
+*[Open the interactive version](docs/diagrams/limen-clearance.html)*
 
-Steps 8 and 11 are what makes a clearance externally checkable. The pool publishes what
-it withdrew and what it credited, so `scripts/verify-mainnet.ts` can reconstruct the
+Submission passes no screening attestation, because a clearance contains no `Deposit`
+action. That is what lets the Limen self-hosted prover produce the whole thing: only the
+initial shielding deposit needs the official screening path.
+
+The withdraw and the credit back are what make a clearance externally checkable. The pool
+publishes what it withdrew and what it credited, so `scripts/verify-mainnet.ts` can reconstruct the
 entire mechanism from a transaction hash without trusting the app, the SDK, or any
 indexer.
 

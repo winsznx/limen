@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Limen Trust Boundary",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "key-material",
+        "label": "Where key material lives",
+        "focus": [
+          "client",
+          "prover",
+          "gateway"
+        ],
+        "note": "Only the subject holds keys. The prover sees a viewing key in calldata and the gateway sees requests; neither can mint state."
+      },
+      {
+        "id": "immutable",
+        "label": "What cannot be forged",
+        "focus": [
+          "pool",
+          "anonymizer",
+          "target"
+        ],
+        "note": "The clearing entry point accepts calls only from the pinned pool, and has no owner, admin, pause, upgrade or sweep."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "client",
+      "type": "external",
+      "label": "Subject's client",
+      "sublabel": "signing + viewing key, witnesses",
+      "tag": "holds every key",
+      "pos": [
+        60,
+        50
+      ],
+      "size": [
+        210,
+        68
+      ]
+    },
+    {
+      "id": "gateway",
+      "type": "security",
+      "label": "Prover Gateway",
+      "sublabel": "sees proving requests",
+      "pos": [
+        430,
+        50
+      ],
+      "size": [
+        190,
+        68
+      ]
+    },
+    {
+      "id": "prover",
+      "type": "backend",
+      "label": "Limen Prover",
+      "sublabel": "sees a viewing key in calldata",
+      "pos": [
+        430,
+        215
+      ],
+      "size": [
+        190,
+        68
+      ]
+    },
+    {
+      "id": "web",
+      "type": "frontend",
+      "label": "Limen web",
+      "sublabel": "holds nothing",
+      "pos": [
+        430,
+        380
+      ],
+      "size": [
+        190,
+        68
+      ]
+    },
+    {
+      "id": "pool",
+      "type": "external",
+      "label": "STRK20 pool",
+      "sublabel": "trusted, out of scope",
+      "pos": [
+        810,
+        50
+      ],
+      "size": [
+        190,
+        68
+      ]
+    },
+    {
+      "id": "anonymizer",
+      "type": "backend",
+      "label": "Limen Anonymizer",
+      "sublabel": "immutable, holds nothing",
+      "pos": [
+        810,
+        215
+      ],
+      "size": [
+        190,
+        68
+      ]
+    },
+    {
+      "id": "target",
+      "type": "external",
+      "label": "Target application",
+      "sublabel": "records the allocation",
+      "pos": [
+        810,
+        380
+      ],
+      "size": [
+        190,
+        68
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "security-group",
+      "label": "Subject \u00b7 trusted by the subject alone",
+      "wraps": [
+        "client"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "Limen operator \u00b7 cannot mint a clearance",
+      "wraps": [
+        "gateway",
+        "prover",
+        "web"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "Public \u00b7 Starknet Mainnet",
+      "wraps": [
+        "pool",
+        "anonymizer",
+        "target"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "proof-request",
+      "from": "client",
+      "to": "gateway",
+      "label": "proving request",
+      "variant": "security"
+    },
+    {
+      "id": "gateway-to-prover",
+      "from": "gateway",
+      "to": "prover",
+      "label": "private network",
+      "labelDy": 68
+    },
+    {
+      "id": "client-submits",
+      "from": "client",
+      "to": "pool",
+      "label": "signed transaction",
+      "variant": "emphasis",
+      "fromSide": "top",
+      "toSide": "top"
+    },
+    {
+      "id": "pool-invokes",
+      "from": "pool",
+      "to": "anonymizer",
+      "label": "pinned caller",
+      "variant": "emphasis",
+      "labelDy": 68
+    },
+    {
+      "id": "anonymizer-executes",
+      "from": "anonymizer",
+      "to": "target",
+      "label": "limen_execute",
+      "variant": "emphasis",
+      "labelDy": 68
+    },
+    {
+      "id": "web-reads",
+      "from": "web",
+      "to": "target",
+      "label": "public reads",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "If the operator is fully compromised",
+      "items": [
+        "No clearance can be fabricated without the subject's own pool-mediated capital flow",
+        "The anonymizer has no privileged path to abuse",
+        "Published transactions stay verifiable from chain with nothing running"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "What the operator can still do",
+      "items": [
+        "Refuse to prove, or serve wrong information from the web app",
+        "Observe a viewing key present in a proving request"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Out of scope",
+      "items": [
+        "The STRK20 pool and Starknet consensus are trusted",
+        "Compromise of the subject's own signing key"
+      ]
+    }
+  ]
+}

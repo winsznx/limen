@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import claims from "../../../../../evidence/claims.json";
 import campaign from "../../../../../evidence/campaigns/security.json";
 import strk20 from "../../../../../strk20.json";
-import { Card, Dot, Field, NotLive, SectionHead, Tag, short } from "@/components/primitives";
+import { Card, Dot, Field, FeltLink, NotLive, SectionHead, Tag, short } from "@/components/primitives";
 import { deploymentConfig } from "@/lib/config";
 import { poolSnapshot } from "@/lib/chain";
 
@@ -43,16 +43,14 @@ export default async function EvidencePage() {
           <Field
             label="STRK20 pool"
             value={
-              <a
-                href={config.network.explorerContractUrl(config.network.poolAddress)}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="text-accent hover:underline"
-              >
-                {short(config.network.poolAddress, 10, 8)}
-              </a>
+              <FeltLink
+                value={config.network.poolAddress}
+                network={config.network}
+                kind="contract"
+                lead={10}
+                tail={8}
+              />
             }
-            mono
             hint={pool.state ? `version ${pool.state.version}` : "not readable"}
           />
         </div>
@@ -60,18 +58,14 @@ export default async function EvidencePage() {
           <Field
             label="Limen Anonymizer"
             value={
-              config.anonymizer ? (
-                <a
-                  href={config.network.explorerContractUrl(config.anonymizer)}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="text-accent hover:underline"
-                >
-                  {short(config.anonymizer, 10, 8)}
-                </a>
-              ) : null
+              <FeltLink
+                value={config.anonymizer}
+                network={config.network}
+                kind="contract"
+                lead={10}
+                tail={8}
+              />
             }
-            mono
             hint={config.anonymizer ? undefined : "not deployed yet"}
           />
         </div>
@@ -79,18 +73,14 @@ export default async function EvidencePage() {
           <Field
             label="Capital Gate"
             value={
-              config.capitalGate ? (
-                <a
-                  href={config.network.explorerContractUrl(config.capitalGate)}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="text-accent hover:underline"
-                >
-                  {short(config.capitalGate, 10, 8)}
-                </a>
-              ) : null
+              <FeltLink
+                value={config.capitalGate}
+                network={config.network}
+                kind="contract"
+                lead={10}
+                tail={8}
+              />
             }
-            mono
             hint={config.capitalGate ? undefined : "not deployed yet"}
           />
         </div>
@@ -108,7 +98,17 @@ export default async function EvidencePage() {
             <tbody>
               {transactions.map((hash) => (
                 <tr key={hash} className="border-b border-ash last:border-b-0">
-                  <td className="felt px-4 py-2.5 text-[12px] text-charcoal">{hash}</td>
+                  <td className="px-4 py-2.5">
+                    <a
+                      href={config.network.explorerTxUrl(hash)}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      title={hash}
+                      className="felt text-[12px] text-charcoal underline decoration-ash underline-offset-2 transition-colors hover:decoration-accent"
+                    >
+                      {hash}
+                    </a>
+                  </td>
                   <td className="px-4 py-2.5">
                     <a
                       href={config.network.explorerTxUrl(hash)}
@@ -156,7 +156,21 @@ export default async function EvidencePage() {
           { label: "Successful replays", value: String(campaign.successful_replays) },
           { label: "Funds stranded", value: String(campaign.funds_stranded) },
           { label: "Seed", value: campaign.seed, mono: true },
-          { label: "Commit", value: short(campaign.commit, 8, 6), mono: true },
+          {
+            label: "Commit",
+            // A git commit rather than a felt, so it belongs on GitHub, not the explorer.
+            value: (
+              <a
+                href={`https://github.com/winsznx/limen/commit/${campaign.commit}`}
+                target="_blank"
+                rel="noreferrer noopener"
+                title={campaign.commit}
+                className="felt text-accent underline decoration-ash underline-offset-2 transition-colors hover:decoration-accent"
+              >
+                {short(campaign.commit, 8, 6)}
+              </a>
+            ),
+          },
         ].map((item) => (
           <div key={item.label} className="bg-canvas p-4">
             <Field label={item.label} value={item.value} mono={item.mono} />

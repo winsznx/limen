@@ -1,0 +1,238 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "One Limen Clearance",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "before-signing",
+        "label": "Before anything is spent",
+        "focus": [
+          "verifier",
+          "client"
+        ],
+        "note": "The challenge is public and authorises nothing. The client checks freshness first so a stale one costs no fee."
+      },
+      {
+        "id": "proving",
+        "label": "Proving",
+        "focus": [
+          "client",
+          "prover"
+        ],
+        "note": "No screening attestation is needed, because a clearance contains no Deposit action. That is what lets Limen prove it."
+      },
+      {
+        "id": "on-chain",
+        "label": "The atomic transaction",
+        "focus": [
+          "pool",
+          "anonymizer",
+          "target"
+        ],
+        "note": "Withdraw, invoke, execute and credit back all settle together. A revert anywhere moves no capital."
+      }
+    ],
+    "column_fit": "spread",
+    "viewBox": [
+      1080,
+      620
+    ]
+  },
+  "participants": [
+    {
+      "id": "verifier",
+      "type": "external",
+      "label": "Verifier",
+      "sublabel": "issues the challenge"
+    },
+    {
+      "id": "client",
+      "type": "frontend",
+      "label": "Subject's client",
+      "sublabel": "holds the keys"
+    },
+    {
+      "id": "prover",
+      "type": "backend",
+      "label": "Limen Prover",
+      "sublabel": "self-hosted"
+    },
+    {
+      "id": "pool",
+      "type": "external",
+      "label": "STRK20 pool",
+      "sublabel": "mainnet"
+    },
+    {
+      "id": "anonymizer",
+      "type": "backend",
+      "label": "Limen Anonymizer",
+      "sublabel": "immutable"
+    },
+    {
+      "id": "target",
+      "type": "external",
+      "label": "Target app",
+      "sublabel": "Capital Gate"
+    }
+  ],
+  "segments": [
+    {
+      "from": 150,
+      "to": 240,
+      "label": "Public setup"
+    },
+    {
+      "from": 262,
+      "to": 330,
+      "label": "Prove"
+    },
+    {
+      "from": 355,
+      "to": 530,
+      "label": "One atomic transaction"
+    }
+  ],
+  "messages": [
+    {
+      "id": "create",
+      "from": "verifier",
+      "to": "anonymizer",
+      "y": 160,
+      "label": "create_challenge",
+      "variant": "default"
+    },
+    {
+      "id": "read",
+      "from": "client",
+      "to": "anonymizer",
+      "y": 195,
+      "label": "read challenge, check freshness",
+      "variant": "dashed"
+    },
+    {
+      "id": "select",
+      "from": "client",
+      "to": "pool",
+      "y": 228,
+      "label": "select mature notes covering T",
+      "variant": "dashed"
+    },
+    {
+      "id": "prove",
+      "from": "client",
+      "to": "prover",
+      "y": 280,
+      "label": "starknet_proveTransaction",
+      "variant": "emphasis"
+    },
+    {
+      "id": "proof",
+      "from": "prover",
+      "to": "client",
+      "y": 315,
+      "label": "proof + proof facts",
+      "variant": "return"
+    },
+    {
+      "id": "submit",
+      "from": "client",
+      "to": "pool",
+      "y": 375,
+      "label": "apply_actions, no attestation",
+      "variant": "emphasis"
+    },
+    {
+      "id": "withdraw",
+      "from": "pool",
+      "to": "anonymizer",
+      "y": 412,
+      "label": "Withdraw T, public event",
+      "variant": "emphasis"
+    },
+    {
+      "id": "invoke",
+      "from": "pool",
+      "to": "anonymizer",
+      "y": 447,
+      "label": "privacy_invoke_with_computation",
+      "variant": "security"
+    },
+    {
+      "id": "execute",
+      "from": "anonymizer",
+      "to": "target",
+      "y": 482,
+      "label": "limen_execute",
+      "variant": "emphasis"
+    },
+    {
+      "id": "credit",
+      "from": "anonymizer",
+      "to": "pool",
+      "y": 517,
+      "label": "OpenNoteDeposit, credited shielded",
+      "variant": "return"
+    }
+  ],
+  "activations": [
+    {
+      "participant": "client",
+      "from": 188,
+      "to": 385,
+      "type": "frontend"
+    },
+    {
+      "participant": "prover",
+      "from": 275,
+      "to": 320,
+      "type": "backend"
+    },
+    {
+      "participant": "pool",
+      "from": 370,
+      "to": 522,
+      "type": "external"
+    },
+    {
+      "participant": "anonymizer",
+      "from": 405,
+      "to": 522,
+      "type": "backend"
+    },
+    {
+      "participant": "target",
+      "from": 477,
+      "to": 497,
+      "type": "external"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "What the pool enforces",
+      "items": [
+        "The subject is derived inside the proven execution, never from calldata",
+        "The amount is a balance delta required to equal the threshold exactly"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Why Limen can prove this",
+      "items": [
+        "A clearance contains no Deposit action, so no screening attestation",
+        "Only the initial shielding deposit needs the official path"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Failure",
+      "items": [
+        "A revert anywhere moves no capital and consumes no challenge",
+        "A stale challenge is refused before a fee is paid"
+      ]
+    }
+  ]
+}

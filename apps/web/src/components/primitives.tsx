@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { NetworkConfig } from "@limen/protocol-config";
 
 /**
  * The small vocabulary every Limen surface is built from.
@@ -143,6 +144,47 @@ export function short(value: string | null | undefined, lead = 6, tail = 4): str
   const normalized = value.startsWith("0x") ? value : `0x${value}`;
   if (normalized.length <= lead + tail + 3) return normalized;
   return `${normalized.slice(0, lead + 2)}…${normalized.slice(-tail)}`;
+}
+
+/**
+ * A felt that exists on chain, rendered as a link to the explorer.
+ *
+ * Every address and transaction hash Limen publishes is a claim someone should be able
+ * to check without trusting this page, so none of them are dead text. The full value
+ * stays in `title` because the visible form is abbreviated.
+ *
+ * Only use this for something the explorer can actually resolve. A subject pseudonym
+ * and a challenge identifier are felts too, and linking them would send a reader to a
+ * page that does not exist.
+ */
+export function FeltLink({
+  value,
+  network,
+  kind,
+  lead = 8,
+  tail = 6,
+  className = "",
+}: {
+  value: string | null | undefined;
+  network: Pick<NetworkConfig, "explorerTxUrl" | "explorerContractUrl">;
+  kind: "tx" | "contract";
+  lead?: number;
+  tail?: number;
+  className?: string;
+}) {
+  if (!value) return null;
+  const href = kind === "tx" ? network.explorerTxUrl(value) : network.explorerContractUrl(value);
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer noopener"
+      title={value}
+      className={`felt text-accent underline decoration-ash underline-offset-2 transition-colors hover:decoration-accent ${className}`}
+    >
+      {short(value, lead, tail)}
+    </a>
+  );
 }
 
 /** A section heading with the optional right-hand slot the dense layouts use. */

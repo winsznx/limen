@@ -10,14 +10,9 @@ document is about adversaries.
 
 ## System boundary
 
-```
-  subject's client                    Limen operator                 public
-  ────────────────                    ─────────────                  ──────
-  signing key                         prover host                    Starknet
-  viewing key          ── proof ──►   gateway            ── tx ──►   STRK20 pool
-  note witnesses                      web app                        anonymizer
-                                                                     target app
-```
+![Limen trust boundary](diagrams/limen-trust-boundary.png)
+
+*[Open the interactive version](diagrams/limen-trust-boundary.html)*
 
 Trust is not uniform across that diagram, and the differences are the point:
 

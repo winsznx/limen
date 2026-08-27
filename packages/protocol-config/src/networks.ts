@@ -10,6 +10,8 @@ export interface NetworkConfig {
   readonly poolAddress: `0x${string}`;
   readonly explorerTxUrl: (transactionHash: string) => string;
   readonly explorerContractUrl: (address: string) => string;
+  /** A declared class, which the explorer indexes separately from its instances. */
+  readonly explorerClassUrl: (classHash: string) => string;
 }
 
 /**
@@ -33,6 +35,7 @@ export const MAINNET: NetworkConfig = {
   poolAddress: "0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a",
   explorerTxUrl: (transactionHash) => `${VOYAGER_MAINNET}/tx/${transactionHash}`,
   explorerContractUrl: (address) => `${VOYAGER_MAINNET}/contract/${address}`,
+  explorerClassUrl: (classHash) => `${VOYAGER_MAINNET}/class/${classHash}`,
 };
 
 export const SEPOLIA: NetworkConfig = {
@@ -42,6 +45,7 @@ export const SEPOLIA: NetworkConfig = {
   poolAddress: "0x0254a6b2997ef52e9f830ce1f543f6b29768295e8d17e2267d672c552cfe0d91",
   explorerTxUrl: (transactionHash) => `${VOYAGER_SEPOLIA}/tx/${transactionHash}`,
   explorerContractUrl: (address) => `${VOYAGER_SEPOLIA}/contract/${address}`,
+  explorerClassUrl: (classHash) => `${VOYAGER_SEPOLIA}/class/${classHash}`,
 };
 
 const NETWORKS: Record<LimenNetwork, NetworkConfig> = {

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { formatAmount, STRK_MAINNET } from "@limen/protocol-config";
 import { ClearancePanel } from "@/components/clearance-panel";
-import { ButtonLink, Card, Dot, Field, SectionHead, Tag, short } from "@/components/primitives";
+import { ButtonLink, Card, Dot, Field, FeltLink, SectionHead, Tag } from "@/components/primitives";
 import { deploymentConfig, isDeployed } from "@/lib/config";
 import { clearedCount, poolSnapshot } from "@/lib/chain";
 
@@ -273,24 +273,21 @@ export default async function HomePage() {
             <div className="bg-canvas p-4">
               <Field
                 label="STRK20 pool"
-                value={short(config.network.poolAddress, 8, 6)}
-                mono
+                value={<FeltLink value={config.network.poolAddress} network={config.network} kind="contract" />}
                 hint={pool.state ? `version ${pool.state.version}` : undefined}
               />
             </div>
             <div className="bg-canvas p-4">
               <Field
                 label="Limen Anonymizer"
-                value={config.anonymizer ? short(config.anonymizer, 8, 6) : null}
-                mono
+                value={<FeltLink value={config.anonymizer} network={config.network} kind="contract" />}
                 hint={live ? undefined : "not deployed yet"}
               />
             </div>
             <div className="bg-canvas p-4">
               <Field
                 label="Capital Gate"
-                value={config.capitalGate ? short(config.capitalGate, 8, 6) : null}
-                mono
+                value={<FeltLink value={config.capitalGate} network={config.network} kind="contract" />}
                 hint={live ? undefined : "not deployed yet"}
               />
             </div>

@@ -148,24 +148,9 @@ from chain:
 
 ## Architecture
 
-```
-browser
-   │
-   ▼
-Limen web ─────────────────► Starknet Mainnet
-Cloudflare Workers           STRK20 pool
-   │                              │
-   │  bearer over HTTPS           │  privacy_compute
-   │                              │  privacy_invoke_with_computation
-   ▼                              ▼
-Limen Prover Gateway         Limen Anonymizer ──► target application
-   │  auth, validation,           │
-   │  admission, idempotency,     └──► shielded open note
-   │  health, redaction
-   ▼
-Limen Prover                 dedicated Linux host
-rebuilt upstream image       never inside a Worker
-```
+![Limen system architecture](docs/diagrams/limen-architecture.png)
+
+*[Open the interactive version](docs/diagrams/limen-architecture.html)*
 
 | Path | What it is |
 | --- | --- |
