@@ -6,46 +6,22 @@
 
 Collected 100 test(s) from limen_anonymizer package
 Running 100 test(s) from tests/
-[PASS] limen_anonymizer::tests::campaign_generated::case_040_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
-        sierra gas: 3751942
-        syscalls: (StorageRead: 30, StorageWrite: 17, CallContract: 9, GetExecutionInfo: 9, Deploy: 4, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_039_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
-        sierra gas: 3751942
-        syscalls: (StorageRead: 30, StorageWrite: 17, GetExecutionInfo: 9, CallContract: 9, Deploy: 4, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_002_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
+[PASS] limen_anonymizer::tests::campaign_generated::case_015_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
         sierra gas: 6011502
         syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, Deploy: 4, EmitEvent: 4)
         events: (count: 4, keys: 14, data size: 12)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_038_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
-        sierra gas: 3751942
-        syscalls: (StorageRead: 30, StorageWrite: 17, CallContract: 9, GetExecutionInfo: 9, Deploy: 4, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_042_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
-        sierra gas: 3751942
-        syscalls: (StorageRead: 30, StorageWrite: 17, GetExecutionInfo: 9, CallContract: 9, Deploy: 4, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_003_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
+[PASS] limen_anonymizer::tests::campaign_generated::case_018_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
         sierra gas: 6011502
         syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, EmitEvent: 4, Deploy: 4)
         events: (count: 4, keys: 14, data size: 12)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_041_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
-        sierra gas: 3751942
-        syscalls: (StorageRead: 30, StorageWrite: 17, GetExecutionInfo: 9, CallContract: 9, Deploy: 4, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
+[PASS] limen_anonymizer::tests::campaign_generated::case_059_replay (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14529935)
+        sierra gas: 5883135
+        syscalls: (StorageRead: 54, StorageWrite: 34, GetExecutionInfo: 15, CallContract: 14, EmitEvent: 4, Deploy: 4)
+        events: (count: 4, keys: 14, data size: 12)
         messages: (l2 to l1: 0, l1 handler: 0)
 
 [PASS] limen_anonymizer::tests::campaign_generated::case_001_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
@@ -54,73 +30,31 @@ Running 100 test(s) from tests/
         events: (count: 4, keys: 14, data size: 12)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_043_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
-        sierra gas: 3751942
-        syscalls: (StorageRead: 30, StorageWrite: 17, CallContract: 9, GetExecutionInfo: 9, Deploy: 4, EmitEvent: 2)
+[PASS] limen_anonymizer::tests::campaign_generated::case_017_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
+        sierra gas: 6011502
+        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, EmitEvent: 4, Deploy: 4)
+        events: (count: 4, keys: 14, data size: 12)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_052_expired (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8510822)
+        sierra gas: 3620262
+        syscalls: (StorageRead: 28, StorageWrite: 17, GetExecutionInfo: 8, CallContract: 8, Deploy: 4, EmitEvent: 2)
         events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_045_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
-        sierra gas: 3751942
-        syscalls: (StorageRead: 30, StorageWrite: 17, CallContract: 9, GetExecutionInfo: 9, Deploy: 4, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
+[PASS] limen_anonymizer::tests::campaign_generated::case_016_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
+        sierra gas: 6011502
+        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, EmitEvent: 4, Deploy: 4)
+        events: (count: 4, keys: 14, data size: 12)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_061_replay (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14529935)
-        sierra gas: 5883135
-        syscalls: (StorageRead: 54, StorageWrite: 34, GetExecutionInfo: 15, CallContract: 14, EmitEvent: 4, Deploy: 4)
+[PASS] limen_anonymizer::tests::campaign_generated::case_014_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
+        sierra gas: 6011502
+        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, Deploy: 4, EmitEvent: 4)
         events: (count: 4, keys: 14, data size: 12)
         messages: (l2 to l1: 0, l1 handler: 0)
 
 [PASS] limen_anonymizer::tests::campaign_generated::case_062_replay (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14529935)
-        sierra gas: 5883135
-        syscalls: (StorageRead: 54, StorageWrite: 34, GetExecutionInfo: 15, CallContract: 14, Deploy: 4, EmitEvent: 4)
-        events: (count: 4, keys: 14, data size: 12)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_060_replay (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14529935)
-        sierra gas: 5883135
-        syscalls: (StorageRead: 54, StorageWrite: 34, GetExecutionInfo: 15, CallContract: 14, EmitEvent: 4, Deploy: 4)
-        events: (count: 4, keys: 14, data size: 12)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_044_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
-        sierra gas: 3751942
-        syscalls: (StorageRead: 30, StorageWrite: 17, GetExecutionInfo: 9, CallContract: 9, Deploy: 4, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_063_replay (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14529935)
-        sierra gas: 5883135
-        syscalls: (StorageRead: 54, StorageWrite: 34, GetExecutionInfo: 15, CallContract: 14, Deploy: 4, EmitEvent: 4)
-        events: (count: 4, keys: 14, data size: 12)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_066_wrong_target (l1_gas: ~0, l1_data_gas: ~1920, l2_gas: ~10586112)
-        sierra gas: 4489552
-        syscalls: (StorageRead: 32, StorageWrite: 23, GetExecutionInfo: 11, CallContract: 10, Deploy: 5, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_064_replay (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14529935)
-        sierra gas: 5883135
-        syscalls: (StorageRead: 54, StorageWrite: 34, GetExecutionInfo: 15, CallContract: 14, EmitEvent: 4, Deploy: 4)
-        events: (count: 4, keys: 14, data size: 12)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_068_wrong_target (l1_gas: ~0, l1_data_gas: ~1920, l2_gas: ~10586112)
-        sierra gas: 4489552
-        syscalls: (StorageRead: 32, StorageWrite: 23, GetExecutionInfo: 11, CallContract: 10, Deploy: 5, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_067_wrong_target (l1_gas: ~0, l1_data_gas: ~1920, l2_gas: ~10586112)
-        sierra gas: 4489552
-        syscalls: (StorageRead: 32, StorageWrite: 23, GetExecutionInfo: 11, CallContract: 10, Deploy: 5, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_065_replay (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14529935)
         sierra gas: 5883135
         syscalls: (StorageRead: 54, StorageWrite: 34, GetExecutionInfo: 15, CallContract: 14, EmitEvent: 4, Deploy: 4)
         events: (count: 4, keys: 14, data size: 12)
@@ -132,10 +66,28 @@ Running 100 test(s) from tests/
         events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_069_wrong_target (l1_gas: ~0, l1_data_gas: ~1920, l2_gas: ~10586112)
-        sierra gas: 4489552
-        syscalls: (StorageRead: 32, StorageWrite: 23, GetExecutionInfo: 11, CallContract: 10, Deploy: 5, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
+[PASS] limen_anonymizer::tests::campaign_generated::case_064_replay (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14529935)
+        sierra gas: 5883135
+        syscalls: (StorageRead: 54, StorageWrite: 34, GetExecutionInfo: 15, CallContract: 14, EmitEvent: 4, Deploy: 4)
+        events: (count: 4, keys: 14, data size: 12)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_061_replay (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14529935)
+        sierra gas: 5883135
+        syscalls: (StorageRead: 54, StorageWrite: 34, GetExecutionInfo: 15, CallContract: 14, EmitEvent: 4, Deploy: 4)
+        events: (count: 4, keys: 14, data size: 12)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_063_replay (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14529935)
+        sierra gas: 5883135
+        syscalls: (StorageRead: 54, StorageWrite: 34, GetExecutionInfo: 15, CallContract: 14, EmitEvent: 4, Deploy: 4)
+        events: (count: 4, keys: 14, data size: 12)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_060_replay (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14529935)
+        sierra gas: 5883135
+        syscalls: (StorageRead: 54, StorageWrite: 34, GetExecutionInfo: 15, CallContract: 14, Deploy: 4, EmitEvent: 4)
+        events: (count: 4, keys: 14, data size: 12)
         messages: (l2 to l1: 0, l1 handler: 0)
 
 [PASS] limen_anonymizer::tests::campaign_generated::case_071_wrong_target (l1_gas: ~0, l1_data_gas: ~1920, l2_gas: ~10586112)
@@ -150,39 +102,45 @@ Running 100 test(s) from tests/
         events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_076_wrong_token (l1_gas: ~0, l1_data_gas: ~1728, l2_gas: ~9874712)
-        sierra gas: 4582152
-        syscalls: (StorageRead: 35, StorageWrite: 22, GetExecutionInfo: 11, CallContract: 11, Deploy: 5, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
 [PASS] limen_anonymizer::tests::campaign_generated::case_074_wrong_target (l1_gas: ~0, l1_data_gas: ~1920, l2_gas: ~10586112)
         sierra gas: 4489552
         syscalls: (StorageRead: 32, StorageWrite: 23, GetExecutionInfo: 11, CallContract: 10, Deploy: 5, EmitEvent: 2)
         events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_077_wrong_token (l1_gas: ~0, l1_data_gas: ~1728, l2_gas: ~9874712)
-        sierra gas: 4582152
-        syscalls: (StorageRead: 35, StorageWrite: 22, GetExecutionInfo: 11, CallContract: 11, Deploy: 5, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
+[PASS] limen_anonymizer::tests::campaign_generated::case_065_replay (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14529935)
+        sierra gas: 5883135
+        syscalls: (StorageRead: 54, StorageWrite: 34, GetExecutionInfo: 15, CallContract: 14, EmitEvent: 4, Deploy: 4)
+        events: (count: 4, keys: 14, data size: 12)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_078_wrong_token (l1_gas: ~0, l1_data_gas: ~1728, l2_gas: ~9874712)
-        sierra gas: 4582152
-        syscalls: (StorageRead: 35, StorageWrite: 22, CallContract: 11, GetExecutionInfo: 11, Deploy: 5, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_073_wrong_target (l1_gas: ~0, l1_data_gas: ~1920, l2_gas: ~10586112)
+[PASS] limen_anonymizer::tests::campaign_generated::case_069_wrong_target (l1_gas: ~0, l1_data_gas: ~1920, l2_gas: ~10586112)
         sierra gas: 4489552
         syscalls: (StorageRead: 32, StorageWrite: 23, GetExecutionInfo: 11, CallContract: 10, Deploy: 5, EmitEvent: 2)
         events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_079_wrong_token (l1_gas: ~0, l1_data_gas: ~1728, l2_gas: ~9874712)
+[PASS] limen_anonymizer::tests::campaign_generated::case_066_wrong_target (l1_gas: ~0, l1_data_gas: ~1920, l2_gas: ~10586112)
+        sierra gas: 4489552
+        syscalls: (StorageRead: 32, StorageWrite: 23, GetExecutionInfo: 11, CallContract: 10, Deploy: 5, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_068_wrong_target (l1_gas: ~0, l1_data_gas: ~1920, l2_gas: ~10586112)
+        sierra gas: 4489552
+        syscalls: (StorageRead: 32, StorageWrite: 23, GetExecutionInfo: 11, CallContract: 10, Deploy: 5, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_076_wrong_token (l1_gas: ~0, l1_data_gas: ~1728, l2_gas: ~9874712)
         sierra gas: 4582152
         syscalls: (StorageRead: 35, StorageWrite: 22, GetExecutionInfo: 11, CallContract: 11, Deploy: 5, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_067_wrong_target (l1_gas: ~0, l1_data_gas: ~1920, l2_gas: ~10586112)
+        sierra gas: 4489552
+        syscalls: (StorageRead: 32, StorageWrite: 23, GetExecutionInfo: 11, CallContract: 10, Deploy: 5, EmitEvent: 2)
         events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
@@ -198,7 +156,19 @@ Running 100 test(s) from tests/
         events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_081_wrong_token (l1_gas: ~0, l1_data_gas: ~1728, l2_gas: ~9874712)
+[PASS] limen_anonymizer::tests::campaign_generated::case_078_wrong_token (l1_gas: ~0, l1_data_gas: ~1728, l2_gas: ~9874712)
+        sierra gas: 4582152
+        syscalls: (StorageRead: 35, StorageWrite: 22, GetExecutionInfo: 11, CallContract: 11, Deploy: 5, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_077_wrong_token (l1_gas: ~0, l1_data_gas: ~1728, l2_gas: ~9874712)
+        sierra gas: 4582152
+        syscalls: (StorageRead: 35, StorageWrite: 22, GetExecutionInfo: 11, CallContract: 11, Deploy: 5, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_079_wrong_token (l1_gas: ~0, l1_data_gas: ~1728, l2_gas: ~9874712)
         sierra gas: 4582152
         syscalls: (StorageRead: 35, StorageWrite: 22, CallContract: 11, GetExecutionInfo: 11, Deploy: 5, EmitEvent: 2)
         events: (count: 1, keys: 4, data size: 5)
@@ -206,7 +176,13 @@ Running 100 test(s) from tests/
 
 [PASS] limen_anonymizer::tests::campaign_generated::case_082_wrong_token (l1_gas: ~0, l1_data_gas: ~1728, l2_gas: ~9874712)
         sierra gas: 4582152
-        syscalls: (StorageRead: 35, StorageWrite: 22, GetExecutionInfo: 11, CallContract: 11, Deploy: 5, EmitEvent: 2)
+        syscalls: (StorageRead: 35, StorageWrite: 22, CallContract: 11, GetExecutionInfo: 11, Deploy: 5, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_084_wrong_token (l1_gas: ~0, l1_data_gas: ~1728, l2_gas: ~9874712)
+        sierra gas: 4582152
+        syscalls: (StorageRead: 35, StorageWrite: 22, CallContract: 11, GetExecutionInfo: 11, Deploy: 5, EmitEvent: 2)
         events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
@@ -216,19 +192,7 @@ Running 100 test(s) from tests/
         events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_086_wrong_subject (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~7504152)
-        sierra gas: 2613592
-        syscalls: (StorageWrite: 13, StorageRead: 12, CallContract: 5, Deploy: 4, GetExecutionInfo: 4, EmitEvent: 1)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_083_wrong_token (l1_gas: ~0, l1_data_gas: ~1728, l2_gas: ~9874712)
-        sierra gas: 4582152
-        syscalls: (StorageRead: 35, StorageWrite: 22, GetExecutionInfo: 11, CallContract: 11, Deploy: 5, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_084_wrong_token (l1_gas: ~0, l1_data_gas: ~1728, l2_gas: ~9874712)
+[PASS] limen_anonymizer::tests::campaign_generated::case_081_wrong_token (l1_gas: ~0, l1_data_gas: ~1728, l2_gas: ~9874712)
         sierra gas: 4582152
         syscalls: (StorageRead: 35, StorageWrite: 22, GetExecutionInfo: 11, CallContract: 11, Deploy: 5, EmitEvent: 2)
         events: (count: 1, keys: 4, data size: 5)
@@ -236,23 +200,29 @@ Running 100 test(s) from tests/
 
 [PASS] limen_anonymizer::tests::campaign_generated::case_087_wrong_subject (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~7504152)
         sierra gas: 2613592
-        syscalls: (StorageWrite: 13, StorageRead: 12, CallContract: 5, Deploy: 4, GetExecutionInfo: 4, EmitEvent: 1)
+        syscalls: (StorageWrite: 13, StorageRead: 12, CallContract: 5, GetExecutionInfo: 4, Deploy: 4, EmitEvent: 1)
         events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_089_wrong_subject (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~7504152)
+[PASS] limen_anonymizer::tests::campaign_generated::case_083_wrong_token (l1_gas: ~0, l1_data_gas: ~1728, l2_gas: ~9874712)
+        sierra gas: 4582152
+        syscalls: (StorageRead: 35, StorageWrite: 22, CallContract: 11, GetExecutionInfo: 11, Deploy: 5, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_088_wrong_subject (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~7504152)
         sierra gas: 2613592
         syscalls: (StorageWrite: 13, StorageRead: 12, CallContract: 5, GetExecutionInfo: 4, Deploy: 4, EmitEvent: 1)
         events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_090_wrong_subject (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~7504152)
+[PASS] limen_anonymizer::tests::campaign_generated::case_086_wrong_subject (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~7504152)
         sierra gas: 2613592
         syscalls: (StorageWrite: 13, StorageRead: 12, CallContract: 5, Deploy: 4, GetExecutionInfo: 4, EmitEvent: 1)
         events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_088_wrong_subject (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~7504152)
+[PASS] limen_anonymizer::tests::campaign_generated::case_090_wrong_subject (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~7504152)
         sierra gas: 2613592
         syscalls: (StorageWrite: 13, StorageRead: 12, CallContract: 5, GetExecutionInfo: 4, Deploy: 4, EmitEvent: 1)
         events: (count: 1, keys: 4, data size: 5)
@@ -264,6 +234,12 @@ Running 100 test(s) from tests/
         events: (count: 0, keys: 0, data size: 0)
         messages: (l2 to l1: 0, l1 handler: 0)
 
+[PASS] limen_anonymizer::tests::campaign_generated::case_089_wrong_subject (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~7504152)
+        sierra gas: 2613592
+        syscalls: (StorageWrite: 13, StorageRead: 12, CallContract: 5, GetExecutionInfo: 4, Deploy: 4, EmitEvent: 1)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
 [PASS] limen_anonymizer::tests::campaign_generated::case_093_malformed (l1_gas: ~0, l1_data_gas: ~864, l2_gas: ~3902676)
         sierra gas: 1892676
         syscalls: (StorageRead: 9, StorageWrite: 6, CallContract: 4, Deploy: 4)
@@ -272,17 +248,29 @@ Running 100 test(s) from tests/
 
 [PASS] limen_anonymizer::tests::campaign_generated::case_091_malformed (l1_gas: ~0, l1_data_gas: ~864, l2_gas: ~3902676)
         sierra gas: 1892676
-        syscalls: (StorageRead: 9, StorageWrite: 6, CallContract: 4, Deploy: 4)
+        syscalls: (StorageRead: 9, StorageWrite: 6, Deploy: 4, CallContract: 4)
         events: (count: 0, keys: 0, data size: 0)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_095_malformed (l1_gas: ~0, l1_data_gas: ~864, l2_gas: ~3902676)
+[PASS] limen_anonymizer::tests::campaign_generated::case_094_malformed (l1_gas: ~0, l1_data_gas: ~864, l2_gas: ~3902676)
         sierra gas: 1892676
         syscalls: (StorageRead: 9, StorageWrite: 6, CallContract: 4, Deploy: 4)
         events: (count: 0, keys: 0, data size: 0)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_094_malformed (l1_gas: ~0, l1_data_gas: ~864, l2_gas: ~3902676)
+[PASS] limen_anonymizer::tests::campaign_generated::case_025_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
+        sierra gas: 6011502
+        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, EmitEvent: 4, Deploy: 4)
+        events: (count: 4, keys: 14, data size: 12)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_026_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
+        sierra gas: 3751942
+        syscalls: (StorageRead: 30, StorageWrite: 17, CallContract: 9, GetExecutionInfo: 9, Deploy: 4, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_095_malformed (l1_gas: ~0, l1_data_gas: ~864, l2_gas: ~3902676)
         sierra gas: 1892676
         syscalls: (StorageRead: 9, StorageWrite: 6, CallContract: 4, Deploy: 4)
         events: (count: 0, keys: 0, data size: 0)
@@ -294,109 +282,19 @@ Running 100 test(s) from tests/
         events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_098_direct_call (l1_gas: ~0, l1_data_gas: ~1632, l2_gas: ~8003619)
-        sierra gas: 2711059
-        syscalls: (StorageWrite: 15, StorageRead: 6, GetExecutionInfo: 5, CallContract: 5, Deploy: 4, EmitEvent: 1)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
 [PASS] limen_anonymizer::tests::campaign_generated::case_097_direct_call (l1_gas: ~0, l1_data_gas: ~1632, l2_gas: ~8003619)
         sierra gas: 2711059
         syscalls: (StorageWrite: 15, StorageRead: 6, GetExecutionInfo: 5, CallContract: 5, Deploy: 4, EmitEvent: 1)
         events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_100_direct_call (l1_gas: ~0, l1_data_gas: ~1632, l2_gas: ~8003619)
-        sierra gas: 2711059
-        syscalls: (StorageWrite: 15, StorageRead: 6, GetExecutionInfo: 5, CallContract: 5, Deploy: 4, EmitEvent: 1)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_056_replay (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14529935)
-        sierra gas: 5883135
-        syscalls: (StorageRead: 54, StorageWrite: 34, GetExecutionInfo: 15, CallContract: 14, EmitEvent: 4, Deploy: 4)
-        events: (count: 4, keys: 14, data size: 12)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_054_expired (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8510822)
-        sierra gas: 3620262
-        syscalls: (StorageRead: 28, StorageWrite: 17, GetExecutionInfo: 8, CallContract: 8, Deploy: 4, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_049_expired (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8510822)
-        sierra gas: 3620262
-        syscalls: (StorageRead: 28, StorageWrite: 17, GetExecutionInfo: 8, CallContract: 8, Deploy: 4, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_047_expired (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8510822)
-        sierra gas: 3620262
-        syscalls: (StorageRead: 28, StorageWrite: 17, CallContract: 8, GetExecutionInfo: 8, Deploy: 4, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_058_replay (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14529935)
-        sierra gas: 5883135
-        syscalls: (StorageRead: 54, StorageWrite: 34, GetExecutionInfo: 15, CallContract: 14, Deploy: 4, EmitEvent: 4)
-        events: (count: 4, keys: 14, data size: 12)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_057_replay (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14529935)
-        sierra gas: 5883135
-        syscalls: (StorageRead: 54, StorageWrite: 34, GetExecutionInfo: 15, CallContract: 14, EmitEvent: 4, Deploy: 4)
-        events: (count: 4, keys: 14, data size: 12)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_048_expired (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8510822)
-        sierra gas: 3620262
-        syscalls: (StorageRead: 28, StorageWrite: 17, CallContract: 8, GetExecutionInfo: 8, Deploy: 4, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_055_expired (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8510822)
-        sierra gas: 3620262
-        syscalls: (StorageRead: 28, StorageWrite: 17, GetExecutionInfo: 8, CallContract: 8, Deploy: 4, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_029_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
+[PASS] limen_anonymizer::tests::campaign_generated::case_028_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
         sierra gas: 3751942
         syscalls: (StorageRead: 30, StorageWrite: 17, CallContract: 9, GetExecutionInfo: 9, Deploy: 4, EmitEvent: 2)
         events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_033_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
-        sierra gas: 3751942
-        syscalls: (StorageRead: 30, StorageWrite: 17, CallContract: 9, GetExecutionInfo: 9, Deploy: 4, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_032_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
-        sierra gas: 3751942
-        syscalls: (StorageRead: 30, StorageWrite: 17, CallContract: 9, GetExecutionInfo: 9, Deploy: 4, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_059_replay (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14529935)
-        sierra gas: 5883135
-        syscalls: (StorageRead: 54, StorageWrite: 34, GetExecutionInfo: 15, CallContract: 14, Deploy: 4, EmitEvent: 4)
-        events: (count: 4, keys: 14, data size: 12)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_051_expired (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8510822)
-        sierra gas: 3620262
-        syscalls: (StorageRead: 28, StorageWrite: 17, GetExecutionInfo: 8, CallContract: 8, Deploy: 4, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_050_expired (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8510822)
-        sierra gas: 3620262
-        syscalls: (StorageRead: 28, StorageWrite: 17, GetExecutionInfo: 8, CallContract: 8, Deploy: 4, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_031_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
+[PASS] limen_anonymizer::tests::campaign_generated::case_027_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
         sierra gas: 3751942
         syscalls: (StorageRead: 30, StorageWrite: 17, GetExecutionInfo: 9, CallContract: 9, Deploy: 4, EmitEvent: 2)
         events: (count: 1, keys: 4, data size: 5)
@@ -408,22 +306,58 @@ Running 100 test(s) from tests/
         events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_022_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
-        sierra gas: 6011502
-        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, EmitEvent: 4, Deploy: 4)
-        events: (count: 4, keys: 14, data size: 12)
+[PASS] limen_anonymizer::tests::campaign_generated::case_099_direct_call (l1_gas: ~0, l1_data_gas: ~1632, l2_gas: ~8003619)
+        sierra gas: 2711059
+        syscalls: (StorageWrite: 15, StorageRead: 6, GetExecutionInfo: 5, CallContract: 5, Deploy: 4, EmitEvent: 1)
+        events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_020_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
-        sierra gas: 6011502
-        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, Deploy: 4, EmitEvent: 4)
-        events: (count: 4, keys: 14, data size: 12)
+[PASS] limen_anonymizer::tests::campaign_generated::case_029_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
+        sierra gas: 3751942
+        syscalls: (StorageRead: 30, StorageWrite: 17, CallContract: 9, GetExecutionInfo: 9, Deploy: 4, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_019_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
-        sierra gas: 6011502
-        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, EmitEvent: 4, Deploy: 4)
-        events: (count: 4, keys: 14, data size: 12)
+[PASS] limen_anonymizer::tests::campaign_generated::case_100_direct_call (l1_gas: ~0, l1_data_gas: ~1632, l2_gas: ~8003619)
+        sierra gas: 2711059
+        syscalls: (StorageWrite: 15, StorageRead: 6, CallContract: 5, GetExecutionInfo: 5, Deploy: 4, EmitEvent: 1)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_098_direct_call (l1_gas: ~0, l1_data_gas: ~1632, l2_gas: ~8003619)
+        sierra gas: 2711059
+        syscalls: (StorageWrite: 15, StorageRead: 6, GetExecutionInfo: 5, CallContract: 5, Deploy: 4, EmitEvent: 1)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_032_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
+        sierra gas: 3751942
+        syscalls: (StorageRead: 30, StorageWrite: 17, GetExecutionInfo: 9, CallContract: 9, Deploy: 4, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_031_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
+        sierra gas: 3751942
+        syscalls: (StorageRead: 30, StorageWrite: 17, GetExecutionInfo: 9, CallContract: 9, Deploy: 4, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_033_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
+        sierra gas: 3751942
+        syscalls: (StorageRead: 30, StorageWrite: 17, GetExecutionInfo: 9, CallContract: 9, Deploy: 4, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_034_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
+        sierra gas: 3751942
+        syscalls: (StorageRead: 30, StorageWrite: 17, CallContract: 9, GetExecutionInfo: 9, Deploy: 4, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_045_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
+        sierra gas: 3751942
+        syscalls: (StorageRead: 30, StorageWrite: 17, CallContract: 9, GetExecutionInfo: 9, Deploy: 4, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
 [PASS] limen_anonymizer::tests::campaign_generated::case_021_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
@@ -432,79 +366,91 @@ Running 100 test(s) from tests/
         events: (count: 4, keys: 14, data size: 12)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_023_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
-        sierra gas: 6011502
-        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, EmitEvent: 4, Deploy: 4)
-        events: (count: 4, keys: 14, data size: 12)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_035_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
-        sierra gas: 3751942
-        syscalls: (StorageRead: 30, StorageWrite: 17, GetExecutionInfo: 9, CallContract: 9, Deploy: 4, EmitEvent: 2)
+[PASS] limen_anonymizer::tests::campaign_generated::case_048_expired (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8510822)
+        sierra gas: 3620262
+        syscalls: (StorageRead: 28, StorageWrite: 17, GetExecutionInfo: 8, CallContract: 8, Deploy: 4, EmitEvent: 2)
         events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_018_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
-        sierra gas: 6011502
-        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, EmitEvent: 4, Deploy: 4)
-        events: (count: 4, keys: 14, data size: 12)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_025_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
-        sierra gas: 6011502
-        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, EmitEvent: 4, Deploy: 4)
-        events: (count: 4, keys: 14, data size: 12)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_024_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
-        sierra gas: 6011502
-        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, Deploy: 4, EmitEvent: 4)
-        events: (count: 4, keys: 14, data size: 12)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_034_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
-        sierra gas: 3751942
-        syscalls: (StorageRead: 30, StorageWrite: 17, GetExecutionInfo: 9, CallContract: 9, Deploy: 4, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_052_expired (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8510822)
+[PASS] limen_anonymizer::tests::campaign_generated::case_051_expired (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8510822)
         sierra gas: 3620262
         syscalls: (StorageRead: 28, StorageWrite: 17, CallContract: 8, GetExecutionInfo: 8, Deploy: 4, EmitEvent: 2)
         events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_037_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
+[PASS] limen_anonymizer::tests::campaign_generated::case_044_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
         sierra gas: 3751942
         syscalls: (StorageRead: 30, StorageWrite: 17, CallContract: 9, GetExecutionInfo: 9, Deploy: 4, EmitEvent: 2)
         events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_026_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
-        sierra gas: 3751942
-        syscalls: (StorageRead: 30, StorageWrite: 17, CallContract: 9, GetExecutionInfo: 9, Deploy: 4, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_005_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
+[PASS] limen_anonymizer::tests::campaign_generated::case_020_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
         sierra gas: 6011502
-        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, EmitEvent: 4, Deploy: 4)
+        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, Deploy: 4, EmitEvent: 4)
         events: (count: 4, keys: 14, data size: 12)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_036_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
+[PASS] limen_anonymizer::tests::campaign_generated::case_022_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
+        sierra gas: 6011502
+        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, Deploy: 4, EmitEvent: 4)
+        events: (count: 4, keys: 14, data size: 12)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_047_expired (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8510822)
+        sierra gas: 3620262
+        syscalls: (StorageRead: 28, StorageWrite: 17, GetExecutionInfo: 8, CallContract: 8, Deploy: 4, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_056_replay (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14529935)
+        sierra gas: 5883135
+        syscalls: (StorageRead: 54, StorageWrite: 34, GetExecutionInfo: 15, CallContract: 14, EmitEvent: 4, Deploy: 4)
+        events: (count: 4, keys: 14, data size: 12)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_046_expired (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8510822)
+        sierra gas: 3620262
+        syscalls: (StorageRead: 28, StorageWrite: 17, CallContract: 8, GetExecutionInfo: 8, Deploy: 4, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_054_expired (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8510822)
+        sierra gas: 3620262
+        syscalls: (StorageRead: 28, StorageWrite: 17, CallContract: 8, GetExecutionInfo: 8, Deploy: 4, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_050_expired (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8510822)
+        sierra gas: 3620262
+        syscalls: (StorageRead: 28, StorageWrite: 17, GetExecutionInfo: 8, CallContract: 8, Deploy: 4, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_003_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
+        sierra gas: 6011502
+        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, Deploy: 4, EmitEvent: 4)
+        events: (count: 4, keys: 14, data size: 12)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_039_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
         sierra gas: 3751942
         syscalls: (StorageRead: 30, StorageWrite: 17, GetExecutionInfo: 9, CallContract: 9, Deploy: 4, EmitEvent: 2)
         events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_027_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
-        sierra gas: 3751942
-        syscalls: (StorageRead: 30, StorageWrite: 17, CallContract: 9, GetExecutionInfo: 9, Deploy: 4, EmitEvent: 2)
+[PASS] limen_anonymizer::tests::campaign_generated::case_055_expired (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8510822)
+        sierra gas: 3620262
+        syscalls: (StorageRead: 28, StorageWrite: 17, GetExecutionInfo: 8, CallContract: 8, Deploy: 4, EmitEvent: 2)
         events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_010_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
+[PASS] limen_anonymizer::tests::campaign_generated::case_008_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
+        sierra gas: 6011502
+        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, Deploy: 4, EmitEvent: 4)
+        events: (count: 4, keys: 14, data size: 12)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_005_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
         sierra gas: 6011502
         syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, Deploy: 4, EmitEvent: 4)
         events: (count: 4, keys: 14, data size: 12)
@@ -512,31 +458,79 @@ Running 100 test(s) from tests/
 
 [PASS] limen_anonymizer::tests::campaign_generated::case_006_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
         sierra gas: 6011502
+        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, EmitEvent: 4, Deploy: 4)
+        events: (count: 4, keys: 14, data size: 12)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_037_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
+        sierra gas: 3751942
+        syscalls: (StorageRead: 30, StorageWrite: 17, GetExecutionInfo: 9, CallContract: 9, Deploy: 4, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_036_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
+        sierra gas: 3751942
+        syscalls: (StorageRead: 30, StorageWrite: 17, CallContract: 9, GetExecutionInfo: 9, Deploy: 4, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_049_expired (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8510822)
+        sierra gas: 3620262
+        syscalls: (StorageRead: 28, StorageWrite: 17, CallContract: 8, GetExecutionInfo: 8, Deploy: 4, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_038_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
+        sierra gas: 3751942
+        syscalls: (StorageRead: 30, StorageWrite: 17, GetExecutionInfo: 9, CallContract: 9, Deploy: 4, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_004_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
+        sierra gas: 6011502
+        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, EmitEvent: 4, Deploy: 4)
+        events: (count: 4, keys: 14, data size: 12)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_041_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
+        sierra gas: 3751942
+        syscalls: (StorageRead: 30, StorageWrite: 17, GetExecutionInfo: 9, CallContract: 9, Deploy: 4, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_023_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
+        sierra gas: 6011502
         syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, Deploy: 4, EmitEvent: 4)
+        events: (count: 4, keys: 14, data size: 12)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_042_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
+        sierra gas: 3751942
+        syscalls: (StorageRead: 30, StorageWrite: 17, GetExecutionInfo: 9, CallContract: 9, Deploy: 4, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_040_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
+        sierra gas: 3751942
+        syscalls: (StorageRead: 30, StorageWrite: 17, CallContract: 9, GetExecutionInfo: 9, Deploy: 4, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_057_replay (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14529935)
+        sierra gas: 5883135
+        syscalls: (StorageRead: 54, StorageWrite: 34, GetExecutionInfo: 15, CallContract: 14, Deploy: 4, EmitEvent: 4)
         events: (count: 4, keys: 14, data size: 12)
         messages: (l2 to l1: 0, l1 handler: 0)
 
 [PASS] limen_anonymizer::tests::campaign_generated::case_007_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
         sierra gas: 6011502
-        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, EmitEvent: 4, Deploy: 4)
-        events: (count: 4, keys: 14, data size: 12)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_008_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
-        sierra gas: 6011502
-        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, EmitEvent: 4, Deploy: 4)
-        events: (count: 4, keys: 14, data size: 12)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_099_direct_call (l1_gas: ~0, l1_data_gas: ~1632, l2_gas: ~8003619)
-        sierra gas: 2711059
-        syscalls: (StorageWrite: 15, StorageRead: 6, GetExecutionInfo: 5, CallContract: 5, Deploy: 4, EmitEvent: 1)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_013_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
-        sierra gas: 6011502
         syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, Deploy: 4, EmitEvent: 4)
+        events: (count: 4, keys: 14, data size: 12)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_024_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
+        sierra gas: 6011502
+        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, EmitEvent: 4, Deploy: 4)
         events: (count: 4, keys: 14, data size: 12)
         messages: (l2 to l1: 0, l1 handler: 0)
 
@@ -544,24 +538,6 @@ Running 100 test(s) from tests/
         sierra gas: 6011502
         syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, Deploy: 4, EmitEvent: 4)
         events: (count: 4, keys: 14, data size: 12)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_015_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
-        sierra gas: 6011502
-        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, Deploy: 4, EmitEvent: 4)
-        events: (count: 4, keys: 14, data size: 12)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_016_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
-        sierra gas: 6011502
-        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, Deploy: 4, EmitEvent: 4)
-        events: (count: 4, keys: 14, data size: 12)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_028_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
-        sierra gas: 3751942
-        syscalls: (StorageRead: 30, StorageWrite: 17, GetExecutionInfo: 9, CallContract: 9, Deploy: 4, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
 [PASS] limen_anonymizer::tests::campaign_generated::case_011_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
@@ -576,34 +552,58 @@ Running 100 test(s) from tests/
         events: (count: 4, keys: 14, data size: 12)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_046_expired (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8510822)
-        sierra gas: 3620262
-        syscalls: (StorageRead: 28, StorageWrite: 17, CallContract: 8, GetExecutionInfo: 8, Deploy: 4, EmitEvent: 2)
-        events: (count: 1, keys: 4, data size: 5)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_004_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
+[PASS] limen_anonymizer::tests::campaign_generated::case_010_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
         sierra gas: 6011502
         syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, EmitEvent: 4, Deploy: 4)
         events: (count: 4, keys: 14, data size: 12)
         messages: (l2 to l1: 0, l1 handler: 0)
 
-[PASS] limen_anonymizer::tests::campaign_generated::case_014_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
-        sierra gas: 6011502
-        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, Deploy: 4, EmitEvent: 4)
-        events: (count: 4, keys: 14, data size: 12)
-        messages: (l2 to l1: 0, l1 handler: 0)
-
-[PASS] limen_anonymizer::tests::campaign_generated::case_017_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
-        sierra gas: 6011502
-        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, Deploy: 4, EmitEvent: 4)
-        events: (count: 4, keys: 14, data size: 12)
+[PASS] limen_anonymizer::tests::campaign_generated::case_035_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
+        sierra gas: 3751942
+        syscalls: (StorageRead: 30, StorageWrite: 17, CallContract: 9, GetExecutionInfo: 9, Deploy: 4, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
         messages: (l2 to l1: 0, l1 handler: 0)
 
 [PASS] limen_anonymizer::tests::campaign_generated::case_053_expired (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8510822)
         sierra gas: 3620262
-        syscalls: (StorageRead: 28, StorageWrite: 17, CallContract: 8, GetExecutionInfo: 8, Deploy: 4, EmitEvent: 2)
+        syscalls: (StorageRead: 28, StorageWrite: 17, GetExecutionInfo: 8, CallContract: 8, Deploy: 4, EmitEvent: 2)
         events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_043_below_threshold (l1_gas: ~0, l1_data_gas: ~1536, l2_gas: ~8642502)
+        sierra gas: 3751942
+        syscalls: (StorageRead: 30, StorageWrite: 17, GetExecutionInfo: 9, CallContract: 9, Deploy: 4, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_013_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
+        sierra gas: 6011502
+        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, EmitEvent: 4, Deploy: 4)
+        events: (count: 4, keys: 14, data size: 12)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_058_replay (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14529935)
+        sierra gas: 5883135
+        syscalls: (StorageRead: 54, StorageWrite: 34, GetExecutionInfo: 15, CallContract: 14, Deploy: 4, EmitEvent: 4)
+        events: (count: 4, keys: 14, data size: 12)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_019_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
+        sierra gas: 6011502
+        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, Deploy: 4, EmitEvent: 4)
+        events: (count: 4, keys: 14, data size: 12)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_073_wrong_target (l1_gas: ~0, l1_data_gas: ~1920, l2_gas: ~10586112)
+        sierra gas: 4489552
+        syscalls: (StorageRead: 32, StorageWrite: 23, GetExecutionInfo: 11, CallContract: 10, Deploy: 5, EmitEvent: 2)
+        events: (count: 1, keys: 4, data size: 5)
+        messages: (l2 to l1: 0, l1 handler: 0)
+
+[PASS] limen_anonymizer::tests::campaign_generated::case_002_valid (l1_gas: ~0, l1_data_gas: ~2400, l2_gas: ~14658302)
+        sierra gas: 6011502
+        syscalls: (StorageRead: 57, StorageWrite: 34, CallContract: 17, GetExecutionInfo: 15, EmitEvent: 4, Deploy: 4)
+        events: (count: 4, keys: 14, data size: 12)
         messages: (l2 to l1: 0, l1 handler: 0)
 
 Tests: 100 passed, 0 failed, 0 ignored, 49 filtered out
