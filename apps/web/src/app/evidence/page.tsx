@@ -19,7 +19,7 @@ export default async function EvidencePage() {
   const proven = claims.claims.filter((claim) => claim.status === "proven").length;
 
   return (
-    <div className="mx-auto max-w-[1200px] px-5 py-12">
+    <div className="mx-auto max-w-300 px-5 py-12">
       <SectionHead
         eyebrow="Evidence"
         title="Every claim, and what proves it"
@@ -30,7 +30,7 @@ export default async function EvidencePage() {
         }
       />
 
-      <p className="mb-10 max-w-[760px] text-[14px] leading-[1.6] text-fog">
+      <p className="mb-10 max-w-190 text-[14px] leading-[1.6] text-fog">
         A claim counts as proven only when an artefact exists that someone else can regenerate.
         Anything Limen has built and tested but not yet demonstrated end to end says{" "}
         <span className="text-charcoal">pending</span> and names what it is waiting on, rather

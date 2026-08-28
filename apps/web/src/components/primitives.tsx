@@ -49,7 +49,7 @@ export function Tag({
   };
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-[9999px] border px-2.5 py-[3px] text-[11px] leading-5 ${tones[tone]}`}
+      className={`inline-flex items-center gap-1.5 rounded-tag border px-2.5 py-0.75 text-[11px] leading-5 ${tones[tone]}`}
     >
       {children}
     </span>
@@ -64,7 +64,7 @@ export function Dot({ tone }: { tone: "green" | "orange" | "red" | "grey" | "acc
     grey: "bg-silver",
     accent: "bg-accent",
   };
-  return <span className={`inline-block size-[6px] shrink-0 rounded-full ${tones[tone]}`} />;
+  return <span className={`inline-block size-1.5 shrink-0 rounded-full ${tones[tone]}`} />;
 }
 
 /**
@@ -203,7 +203,7 @@ export function SectionHead({
         {eyebrow ? (
           <div className="mb-2 text-[11px] uppercase tracking-[0.09em] text-fog">{eyebrow}</div>
         ) : null}
-        <h2 className="text-[24px] leading-[1.25] font-medium tracking-[-0.015em] text-charcoal">
+        <h2 className="text-[24px] leading-tight font-medium tracking-[-0.015em] text-charcoal">
           {title}
         </h2>
       </div>
@@ -220,7 +220,7 @@ export function NotLive({ what, detail }: { what: string; detail?: string }) {
   return (
     <Card className="p-4">
       <div className="flex items-start gap-3">
-        <span className="mt-[7px]">
+        <span className="mt-1.75">
           <Dot tone="grey" />
         </span>
         <div>

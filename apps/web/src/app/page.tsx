@@ -19,7 +19,7 @@ export default async function HomePage() {
   return (
     <>
       <section className="texture-grid border-b border-ash">
-        <div className="mx-auto max-w-[1200px] px-5 py-16 sm:py-24">
+        <div className="mx-auto max-w-300 px-5 py-16 sm:py-24">
           <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,520px)]">
             <div>
               <div className="mb-6 flex flex-wrap items-center gap-2">
@@ -36,12 +36,12 @@ export default async function HomePage() {
                 Keep the rest private.
               </h1>
 
-              <p className="mt-6 max-w-[520px] text-[18px] leading-[1.55] text-steel">
+              <p className="mt-6 max-w-130 text-[18px] leading-[1.55] text-steel">
                 Limen lets Starknet apps require a capital threshold without asking users to
                 reveal their total shielded balance.
               </p>
 
-              <p className="mt-4 max-w-[520px] text-[15px] leading-[1.6] text-fog">
+              <p className="mt-4 max-w-130 text-[15px] leading-[1.6] text-fog">
                 The user mobilises exactly the threshold from valid STRK20 private state through
                 the Limen Anonymizer. The bound action executes, and the capital returns to a
                 shielded note in the same transaction. If they cannot supply it, nothing clears.
@@ -54,7 +54,7 @@ export default async function HomePage() {
                 <ButtonLink href="/protocol">View protocol</ButtonLink>
               </div>
 
-              <dl className="mt-10 grid max-w-[520px] grid-cols-3 gap-px overflow-hidden rounded-[12px] border border-ash bg-ash">
+              <dl className="mt-10 grid max-w-130 grid-cols-3 gap-px overflow-hidden rounded-[12px] border border-ash bg-ash">
                 <Stat
                   label="Pool fee, live"
                   value={poolFee ? `${poolFee} STRK` : null}
@@ -73,7 +73,7 @@ export default async function HomePage() {
               </dl>
             </div>
 
-            <div className="lg:justify-self-end lg:w-[520px]">
+            <div className="lg:justify-self-end lg:w-130">
               <ClearancePanel
                 threshold="50"
                 symbol="STRK"
@@ -91,7 +91,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1200px] px-5 py-16">
+      <section className="mx-auto max-w-300 px-5 py-16">
         <SectionHead
           eyebrow="The mechanism"
           title="One atomic transaction, four things happen"
@@ -133,7 +133,7 @@ export default async function HomePage() {
           ))}
         </ol>
 
-        <p className="mt-4 max-w-[760px] text-[13px] leading-[1.6] text-fog">
+        <p className="mt-4 max-w-190 text-[13px] leading-[1.6] text-fog">
           A revert anywhere aborts all of it. A target that refuses, a threshold that is not met,
           an expired or already-used challenge: in every case no capital moves and the challenge
           stays unconsumed.
@@ -141,7 +141,7 @@ export default async function HomePage() {
       </section>
 
       <section className="border-y border-ash bg-paper">
-        <div className="mx-auto max-w-[1200px] px-5 py-16">
+        <div className="mx-auto max-w-300 px-5 py-16">
           <SectionHead
             eyebrow="Privacy boundary"
             title="Stated precisely, because vague claims are worse than none"
@@ -162,8 +162,8 @@ export default async function HomePage() {
                   "That the pool withdrew the threshold and credited it back.",
                   "The time the transaction landed.",
                 ].map((item) => (
-                  <li key={item} className="flex gap-2.5 text-[13px] leading-[1.5] text-steel">
-                    <span className="mt-[7px] shrink-0">
+                  <li key={item} className="flex gap-2.5 text-[13px] leading-normal text-steel">
+                    <span className="mt-1.75 shrink-0">
                       <Dot tone="grey" />
                     </span>
                     {item}
@@ -186,8 +186,8 @@ export default async function HomePage() {
                   "Your unrelated shielded transfers and positions.",
                   "Your viewing key and your signing key.",
                 ].map((item) => (
-                  <li key={item} className="flex gap-2.5 text-[13px] leading-[1.5] text-steel">
-                    <span className="mt-[7px] shrink-0">
+                  <li key={item} className="flex gap-2.5 text-[13px] leading-normal text-steel">
+                    <span className="mt-1.75 shrink-0">
                       <Dot tone="grey" />
                     </span>
                     {item}
@@ -201,7 +201,7 @@ export default async function HomePage() {
             <h3 className="mb-3 text-[14px] font-medium text-charcoal">
               And the parts that reduce privacy
             </h3>
-            <div className="grid gap-2.5 text-[13px] leading-[1.5] text-fog sm:grid-cols-2">
+            <div className="grid gap-2.5 text-[13px] leading-normal text-fog sm:grid-cols-2">
               <p>
                 Deposits into and withdrawals out of the pool are public by protocol design. Only
                 movement inside the pool is shielded.
@@ -220,7 +220,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1200px] px-5 py-16">
+      <section className="mx-auto max-w-300 px-5 py-16">
         <SectionHead
           eyebrow="Infrastructure"
           title="Limen runs its own proving"
@@ -259,7 +259,7 @@ export default async function HomePage() {
       </section>
 
       <section className="border-t border-ash">
-        <div className="mx-auto max-w-[1200px] px-5 py-16">
+        <div className="mx-auto max-w-300 px-5 py-16">
           <SectionHead
             eyebrow="Status"
             title="What is live right now"
