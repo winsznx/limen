@@ -20,7 +20,46 @@ If you cannot supply the threshold, nothing clears. If you can, the application 
 the one condition it asked about and nothing else: not your balance, not your other
 notes, not your address.
 
-**Live demo** — <https://limen.timjosh507.workers.dev>
+**Live demo** — <https://limen.timjosh507.workers.dev> ·
+**Integrating** — [docs/INTEGRATING.md](docs/INTEGRATING.md)
+
+---
+
+## Why this needs to exist
+
+Gating on capital is ordinary. Allowlists, OTC counterparty checks, governance tiers,
+lending minimums. All of them need one bit: *does this person control at least T?* All of
+them get it by having you connect a wallet, which hands over everything.
+
+The obvious fix is to prove `balance >= T` in zero knowledge, and it does not hold up.
+
+**A balance proof is a snapshot.** Prove you hold T, move the capital, prove again for
+someone else. The same money certifies unlimited claims because nothing was committed.
+
+**A balance can be borrowed.** Flash-loaned or lent for a block. Proving a balance at an
+instant says very little about control.
+
+Limen does not prove a balance. It requires the capital to be *mobilised*: exactly T
+leaves your private notes, passes through the anonymizer, triggers the application's
+action, and returns to a shielded note, all in one atomic transaction. The claim is not
+"I have T", it is "I just moved T" — single-use, consumed on chain, and impossible to
+replay.
+
+Two properties make that enforceable rather than merely asserted, and both come from the
+pool rather than from anything a caller supplies.
+
+**The subject cannot be forged.** The pool derives
+`poseidon(TAG, address, private_key, contract)` inside the proven execution. Producing it
+needs the private key, it contains no address, and it differs at every other anonymizer,
+so it cannot be correlated across applications.
+
+**The amount is measured, not claimed.** The contract snapshots its own balance at the
+proving base and requires `balance_now - balance_before` to equal the threshold exactly.
+No calldata field asserts it.
+
+The wider point: shielded funds are usually inert, because the moment they have to mean
+something to an application you unshield and the privacy was pointless. Limen makes
+shielded capital usable as a credential without unshielding it.
 
 ---
 
@@ -232,7 +271,7 @@ rebuild that produced a mainnet-accepted proof as the argument.
 
 ## Documentation
 
-[ARCHITECTURE.md](ARCHITECTURE.md) · [SECURITY.md](SECURITY.md) ·
+[INTEGRATING.md](docs/INTEGRATING.md) · [ARCHITECTURE.md](ARCHITECTURE.md) · [SECURITY.md](SECURITY.md) ·
 [DECISIONS.md](DECISIONS.md) · [BUILD_LOG.md](BUILD_LOG.md) ·
 [CONTRIBUTIONS.md](CONTRIBUTIONS.md) · [SETUP.md](SETUP.md) ·
 [infra/prover/README.md](infra/prover/README.md)

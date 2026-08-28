@@ -200,14 +200,33 @@ export default async function ChallengePage({ params }: { params: Promise<{ id: 
                   API does not expose it yet.
                 </p>
                 <pre className="mono overflow-x-auto rounded-[8px] border border-ash bg-paper p-3 text-[11px] leading-[1.7] text-charcoal">
-                  {`limen clear \\
-  --challenge ${short(challenge.challengeId, 10, 8)} \\
-  --provider limen`}
+                  {`import { buildClearancePlan } from "@limen/sdk";
+
+const plan = buildClearancePlan({
+  challenge, notes, anonymizer,
+});`}
                 </pre>
                 <p className="mt-3 text-[12px] leading-5 text-fog">
                   Requires a registered STRK20 account holding at least {threshold} {symbol}{" "}
                   shielded, plus the pool fee
-                  {poolFee ? ` of ${poolFee} STRK` : ""}.
+                  {poolFee ? ` of ${poolFee} STRK` : ""} and gas, both from the public balance.{" "}
+                  <a
+                    href="https://github.com/winsznx/limen/blob/main/docs/INTEGRATING.md"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="text-accent underline decoration-ash underline-offset-2 hover:decoration-accent"
+                  >
+                    Integration guide
+                  </a>
+                  {" · "}
+                  <a
+                    href="https://github.com/winsznx/limen/blob/main/scripts/mainnet-clearance.ts"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="text-accent underline decoration-ash underline-offset-2 hover:decoration-accent"
+                  >
+                    working example
+                  </a>
                 </p>
               </>
             )}
