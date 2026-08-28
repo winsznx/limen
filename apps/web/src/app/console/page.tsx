@@ -203,10 +203,10 @@ export default async function ConsolePage() {
                       </span>
                     </td>
                     <td className="mono px-4 py-2.5 text-[12px] text-steel">
-                      {job.durationMs ? `${(job.durationMs / 1000).toFixed(1)}s` : "—"}
+                      {job.durationMs ? `${(job.durationMs / 1000).toFixed(1)}s` : "n/a"}
                     </td>
                     <td className="mono px-4 py-2.5 text-[12px] text-steel">
-                      {job.blockNumber ?? "—"}
+                      {job.blockNumber ?? "n/a"}
                     </td>
                     <td className="px-4 py-2.5 text-[12px] text-fog">
                       {new Date(job.startedAt).toISOString().replace("T", " ").slice(0, 19)}

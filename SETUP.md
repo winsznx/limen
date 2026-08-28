@@ -5,7 +5,7 @@ The live tier needs an RPC key, a funded account, and a machine to prove on.
 
 ---
 
-## Tier 1 — no credentials
+## Tier 1: no credentials
 
 ```sh
 git clone https://github.com/winsznx/limen && cd limen
@@ -56,7 +56,7 @@ export PATH="$HOME/.local/scarb-v2.17.0-${ARCH}-${OS}/bin:$HOME/.local/starknet-
 
 ---
 
-## Tier 2 — live
+## Tier 2: live
 
 Three external inputs. Limen generates everything else itself.
 
@@ -73,7 +73,7 @@ Checked while building:
 | Alchemy `.../rpc/v0_10/<KEY>` | 0.10.3-rc.0 | yes |
 | `rpc.starknet.lava.build` | 0.10.2 | no |
 | Alchemy `.../rpc/v0_9/<KEY>` | 0.9.0 | no |
-| `starknet-mainnet.public.blastapi.io` | — | retired |
+| `starknet-mainnet.public.blastapi.io` | n/a | retired |
 
 Treat the URL as a credential: it can carry a key in its path. It is never committed,
 never baked into an image, and never logged.
@@ -89,7 +89,7 @@ node --experimental-strip-types tools/new-account.ts
 It writes the key to `.env.local` (gitignored, `chmod 600`), prints only the address, and
 refuses to overwrite an existing key so a funded account cannot be orphaned.
 
-Fund it with **STRK** — Starknet v3 fees are paid in STRK, so no ETH is needed. Roughly
+Fund it with **STRK**, because Starknet v3 fees are paid in STRK and no ETH is needed. Roughly
 80 STRK covers:
 
 | | ~STRK |
@@ -114,7 +114,7 @@ aarch64, and at 12 GiB the prover is killed 21–29 s into every proof.
 
 Two supported paths.
 
-**Fly.io** — recommended, and the cheapest. Proving is bursty, so the expensive machine
+**Fly.io**, recommended and the cheapest. Proving is bursty, so the expensive machine
 exists only during a session and is destroyed afterwards. Roughly **$3.70 for a
 12-hour session**. Card required, no identity verification.
 
@@ -126,7 +126,7 @@ fly auth login
 ./infra/fly/session.sh down
 ```
 
-**Your own Linux host** — if you already have one with the memory.
+**Your own Linux host**, if you already have one with the memory.
 
 ```sh
 cd infra/prover
@@ -185,6 +185,6 @@ so they are not frozen at build time.
 `PROVER_RPC_URL`, `GATEWAY_TOKEN`, `CLOUDFLARE_TUNNEL_TOKEN`.
 
 Nothing in either file may be committed. Signing keys, viewing keys, decrypted notes and
-proving witnesses never go into D1, analytics, logs, or source control —
+proving witnesses never go into D1, analytics, logs, or source control,
 [SECURITY.md](SECURITY.md) states the rule and
 `packages/proving-core/src/redact.test.ts` enforces part of it.

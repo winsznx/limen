@@ -16,7 +16,7 @@ against existing issues before being reported.
 
 ---
 
-## C-1 — The published prover images are built for one microarchitecture, and nothing says so
+## C-1: The published prover images are built for one microarchitecture, and nothing says so
 
 **Component:** `ghcr.io/starkware-libs/starknet-privacy/transaction-prover`
 **Tag:** `PRIVACY-0.14.3-RC.2`
@@ -26,7 +26,7 @@ against existing issues before being reported.
 ### What happens
 
 The image publishes `linux/amd64` and `linux/arm64` manifests. On most hosts the prover
-binary dies with `SIGILL` — illegal instruction — before doing any work at all. Not
+binary dies with `SIGILL`, an illegal instruction, before doing any work at all. Not
 during proving: on `--version`.
 
 | Host | Arch | Result |
@@ -53,7 +53,7 @@ Illegal instruction
 exit=132
 ```
 
-The container itself is healthy — `sh` runs, `uname -m` prints the expected
+The container itself is healthy: `sh` runs, `uname -m` prints the expected
 architecture, the 172 MB binary is present and executable. Only the binary faults.
 
 On the arm64 host, `/proc/cpuinfo` reports no `sve`, `sve2`, `bf16` or `i8mm`.
@@ -71,8 +71,8 @@ The default is a portable build. `TARGET_CPU` is then injected as
 documents this as a performance option and gives `znver5` as the example, "optimized for
 AMD EPYC Turin (GKE c4d nodes)".
 
-So the published images are built **with** a CPU target — matching the hardware the
-project runs on — and that constraint appears nowhere a consumer would look: not in the
+So the published images are built **with** a CPU target, matching the hardware the
+project runs on, and that constraint appears nowhere a consumer would look: not in the
 tag, not in the README's compatibility matrix, not in the image labels, and not in the
 error the binary produces.
 
@@ -90,7 +90,7 @@ docker image inspect ghcr.io/starkware-libs/starknet-privacy/transaction-prover:
 
 Building that exact commit with `TARGET_CPU` left at its default produces a binary that
 runs on hosts where the published one dies. Same source, same crate, same
-`--features stwo_proving` — the only difference is the microarchitecture pin.
+`--features stwo_proving`. The only difference is the microarchitecture pin.
 
 Note also what the labels do *not* record: there is no `TARGET_CPU`, so nothing in the
 image says which CPU it was built for.
@@ -127,7 +127,7 @@ Two things are worth noting about it:
 
 The amd64 case appears to be unreported, and it is the broader one. `neoverse-v2` mainly
 inconveniences developers on Apple Silicon. `znver5` restricts the published amd64 image
-to AMD Zen 5, which excludes most server hardware a team would rent today — including
+to AMD Zen 5, which excludes most server hardware a team would rent today, including
 AMD EPYC parts that do have AVX-512.
 
 The matrix on `main` still reads:
@@ -153,8 +153,8 @@ Any one of these would have saved the diagnosis:
 
 ### How Limen works around it, and that the workaround demonstrably works
 
-Limen rebuilds the prover from `e6b6fd2` — the commit the published image names in its
-own labels — with `TARGET_CPU` left at its default. Not a fork: same commit, same crate,
+Limen rebuilds the prover from `e6b6fd2`, the commit the published image names in its
+own labels, with `TARGET_CPU` left at its default. Not a fork: same commit, same crate,
 same `--features stwo_proving`, only without the microarchitecture pin.
 
 That build is in production use and the result is not theoretical:
@@ -177,7 +177,7 @@ fully generic build is the correct one.
 
 ---
 
-## C-2 — The Wallet API cannot reach the pool's `ComputeAndInvoke` path
+## C-2: The Wallet API cannot reach the pool's `ComputeAndInvoke` path
 
 **Component:** Starknet Wallet API / `@starknet-io/types-js`
 **Version checked:** `0.10.3`
@@ -221,7 +221,7 @@ learning who the user is".
 The Wallet API is the route the documentation recommends for most private dapps, and it
 is the only route that keeps viewing keys inside the wallet. So today the primitive best
 suited to user-facing dapps is available only to integrations that hold the user's
-viewing key themselves — which is the arrangement the Wallet API exists to avoid.
+viewing key themselves, which is the arrangement the Wallet API exists to avoid.
 
 Concretely for Limen: a challenge cannot be cleared from a browser wallet at all,
 because the subject binding and the proof-bound balance snapshot both depend on
@@ -267,14 +267,14 @@ DECISIONS.md D-013.
 
 ---
 
-## C-3 — The branch the prover README links to does not build
+## C-3: The branch the prover README links to does not build
 
 **Component:** `starkware-libs/sequencer`, branch `avi/privacy/configmap-docs`
 **Status:** filed as [starknet-privacy#972](https://github.com/starkware-libs/starknet-privacy/issues/972)
 
 ### What happens
 
-The prover's README — the one linked from the STRK20 compatibility matrix — lives on
+The prover's README, the one linked from the STRK20 compatibility matrix, lives on
 `avi/privacy/configmap-docs`, and that branch's Dockerfile fails in its base stage before
 compiling anything:
 

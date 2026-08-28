@@ -11,7 +11,7 @@
 set -euo pipefail
 
 REPO_URL="https://github.com/starkware-libs/starknet-privacy.git"
-# Tag CONTRACT_V2_DEPLOYED_MAINNET_2026-07-08 — the revision whose `privacy` package
+# Tag CONTRACT_V2_DEPLOYED_MAINNET_2026-07-08, the revision whose `privacy` package
 # compiles to the class hash live at the mainnet pool. See DECISIONS.md D-001.
 PINNED_COMMIT="74841caf0466d122117945e28ed983e2864c8fc1"
 

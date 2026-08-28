@@ -9,7 +9,7 @@
 #
 # The prover has no published port. It is reachable only from the gateway over the
 # private compose network, so there is no public unauthenticated prover port at any
-# point — which is the requirement in PRD §7.4.
+# point, which is the requirement in PRD §7.4.
 #
 #   cp .env.example .env && $EDITOR .env
 #   ./setup.sh

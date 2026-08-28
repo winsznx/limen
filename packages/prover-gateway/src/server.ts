@@ -69,7 +69,7 @@ const server = createServer((request, response) => {
 
     try {
       // Liveness: is this process up. Deliberately independent of the prover, because
-      // the gateway is expected to outlive it — the prover exists only during a
+      // the gateway is expected to outlive it, because the prover exists only during a
       // proving session. Conflating the two means the gateway can only be deployed
       // while the expensive machine is already running.
       if (url.pathname === "/live" && request.method === "GET") {

@@ -74,7 +74,7 @@ transfer tokens to the anonymizer.
 This is the sharpest edge in the system and it is not softened anywhere in the product.
 
 A proving request contains the user's full signed transaction. For a STRK20 client
-action, that calldata **contains the user's private viewing key** — the pool needs it to
+action, that calldata **contains the user's private viewing key**, because the pool needs it to
 compile client actions inside the proof. There is no zero-knowledge relationship between
 the client and the prover, and Limen does not claim one.
 
@@ -110,7 +110,7 @@ the anonymizer publicly, and that transfer is indistinguishable from the pool's
 withdrawal.
 
 So a subject holding part of the threshold publicly and the rest privately can clear a
-challenge by topping the anonymizer up. **The capital condition still holds in full** —
+challenge by topping the anonymizer up. **The capital condition still holds in full**,
 exactly the threshold really was delivered, and a subject who cannot raise it still
 cannot clear. What is not enforced *inside the contract* is that every unit came from
 shielded notes.

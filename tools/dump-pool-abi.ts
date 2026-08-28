@@ -2,7 +2,7 @@
  * Dumps the ABI of the class actually deployed at the STRK20 mainnet pool.
  *
  * The repository's `main` branch is ahead of what mainnet runs, so the deployed
- * ABI — not the monorepo source — is the authority on which entry points,
+ * ABI, not the monorepo source, is the authority on which entry points,
  * actions and events Limen can rely on.
  */
 import { RpcProvider, num } from "starknet";

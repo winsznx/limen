@@ -5,8 +5,8 @@
 # and the smallest claim to make about it is "it is exactly the published artefact".
 #
 # This app has no public address. It is reachable only over the organisation's private
-# network, from the gateway, at `limen-prover.flycast:3000`. Everything Limen adds —
-# auth, validation, admission control, idempotency, health, metrics, redaction — lives
+# network, from the gateway, at `limen-prover.flycast:3000`. Everything Limen adds
+# (auth, validation, admission control, idempotency, health, metrics, redaction) lives
 # in the gateway app in front of it.
 #
 # Sizing is not a guess. Measured: at 12 GiB the prover is killed 21-29s into every
@@ -18,7 +18,7 @@
 #
 # --ha=false matters: without it Fly launches a second machine for high
 # availability, which at 32 GB doubles the hourly cost and buys a batch prover
-# nothing. Decline the dedicated IP prompt too — this app must have no public route.
+# nothing. Decline the dedicated IP prompt too, because this app must have no public route.
 #
 # This app costs real money while it runs. Destroy it when a session ends:
 #   fly machine destroy --force -a limen-prover <id>
@@ -33,7 +33,7 @@ primary_region = "ord"
   # Limen's own portable build of the pinned upstream prover. Same commit, same crate,
   # same `--features stwo_proving`; the only build-level deltas are `TARGET_CPU` left at
   # its default and `cargo install cargo-chef --locked`. The published image is compiled
-  # for a specific microarchitecture and dies with SIGILL on Fly's CPUs — see
+  # for a specific microarchitecture and dies with SIGILL on Fly's CPUs, see
   # CONTRIBUTIONS.md C-1 and C-3, and infra/prover/prover-portable.Dockerfile.
   image = "registry.fly.io/limen-prover:limen-portable-v2"
 

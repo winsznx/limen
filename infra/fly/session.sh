@@ -107,13 +107,13 @@ cost)
   created=$(fly machines list -a "$PROVER_APP" --json 2>/dev/null | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{try{const m=JSON.parse(s)[0];console.log(m&&m.state==="started"?m.created_at:"")}catch{}})')
   printf '\n'
   if [ -z "$created" ]; then
-    note "no prover machine running — nothing accruing"
+    note "no prover machine running, nothing accruing"
   else
     hours=$(node -e "console.log(((Date.now()-Date.parse('$created'))/3.6e6).toFixed(2))")
     est=$(node -e "console.log((($hours)*$COST_PER_HOUR).toFixed(2))")
     note "prover has been up ${hours}h"
     note "estimated ~\$${est} so far at ~\$${COST_PER_HOUR}/hr"
-    note "approximate only — Fly's invoice is authoritative"
+    note "approximate only, Fly's invoice is authoritative"
   fi
   printf '\n'
   ;;

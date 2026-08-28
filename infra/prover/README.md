@@ -51,13 +51,13 @@ before starting anything, then waits for the prover to answer.
 
 ### The three values in `.env`
 
-**`PROVER_RPC_URL`** — must serve Starknet JSON-RPC spec **0.10.x**. Older endpoints
+**`PROVER_RPC_URL`** must serve Starknet JSON-RPC spec **0.10.x**. Older endpoints
 fail mid-proof with `missing field state_diff_commitment`, which does not look like an
 RPC problem when you hit it. Alchemy's `v0_10` path works:
 `https://starknet-mainnet.g.alchemy.com/starknet/version/rpc/v0_10/<KEY>`. Treated as a
 credential: passed to the container at start, never baked into the image, never logged.
 
-**`GATEWAY_TOKEN`** — bearer token on every proving request.
+**`GATEWAY_TOKEN`** is the bearer token on every proving request.
 
 ```sh
 openssl rand -base64 32 | tr -d '\n' | tr '+/' '-_'
@@ -66,7 +66,7 @@ openssl rand -base64 32 | tr -d '\n' | tr '+/' '-_'
 The same value goes into the web app as the `LIMEN_GATEWAY_TOKEN` secret. Without it
 the gateway is an open proving oracle and anyone can spend the host's capacity.
 
-**`CLOUDFLARE_TUNNEL_TOKEN`** — from a Zero Trust tunnel whose public hostname routes to
+**`CLOUDFLARE_TUNNEL_TOKEN`** comes from a Zero Trust tunnel whose public hostname routes to
 `http://gateway:8787`. In the Cloudflare dashboard: Zero Trust → Networks → Tunnels →
 Create a tunnel → Docker → copy the token from the `--token` argument, then add a public
 hostname pointing at that service.

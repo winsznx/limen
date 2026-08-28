@@ -6,13 +6,13 @@ import { SiteFooter } from "@/components/site-footer";
 export const metadata: Metadata = {
   metadataBase: new URL("https://limen.build"),
   title: {
-    default: "Limen — Prove enough. Keep the rest private.",
-    template: "%s — Limen",
+    default: "Limen · Prove enough. Keep the rest private.",
+    template: "%s · Limen",
   },
   description:
     "Limen lets Starknet applications require a capital threshold without asking users to reveal their total shielded balance.",
   openGraph: {
-    title: "Limen — Prove enough. Keep the rest private.",
+    title: "Limen · Prove enough. Keep the rest private.",
     description:
       "A capital-threshold authorization primitive for STRK20. Prove you can mobilize an amount without disclosing what else you hold.",
     type: "website",

@@ -5,7 +5,7 @@
  * end to end against mainnet: the SDK compiles client actions, the Limen Prover
  * produces the STARK proof, and the pool verifies it on chain before applying anything.
  *
- * It carries no `Deposit` action, so `apply_actions` requires `screening: None` — which
+ * It carries no `Deposit` action, so `apply_actions` requires `screening: None`, which
  * is exactly why Limen can prove it without the screening credentials only the official
  * deployment holds (DECISIONS.md D-008).
  *
@@ -26,7 +26,7 @@ const STRK = "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d
  * Allowance granted to the pool for its fee.
  *
  * The pool collects its fee with `transfer_from` against the submitting account, so a
- * bare balance is not enough — without an allowance every pool transaction reverts with
+ * bare balance is not enough, because without an allowance every pool transaction reverts with
  * "Insufficient ERC20 allowance". Approving several transactions' worth at once avoids
  * paying gas for an approval before each one.
  */

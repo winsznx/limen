@@ -13,7 +13,7 @@ import { IDENTITY_KEY_TAG } from "@limen/protocol-config";
  * before ever touching the chain.
  *
  * The private viewing key is used to compute a hash and is never stored, logged, or
- * transmitted by this function. Callers must keep it out of anything persistent — see
+ * transmitted by this function. Callers must keep it out of anything persistent. See
  * SECURITY.md.
  *
  * A dapp built on the Wallet API cannot call this, because it never sees the user's

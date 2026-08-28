@@ -13,12 +13,12 @@ this much of this token through the STRK20 pool, and the bound action ran.*
 
 ![Limen system architecture](docs/diagrams/limen-architecture.png)
 
-*[Open the interactive version](docs/diagrams/limen-architecture.html)* — guided views for the
+*[Open the interactive version](docs/diagrams/limen-architecture.html)*, with guided views for the
 clearance path, the proving infrastructure, and what holds a key.
 
 Two things about this diagram are load-bearing.
 
-**The prover is never inside a Worker.** Proving is minutes of a whole machine — measured
+**The prover is never inside a Worker.** Proving is minutes of a whole machine, measured
 at 51.6 s, 56.0 s and 80.8 s for the mainnet clearances, on 4 vCPU and 32 GB. It runs as a real
 Linux container on a dedicated host with no public address of its own, reachable only
 from the gateway across a private network.
@@ -188,7 +188,7 @@ Two independent implementations of challenge-id derivation, in Cairo and TypeScr
 asserting the same pinned constant. Two implementations agreeing with each other proves
 nothing; agreeing with a fixed value does.
 
-The contract test fixture reproduces the pool's real `ComputeAndInvoke` sequence — compute
+The contract test fixture reproduces the pool's real `ComputeAndInvoke` sequence: compute
 at the proving base, then withdraw, invoke, deserialize the return with the pool's own
 trailing-data check, and pull. Splitting compute from apply is what lets a test insert
 activity between proving and execution, which is where the interesting attack lives.

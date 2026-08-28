@@ -5,7 +5,7 @@
 # and redaction. Small and cheap, so it can stay reachable for the whole judging window
 # while the expensive prover exists only during a session.
 #
-# When the prover is destroyed this app answers honestly — `/health` reports unhealthy
+# When the prover is destroyed this app answers honestly: `/health` reports unhealthy
 # with a reason rather than pretending. That is the intended behaviour, and the console
 # renders it as "unreachable" rather than inventing a green light.
 #

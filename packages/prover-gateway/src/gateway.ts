@@ -88,7 +88,7 @@ export class ProverGateway {
    *
    * It also detects a prover restart. The prover reports no boot identifier, so a
    * transition from unreachable back to reachable is treated as one, and any job still
-   * marked running is released — otherwise a crash would permanently consume an
+   * marked running is released, because otherwise a crash would permanently consume an
    * admission slot and the gateway would wedge at "busy" forever.
    */
   async health(): Promise<GatewayResponse> {

@@ -41,7 +41,7 @@ stronger claim: it proves the transaction is real without trusting anything Lime
 
 ---
 
-## 0:00 — 0:20 · The problem
+## 0:00–0:20 · The problem
 
 **Screen:** the landing page, <https://limen.timjosh507.workers.dev>
 
@@ -51,11 +51,11 @@ stronger claim: it proves the transaction is real without trusting anything Lime
 Scroll so the hero panel is centred. Point at the balance field.
 
 > This is Limen's actual interface. The requirement is on the left. Where a balance
-> would normally sit, it says *not disclosed* — because Limen never learns it.
+> would normally sit, it says *not disclosed*, because Limen never learns it.
 
 ---
 
-## 0:20 — 0:50 · The mechanism
+## 0:20–0:50 · The mechanism
 
 **Screen:** scroll to the four-step strip.
 
@@ -76,7 +76,7 @@ Hold briefly on the third column.
 
 ---
 
-## 0:50 — 1:15 · Proving infrastructure
+## 0:50–1:15 · Proving infrastructure
 
 **Screen:** `/console`.
 
@@ -96,7 +96,7 @@ Point at latency.
 
 ---
 
-## 1:15 — 2:10 · The mainnet clearance
+## 1:15–2:10 · The mainnet clearance
 
 **Screen:** terminal, pre-typed but not yet run:
 
@@ -127,7 +127,7 @@ Point at the last line.
 
 ---
 
-## 2:10 — 2:35 · Failure is a first-class state
+## 2:10–2:35 · Failure is a first-class state
 
 **Screen:** terminal.
 
@@ -146,7 +146,7 @@ Let it finish.
 
 ---
 
-## 2:35 — 3:00 · Close
+## 2:35–3:00 · Close
 
 **Screen:** `/evidence`.
 
@@ -174,8 +174,8 @@ what the panel reads, and it is the last thing on the manifest.
 
 ## Things not to say
 
-- "anonymous" or "untraceable" — Limen is pseudonymous, and the boundary is documented
-- "proof of solvency" — explicitly not the claim
-- "audited" — it is not
-- any suggestion a judge can clear a challenge from a browser wallet — the Wallet API
+- "anonymous" or "untraceable". Limen is pseudonymous, and the boundary is documented
+- "proof of solvency". Explicitly not the claim
+- "audited". It is not
+- any suggestion a judge can clear a challenge from a browser wallet. The Wallet API
   cannot express compute-and-invoke, which is why we filed types-js#77

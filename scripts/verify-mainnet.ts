@@ -50,7 +50,7 @@ function loadDeployment(): { anonymizer: string; capitalGate: string } | null {
  *
  * Naming hashes on the command line asks about those transactions. It must never
  * republish the manifest, because verifying one hash would then delete every other
- * published one — including on a machine that is only inspecting.
+ * published one, including on a machine that is only inspecting.
  */
 function hashesToVerify(): { hashes: string[]; scoped: boolean } {
   const fromArgs = process.argv.slice(2).filter((arg) => /^0x[0-9a-fA-F]+$/.test(arg));
@@ -143,7 +143,7 @@ async function main() {
   const fullyVerified = clearances.filter((entry) => entry.ok);
   // Only clearances go in the manifest. A declared transaction has to carry an event
   // from one of this project's own contracts to count as the project running on
-  // mainnet, and a plain pool touch — the bootstrap transfer that funded this account —
+  // mainnet, and a plain pool touch (the bootstrap transfer that funded this account)
   // does not. Those stay in the evidence report below as context rather than a claim.
   const qualifying = fullyVerified.map((entry) => entry.transactionHash);
 

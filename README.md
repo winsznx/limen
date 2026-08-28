@@ -20,8 +20,8 @@ If you cannot supply the threshold, nothing clears. If you can, the application 
 the one condition it asked about and nothing else: not your balance, not your other
 notes, not your address.
 
-**Live demo** — <https://limen.timjosh507.workers.dev> ·
-**Integrating** — [docs/INTEGRATING.md](docs/INTEGRATING.md)
+**Live demo**: <https://limen.timjosh507.workers.dev> ·
+**Integrating**: [docs/INTEGRATING.md](docs/INTEGRATING.md)
 
 ---
 
@@ -42,7 +42,7 @@ instant says very little about control.
 Limen does not prove a balance. It requires the capital to be *mobilised*: exactly T
 leaves your private notes, passes through the anonymizer, triggers the application's
 action, and returns to a shielded note, all in one atomic transaction. The claim is not
-"I have T", it is "I just moved T" — single-use, consumed on chain, and impossible to
+"I have T", it is "I just moved T". Single-use, consumed on chain, and impossible to
 replay.
 
 Two properties make that enforceable rather than merely asserted, and both come from the
@@ -112,7 +112,7 @@ node --experimental-strip-types scripts/verify-mainnet.ts \
   0x6e597fbed2be9e4d829f62d456bf762c69a6845add766deecfebbda725dd4aa
 ```
 
-The protocol map is checkable too — the pinned upstream revision compiles to exactly the
+The protocol map is checkable too. The pinned upstream revision compiles to exactly the
 class deployed at the pool:
 
 ```
@@ -145,8 +145,8 @@ narrows the anonymity set. The threshold itself is disclosed to the verifier on 
 **And one thing Limen does not prove.** An ERC-20 balance carries no provenance. Between
 the proving base and execution, a subject can transfer the token to the anonymizer
 publicly, and the contract cannot distinguish that from the pool's own withdrawal. The
-capital condition still holds — a subject who cannot raise the threshold still cannot
-clear — but the contract does not enforce that every unit came from shielded notes.
+capital condition still holds, since a subject who cannot raise the threshold still cannot
+clear, but the contract does not enforce that every unit came from shielded notes.
 
 This cannot be closed on chain, and the reasoning is in [DECISIONS.md](DECISIONS.md)
 D-007. It is measured rather than described: the pool publishes
@@ -265,7 +265,7 @@ against prior art, and filed. Details in [CONTRIBUTIONS.md](CONTRIBUTIONS.md).
 | C-3 | The compatibility matrix links a prover README on a branch that will not build | [starknet-privacy#972](https://github.com/starkware-libs/starknet-privacy/issues/972) |
 
 The first is the substantial one. A prior PR had reported the arm64 half and was closed
-unmerged by the stale-bot, while explicitly proposing to keep the amd64 pin — the case we
+unmerged by the stale-bot, while explicitly proposing to keep the amd64 pin, which is the case we
 actually hit. Limen's report credits that PR and covers what is new, with a portable
 rebuild that produced a mainnet-accepted proof as the argument.
 

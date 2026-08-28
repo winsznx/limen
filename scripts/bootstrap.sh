@@ -29,7 +29,7 @@ if command -v scarb >/dev/null && command -v snforge >/dev/null; then
   note "scarb $(scarb --version | head -1 | awk '{print $2}'), snforge $(snforge --version | awk '{print $2}')"
 else
   CAIRO_OK=0
-  note "scarb/snforge not on PATH — Cairo tests will be skipped"
+  note "scarb/snforge not on PATH, Cairo tests will be skipped"
   note "  install: curl --proto '=https' --tlsv1.2 -sSf https://sh.starkup.dev | sh"
   note "  versions are pinned in contracts/.tool-versions"
 fi

@@ -19,7 +19,7 @@ export interface NetworkConfig {
  *
  * The default class for accounts Limen generates for deployment. Shared so the tool that
  * derives a counterfactual address and the script that deploys it cannot disagree about
- * which class the address was computed from — they would silently land on different
+ * which class the address was computed from, because they would silently land on different
  * addresses.
  */
 export const OZ_ACCOUNT_CLASS_HASH =

@@ -6,7 +6,7 @@ import type { NetworkConfig } from "@limen/protocol-config";
  *
  * Borders define containers, not shadows. One accent, used sparingly. Density over
  * decoration. And a deliberate `Unknown` state everywhere a value comes from chain,
- * so a surface reads correctly when the answer genuinely is not known yet — which is
+ * so a surface reads correctly when the answer genuinely is not known yet, which is
  * the difference between an honest dashboard and a decorative one.
  */
 

@@ -4,7 +4,7 @@ Running record of what was built, what was measured, and what it cost. Newest fi
 
 ---
 
-## 2026-08-25 — Session 1
+## 2026-08-25: Session 1
 
 ### Resumed
 
@@ -15,12 +15,12 @@ anyway. Work continued on everything not blocked on funding or that host.
 
 ### Done
 
-**G0 — bootstrap.** Repository, workspace, Apache-2.0 licensing, `.gitignore` that
+**G0: bootstrap.** Repository, workspace, Apache-2.0 licensing, `.gitignore` that
 excludes every secret path. STRK20 skills installed
 (`npx skills add welttowelt/strk20-skills`) and read end to end before any protocol
 code was written.
 
-**G1 — authoritative protocol map. Passed, with evidence rather than assertion.**
+**G1: authoritative protocol map. Passed, with evidence rather than assertion.**
 
 - The monorepo's `main` is pool version `2.1`; mainnet runs `2.0`. Building against
   `main` would have been wrong in ways that matter. DECISIONS.md D-001.
@@ -38,11 +38,11 @@ code was written.
 - `ComputeAndInvoke` is live on mainnet and gives a protocol-derived, unforgeable,
   address-free subject identity. D-003.
 
-**G3 — contract correctness. 66 Cairo tests, all passing.**
+**G3: contract correctness. 66 Cairo tests, all passing.**
 
 `LimenAnonymizer` (no owner, no admin, no upgrade, no sweep) and `CapitalGate`. The
-test fixture reproduces the pool's real `ComputeAndInvoke` sequence — compute at the
-proving base, then withdraw, invoke, and pull — so tests exercise the actual ordering
+test fixture reproduces the pool's real `ComputeAndInvoke` sequence, compute at the
+proving base then withdraw, invoke, and pull, so tests exercise the actual ordering
 rather than a convenient approximation.
 
 The suite caught a real design flaw. An ERC-20 balance carries no provenance, so a
@@ -53,7 +53,7 @@ whom in the same transaction, so the split is on-chain for every clearance and i
 asserted by the verifier, the explorer, and two contract tests. Written up in full in
 DECISIONS.md **D-007**. The claim was not weakened to route around it.
 
-**TypeScript packages — 48 tests passing.** `protocol-config` (live chain reads,
+**TypeScript packages, 48 tests passing.** `protocol-config` (live chain reads,
 exact 18-decimal arithmetic with no float anywhere), `proving-core` (provider seam,
 retry classification that only retries what upstream defines as transient, redaction
 with tests proving a viewing key cannot reach a log), `limen-sdk` (challenge and
@@ -62,7 +62,7 @@ subject derivation, clearance planning, transaction verifier).
 Challenge-id derivation is pinned by one shared constant asserted independently in
 Cairo and in TypeScript, so a change on either side turns exactly one suite red.
 
-**G4 — Limen Prover. Deployed and healthy; cannot yet complete a proof.**
+**G4: Limen Prover. Deployed and healthy; cannot yet complete a proof.**
 
 The pinned upstream prover image runs as a real Linux container on Cloudflare
 Containers, behind a gateway Worker doing auth, validation, admission control,
@@ -82,7 +82,7 @@ Upstream recommends 48 vCPU / 96 GB; the STRK20 skill cites ~29 s on 12 cores /
 46 GiB. 12 GiB is roughly a quarter of the smallest configuration anyone reports
 working, and Cloudflare caps custom instance types at `standard-4`.
 
-### Open decision — needs the owner
+### Open decision, needs the owner
 
 Cloudflare Containers cannot host the Limen Prover, and the instruction was to keep
 everything on Cloudflare. Those two cannot both hold. PRD §26 kill criterion 2 is
@@ -101,7 +101,7 @@ Options are in the handover message.
 
 ### Done after resuming
 
-**Adversarial campaign — G8 campaign half passed.** 100 deterministic cases across nine
+**Adversarial campaign, G8 campaign half passed.** 100 deterministic cases across nine
 attack shapes, generated from a seeded vector set so the same commit always produces the
 same campaign. Each case is an independent test and every adversarial case asserts the
 exact error it must fail with, so the oracle is snforge's own reporting rather than a
@@ -115,7 +115,7 @@ false clearances 0 · successful replays 0 · funds stranded 0
 **Prover gateway moved onto the host.** `packages/prover-gateway` is a single-process
 Node service beside the prover: auth, validation before cost, admission control,
 idempotency, worker-failure detection, health that means "answers JSON-RPC", metrics and
-redaction. Its own tests caught a real bug — the admission counter double-counted queued
+redaction. Its own tests caught a real bug: the admission counter double-counted queued
 jobs, so a `maxConcurrent: 1, maxQueued: 2` gateway wedged after two admissions.
 `active` and `queued` are now derived from one counter, because two counters that must
 agree eventually disagree.
@@ -132,13 +132,13 @@ reads notes from the pool contract directly through a view adapter, verified aga
 mainnet. Nothing about the account's activity leaves the client. D-014.
 
 **Docs and CI.** README, ARCHITECTURE, SECURITY, SETUP, CONTRIBUTIONS, `claims.json`,
-`strk20.json`, and a CI pipeline that runs entirely without credentials — including a
+`strk20.json`, and a CI pipeline that runs entirely without credentials, including a
 check that regenerating the campaign produces no diff, and a protocol-drift job that
 fails if the pinned revision stops matching the deployed pool class.
 
 **A second upstream finding.** The Wallet API exposes four STRK20 actions and none is
-compute-and-invoke, so the pool's `identity_key` — the only unforgeable, address-free
-user identity in STRK20 — is unreachable from every wallet-based dapp, which is the
+compute-and-invoke, so the pool's `identity_key`, the only unforgeable, address-free
+user identity in STRK20, is unreachable from every wallet-based dapp, which is the
 route the documentation recommends. Reproduced and written up as CONTRIBUTIONS.md C-2.
 
 ### Current totals
@@ -165,7 +165,7 @@ reproduction run, filing the two upstream reports.
 
 ---
 
-## 2026-08-26 — Session 2
+## 2026-08-26: Session 2
 
 Everything above that was blocked is now done. Limen is live on mainnet and every
 mandatory gate is green.
@@ -203,7 +203,7 @@ clearance 2    0x6f155afb8098972a32feee8ab7059177e7dff17bd57bca1b1909b87d0a2ec54
 
 Both proved by Limen's own prover and both pass all eight checks in
 `scripts/verify-mainnet.ts`, which rebuilds the mechanism from pool events and trusts
-nothing Limen produced — including the check that the capital came entirely from private
+nothing Limen produced, including the check that the capital came entirely from private
 notes.
 
 ### The benchmark says less than the first run claimed

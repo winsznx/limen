@@ -5,7 +5,7 @@ import { RpcProvider, num } from "starknet";
  *
  * The SDK ships `ProvingServiceProofProvider`, which speaks the same JSON-RPC but
  * cannot attach an `Authorization` header. The gateway requires a bearer token on every
- * proving request — without one it would be an open proving oracle, and proving is the
+ * proving request. Without one it would be an open proving oracle, and proving is the
  * scarcest resource Limen operates. Rather than move the credential into a URL path to
  * fit the stock provider, Limen implements the interface and keeps the token in the
  * header where it belongs.
@@ -129,7 +129,7 @@ export class LimenProvingProvider {
     if (payload.error) {
       throw new Error(
         `Proving failed [${payload.error.code}]: ${payload.error.message}` +
-          (payload.error.data ? ` — ${payload.error.data}` : "")
+          (payload.error.data ? `: ${payload.error.data}` : "")
       );
     }
     const result = payload.result;

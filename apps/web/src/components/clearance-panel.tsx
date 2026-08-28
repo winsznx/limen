@@ -5,7 +5,7 @@ import { Dot, Tag } from "./primitives";
  *
  * DESIGN.md asks for real interface states rather than decorative art, and PRD §18.1
  * is explicit that no fabricated balance may appear. So the one figure a normal
- * dashboard would show largest — the user's balance — is rendered here as the thing
+ * dashboard would show largest, the user's balance, is rendered here as the thing
  * Limen deliberately does not know.
  *
  * `stage` drives which step is current, so the same component serves the landing page

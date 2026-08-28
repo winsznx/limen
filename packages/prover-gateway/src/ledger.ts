@@ -10,7 +10,7 @@ import { randomUUID } from "node:crypto";
  *
  * Nothing stored here derives from request content. Counters, durations, outcomes, and
  * a proof result keyed by a client-chosen idempotency key. Never calldata, signatures,
- * or witnesses — which is why `/metrics` and `/jobs` are safe to expose.
+ * or witnesses, which is why `/metrics` and `/jobs` are safe to expose.
  */
 
 export interface JobRecord {

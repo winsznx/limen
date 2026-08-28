@@ -18,11 +18,11 @@ Trust is not uniform across that diagram, and the differences are the point:
 
 | Component | Holds key material | Can fabricate a clearance |
 | --- | --- | --- |
-| Subject's client | signing + viewing key | no — the pool enforces the capital flow |
-| Limen Prover | sees the viewing key in calldata | no — it produces proofs, it cannot mint state |
+| Subject's client | signing + viewing key | no, the pool enforces the capital flow |
+| Limen Prover | sees the viewing key in calldata | no, it produces proofs and cannot mint state |
 | Limen Gateway | sees proving requests | no |
 | Limen web app | nothing | no |
-| Limen Anonymizer | nothing | no — immutable, no admin, no privileged path |
+| Limen Anonymizer | nothing | no, immutable with no admin or privileged path |
 | STRK20 pool | pool state | out of scope, trusted |
 | Starknet | consensus | out of scope, trusted |
 
@@ -50,7 +50,7 @@ pool, and it has no owner, no admin, no pause, no upgrade and no sweep.
 
 ## Adversaries
 
-### A1 — Subject below the threshold
+### A1: Subject below the threshold
 
 *Wants a clearance without the capital.*
 
@@ -59,9 +59,9 @@ against a snapshot the proof carries, and required to equal the threshold exactl
 is no calldata field asserting the amount, so there is nothing to lie about.
 
 Verified: `below_threshold_capital_cannot_clear`, plus 20 campaign cases. Confirmed on
-mainnet — all three clearances show `Withdrawal.amount == threshold`.
+mainnet: all three clearances show `Withdrawal.amount == threshold`.
 
-### A2 — Replay attacker
+### A2: Replay attacker
 
 *Resubmits a cleared challenge.*
 
@@ -72,7 +72,7 @@ fee; the execution leg rejects it again.
 Verified: `a_consumed_challenge_cannot_be_replayed`,
 `a_consumed_challenge_is_rejected_before_proving`, 10 campaign cases.
 
-### A3 — Malicious verifier
+### A3: Malicious verifier
 
 *Issues a challenge naming an application that never opted in.*
 
@@ -83,7 +83,7 @@ that did not open it.
 
 Verified: `run_wrong_target` × 10, `a_target_rejects_a_clearance_that_did_not_come_from_limen`.
 
-### A4 — Malicious target
+### A4: Malicious target
 
 *Tries to keep the capital it is told about.*
 
@@ -95,7 +95,7 @@ A target that reverts aborts the whole transaction: no capital moves, and the ch
 stays unconsumed. Verified: `a_target_cannot_spend_the_capital_it_is_told_about`,
 `no_capital_is_stranded_when_the_target_reverts`.
 
-### A5 — Griefing donor
+### A5: Griefing donor
 
 *Transfers tokens to the anonymizer to disrupt clearances.*
 
@@ -107,14 +107,14 @@ This is a deliberate trade: a sweep would create a way to change the contract's 
 between the proving snapshot and execution, which is a stronger lever than the one it
 would remove. DECISIONS.md D-006.
 
-### A6 — Subject substituting public capital
+### A6: Subject substituting public capital
 
 *Publicly tops the anonymizer up so less private capital is needed.*
 
 **This works, and it is the disclosed boundary.** An ERC-20 balance carries no
 provenance, and between the proving base and execution anyone can transfer to the
-anonymizer. The capital condition still holds in full — a subject who cannot raise the
-threshold still cannot clear — but the contract does not enforce that every unit came
+anonymizer. The capital condition still holds in full, since a subject who cannot raise the
+threshold still cannot clear, but the contract does not enforce that every unit came
 from shielded notes.
 
 It cannot be closed on chain; every avenue was checked against the deployed pool class.
@@ -131,17 +131,17 @@ Withdrawal.amount <  threshold  →  the difference was public
 `scripts/verify-mainnet.ts` asserts this on every published hash and refuses any that
 fails. Both mainnet clearances pass.
 
-### A7 — Compromised prover operator
+### A7: Compromised prover operator
 
 *Reads what passes through the prover.*
 
 **Real exposure, not mitigated by cryptography.** A proving request contains the
 subject's signed transaction, and STRK20 client-action calldata contains the private
-viewing key — the pool needs it to compile actions inside the proof. There is no
+viewing key, because the pool needs it to compile actions inside the proof. There is no
 zero-knowledge relationship between client and prover, and Limen does not claim one.
 
 What the operator can do: read the viewing key, and therefore that subject's private
-activity. What they cannot do: spend, forge a clearance, or alter the outcome — a proof
+activity. What they cannot do: spend, forge a clearance, or alter the outcome. A proof
 attests to an execution, it does not authorise one.
 
 Reduced, not removed:
@@ -155,7 +155,7 @@ Reduced, not removed:
 **If you do not operate the prover, you are trusting whoever does, with your viewing key,
 for the duration of the request.** Run your own: `infra/prover/`.
 
-### A8 — Compromised edge worker
+### A8: Compromised edge worker
 
 *Serves wrong data from the web app.*
 
@@ -163,7 +163,7 @@ The app holds no signing key and cannot mint a clearance. Worst case is misinfor
 a wrong challenge shown, a wrong status reported. Correctable by verifying on chain,
 which `verify-mainnet.ts` does without trusting the app at all.
 
-### A9 — Front-runner
+### A9: Front-runner
 
 *Reorders around a clearance.*
 
@@ -172,7 +172,7 @@ is single-use and subject-bound, so seeing one does not let anyone else use it.
 
 The one ordering-sensitive window is A6's, and it requires the subject's cooperation.
 
-### A10 — Denial of service
+### A10: Denial of service
 
 *Exhausts proving capacity.*
 
@@ -184,7 +184,7 @@ the single proving slot.
 Residual: a valid token holder can saturate the prover. Adequate for a single-operator
 deployment, not for a public service.
 
-### A11 — RPC inconsistency
+### A11: RPC inconsistency
 
 *The node lies or lags.*
 
@@ -195,7 +195,7 @@ between generation and submission.
 Not defended: a node that consistently lies about state could cause proofs that always
 fail. That is availability, not correctness.
 
-### A12 — Dependency compromise
+### A12: Dependency compromise
 
 *Malicious code in the supply chain.*
 
@@ -221,7 +221,7 @@ Limen is only as sound as these:
    else moot.
 5. **The prover operator is honest, or is the subject.** See A7.
 6. **The pool's governance does not turn hostile.** It can denylist the anonymizer,
-   which would stop clearances — an availability risk, not a correctness one.
+   which would stop clearances. That is an availability risk, not a correctness one.
 
 ---
 

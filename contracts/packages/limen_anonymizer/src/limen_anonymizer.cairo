@@ -20,7 +20,7 @@
 //!    proving base, before any value moves, and the proof carries that snapshot into
 //!    the invoke. The difference against the balance at execution time is exactly what
 //!    the pool withdrew, so a public transfer into this contract cannot stand in for
-//!    private capital — it makes the equality fail and the transaction revert.
+//!    private capital: it makes the equality fail and the transaction revert.
 
 #[starknet::contract]
 pub mod LimenAnonymizer {

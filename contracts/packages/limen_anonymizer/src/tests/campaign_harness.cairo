@@ -1,7 +1,7 @@
 //! Execution harness for the generated adversarial campaign.
 //!
-//! Every case drives the same pool sequence the real protocol uses — compute at the
-//! proving base, then withdraw, invoke, and pull — and additionally asserts the fund
+//! Every case drives the same pool sequence the real protocol uses, compute at the
+//! proving base then withdraw, invoke, and pull, and additionally asserts the fund
 //! invariants that a pass/fail alone would not catch: the anonymizer must never retain
 //! threshold capital, and the pool must end a successful clearance holding exactly what
 //! it started with.

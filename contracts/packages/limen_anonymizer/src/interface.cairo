@@ -13,10 +13,10 @@ pub trait ILimenAnonymizer<T> {
     ///
     /// #### Reverts
     /// - `LIMEN_ZERO_TOKEN` / `LIMEN_ZERO_TARGET` / `LIMEN_ZERO_THRESHOLD` /
-    ///   `LIMEN_ZERO_ACTION` — malformed parameters.
-    /// - `LIMEN_ISSUER_NOT_CALLER` — `params.issuer` is not the caller.
-    /// - `LIMEN_ALREADY_EXPIRED` — `params.expires_at` is not in the future.
-    /// - `LIMEN_CHALLENGE_EXISTS` — the identifier is already in use, which is how
+    ///   `LIMEN_ZERO_ACTION`, malformed parameters.
+    /// - `LIMEN_ISSUER_NOT_CALLER`, `params.issuer` is not the caller.
+    /// - `LIMEN_ALREADY_EXPIRED`, `params.expires_at` is not in the future.
+    /// - `LIMEN_CHALLENGE_EXISTS`, the identifier is already in use, which is how
     ///   nonce reuse is rejected.
     fn create_challenge(ref self: T, params: ChallengeParams) -> felt252;
 
@@ -49,10 +49,10 @@ pub trait ILimenAnonymizer<T> {
     /// full amount back to the open note.
     ///
     /// #### Reverts
-    /// - `LIMEN_CALLER_NOT_POOL` — anything other than the pinned pool called it.
+    /// - `LIMEN_CALLER_NOT_POOL`, anything other than the pinned pool called it.
     /// - `LIMEN_CHALLENGE_NOT_FOUND`, `LIMEN_CHALLENGE_CONSUMED`,
     ///   `LIMEN_CHALLENGE_EXPIRED`, `LIMEN_WRONG_SUBJECT`.
-    /// - `LIMEN_BELOW_THRESHOLD` / `LIMEN_ABOVE_THRESHOLD` — the measured capital is
+    /// - `LIMEN_BELOW_THRESHOLD` / `LIMEN_ABOVE_THRESHOLD`, the measured capital is
     ///   not exactly the threshold.
     /// - Any revert from the target application, which aborts the whole pool
     ///   transaction and moves no funds.

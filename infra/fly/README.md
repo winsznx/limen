@@ -23,7 +23,7 @@ Proving is bursty. A proof takes minutes of a whole machine, and then nothing ha
 for hours. Paying for 32 GB continuously across a two-week judging window buys nothing:
 the mainnet transaction hashes are permanent and independently verifiable long after the
 machine is gone, and no judge can trigger proving from a browser anyway (the Wallet API
-cannot reach the pool's compute-and-invoke path — CONTRIBUTIONS.md C-2).
+cannot reach the pool's compute-and-invoke path, CONTRIBUTIONS.md C-2).
 
 So the prover is created for a session, does the work, and is destroyed.
 
@@ -98,7 +98,7 @@ smaller shapes, and that is much better to discover now than on the night.
 ```
 
 `up` refuses to start if `RPC_URL` is unset, and waits for the gateway to report
-`healthy: true` — meaning the prover answered JSON-RPC, not that a machine exists.
+`healthy: true`, meaning the prover answered JSON-RPC, not that a machine exists.
 
 Between `up` and `down`:
 

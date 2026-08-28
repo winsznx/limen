@@ -7,7 +7,7 @@
 # Limen's deterministic claims without asking for anything.
 #
 # What it deliberately does NOT do is re-run mainnet transactions. Those are verified
-# from chain instead, which is the stronger check — it needs no key and cannot be faked
+# from chain instead, which is the stronger check: it needs no key and cannot be faked
 # by this repository.
 #
 #   ./scripts/clean-room.sh [target-dir]
@@ -51,7 +51,7 @@ printf '\n  bootstrapping (this installs and builds)…\n'
 if ./scripts/bootstrap.sh >/tmp/cleanroom-bootstrap.log 2>&1; then
   pass "bootstrap completed"
 else
-  fail "bootstrap failed — see /tmp/cleanroom-bootstrap.log"
+  fail "bootstrap failed, see /tmp/cleanroom-bootstrap.log"
 fi
 
 # ---------------------------------------------------------------- tests
@@ -60,19 +60,19 @@ if pnpm -r test >/tmp/cleanroom-ts.log 2>&1; then
   TS_COUNT=$(grep -oE 'Tests +[0-9]+ passed' /tmp/cleanroom-ts.log | grep -oE '[0-9]+' | paste -sd+ - | bc 2>/dev/null || echo "?")
   pass "TypeScript tests pass (${TS_COUNT})"
 else
-  fail "TypeScript tests failed — see /tmp/cleanroom-ts.log"
+  fail "TypeScript tests failed, see /tmp/cleanroom-ts.log"
 fi
 
 if pnpm typecheck >/tmp/cleanroom-types.log 2>&1; then
   pass "typecheck clean, including scripts and tools"
 else
-  fail "typecheck failed — see /tmp/cleanroom-types.log"
+  fail "typecheck failed, see /tmp/cleanroom-types.log"
 fi
 
 if pnpm lint >/tmp/cleanroom-lint.log 2>&1; then
   pass "lint clean"
 else
-  fail "lint failed — see /tmp/cleanroom-lint.log"
+  fail "lint failed, see /tmp/cleanroom-lint.log"
 fi
 
 if command -v snforge >/dev/null 2>&1; then
@@ -80,7 +80,7 @@ if command -v snforge >/dev/null 2>&1; then
     CAIRO_COUNT=$(grep -oE '[0-9]+ passed' /tmp/cleanroom-cairo.log | tail -1 | grep -oE '[0-9]+')
     pass "Cairo tests pass (${CAIRO_COUNT})"
   else
-    fail "Cairo tests failed — see /tmp/cleanroom-cairo.log"
+    fail "Cairo tests failed, see /tmp/cleanroom-cairo.log"
   fi
 else
   printf '  \033[33mskip\033[0m snforge not on PATH; Cairo tests not run\n'
@@ -90,7 +90,7 @@ fi
 
 # The campaign is generated from a seed, so regenerating it must produce no diff.
 # A diff means generated output was hand-edited or the generator changed without a
-# regenerate — either way the published campaign would not be the one the code makes.
+# regenerate, and either way the published campaign would not be the one the code makes.
 node --experimental-strip-types scripts/generate-campaign.ts >/dev/null 2>&1 || true
 if git diff --quiet -- contracts/packages/limen_anonymizer/src/tests/campaign_generated.cairo evidence/campaigns/vectors.json; then
   pass "campaign regenerates identically from its seed"
@@ -113,7 +113,7 @@ if command -v snforge >/dev/null 2>&1; then
     ' && pass "100-case campaign: 0 false clearances, 0 replays, 0 stranded" \
       || fail "campaign acceptance targets not met"
   else
-    fail "campaign run failed — see /tmp/cleanroom-campaign.log"
+    fail "campaign run failed, see /tmp/cleanroom-campaign.log"
   fi
 fi
 
@@ -132,7 +132,7 @@ if node --experimental-strip-types scripts/verify-mainnet.ts >/tmp/cleanroom-ver
   VERIFIED=$(node -pe 'JSON.parse(require("fs").readFileSync("evidence/mainnet/verification.json","utf8")).clearances_verified' 2>/dev/null || echo "?")
   pass "mainnet clearances re-verified from chain (${VERIFIED})"
 else
-  printf '  \033[33mskip\033[0m mainnet verification needs network — see /tmp/cleanroom-verify.log\n'
+  printf '  \033[33mskip\033[0m mainnet verification needs network, see /tmp/cleanroom-verify.log\n'
 fi
 
 # ---------------------------------------------------------------- result

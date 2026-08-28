@@ -103,7 +103,7 @@ async function collectTransactions(provider: RpcProvider, wanted: number) {
       const calldata = transaction.calldata as string[] | undefined;
       // Keep the sample close to the shape the prover is built for. A large multicall
       // or a complex DeFi route produces a much bigger execution trace than a pool
-      // transaction, which the prover rejects with "Not enough twiddles!" — a statement
+      // transaction, which the prover rejects with "Not enough twiddles!", a statement
       // about trace size, not about proving reliability.
       if (!calldata || calldata.length > MAX_CALLDATA_FELTS) continue;
       found.push({

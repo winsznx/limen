@@ -1,7 +1,7 @@
 /**
  * Deploys an additional CapitalGate instance with a lower minimum.
  *
- * The gate is immutable by design — no owner, no setter — so changing its
+ * The gate is immutable by design, with no owner and no setter, so changing its
  * `min_amount` means deploying another instance. The class is already declared, so this
  * is a single deploy transaction rather than a redeclare.
  *

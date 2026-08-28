@@ -45,9 +45,9 @@ fn above_threshold_capital_cannot_clear() {
 ///
 /// An ERC-20 balance carries no provenance, so between the proving base and execution
 /// a subject can publicly transfer part of the threshold to the anonymizer and let it
-/// stand in for private capital. The capital condition still holds in full — the
+/// stand in for private capital. The capital condition still holds in full, since the
 /// subject really did mobilise the whole threshold, and a subject who cannot raise it
-/// at all still cannot clear — but that portion came from public funds rather than
+/// at all still cannot clear, but that portion came from public funds rather than
 /// from shielded notes.
 ///
 /// This is not silently accepted. The pool publishes the amount it withdrew and to

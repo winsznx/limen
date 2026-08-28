@@ -6,7 +6,7 @@ one says so.
 
 ---
 
-## D-001 — The deployed mainnet pool is the authority, not the monorepo `main` branch
+## D-001: The deployed mainnet pool is the authority, not the monorepo `main` branch
 
 **Date:** 2026-08-25
 **Status:** accepted
@@ -27,7 +27,7 @@ taken from the deployed ABI, dumped to `evidence/mainnet/pool-abi.json` by
 
 ---
 
-## D-002 — Open-note deposits are not screened on the deployed mainnet pool
+## D-002: Open-note deposits are not screened on the deployed mainnet pool
 
 **Date:** 2026-08-25
 **Status:** accepted
@@ -43,8 +43,8 @@ would have made Limen depend on credentials it cannot obtain, and would have tri
 PRD kill criterion 5.
 
 The deployed v2.0 class has no such policy. It exposes
-`is_open_note_depositor_blocked(depositor)` / `set_open_note_depositor_blocked` — a
-governance denylist — and `_apply_invoke_and_deposits` asserts only
+`is_open_note_depositor_blocked(depositor)` / `set_open_note_depositor_blocked`, a
+governance denylist, and `_apply_invoke_and_deposits` asserts only
 `!blocked_open_note_depositors.read(contract_address)`. No attestation is required for
 open-note deposits. `get_open_note_screening_policy` does not exist on chain, and the
 pool has never emitted an `OpenNoteScreeningPolicySet` event.
@@ -62,7 +62,7 @@ README limitations and re-checked by `tools/probe-mainnet.ts` in CI.
 
 ---
 
-## D-003 — Limen uses `ComputeAndInvoke`, not the plain `InvokeExternal` path
+## D-003: Limen uses `ComputeAndInvoke`, not the plain `InvokeExternal` path
 
 **Date:** 2026-08-25
 **Status:** accepted
@@ -81,11 +81,11 @@ viewing key. The result is bound into the proof and delivered verbatim to
 This is exactly the subject primitive Limen needs, and nothing else in the protocol
 provides it:
 
-- unforgeable — deriving it requires the private viewing key,
-- stable per (user, anonymizer) — so a verifier can bind a challenge to a subject,
-- scoped to one anonymizer — so a Limen pseudonym cannot be correlated across
+- unforgeable, since deriving it requires the private viewing key,
+- stable per (user, anonymizer), so a verifier can bind a challenge to a subject,
+- scoped to one anonymizer, so a Limen pseudonym cannot be correlated across
   deployments,
-- address-free — the target never learns who the subject is.
+- address-free, so the target never learns who the subject is.
 
 Limen therefore implements **only** `privacy_compute` and
 `privacy_invoke_with_computation`. It deliberately does **not** implement
@@ -99,7 +99,7 @@ Verified live: `privacy_invoke_with_computation` is in production use on mainnet
 
 ---
 
-## D-004 — A fixed target selector, never a caller-supplied one
+## D-004: A fixed target selector, never a caller-supplied one
 
 **Date:** 2026-08-25
 **Status:** accepted
@@ -107,7 +107,7 @@ Verified live: `privacy_invoke_with_computation` is in production use on mainnet
 A challenge binds a `target` address and an `action` felt, and the anonymizer always
 calls the fixed entry point `limen_execute(LimenClearance)`.
 
-The obvious alternative — letting the challenge carry an arbitrary selector — would
+The obvious alternative, letting the challenge carry an arbitrary selector, would
 turn the anonymizer into a general-purpose call proxy at the moment it is holding the
 threshold capital, so a challenge could name `approve` or `transfer` on the token
 itself. PRD §10.1 forbids exactly that surface. Application-level dispatch belongs in
@@ -118,7 +118,7 @@ and it is the same shape for every integration.
 
 ---
 
-## D-005 — The capital condition is exact equality, not a lower bound
+## D-005: The capital condition is exact equality, not a lower bound
 
 **Date:** 2026-08-25
 **Status:** accepted
@@ -140,7 +140,7 @@ foot-gun in practice.
 
 ---
 
-## D-006 — The anonymizer has no owner, no admin, and no recovery path
+## D-006: The anonymizer has no owner, no admin, and no recovery path
 
 **Date:** 2026-08-25
 **Status:** accepted
@@ -158,7 +158,7 @@ anonymizer directly.
 
 ---
 
-## D-007 — What Limen proves, and the one thing it does not
+## D-007: What Limen proves, and the one thing it does not
 
 **Date:** 2026-08-25
 **Status:** accepted
@@ -176,8 +176,8 @@ by any route. That is the falsifiable claim in PRD §1.4 and it holds.
 
 An ERC-20 balance carries no provenance. The anonymizer measures capital as
 `balance_of(self)` at execution minus a snapshot taken by `privacy_compute` at the
-proving base. Between those two moments — the proving base is roughly ten blocks back,
-so the window is minutes — anyone can publicly transfer the token to the anonymizer,
+proving base. Between those two moments, and the proving base is roughly ten blocks back
+so the window is minutes, anyone can publicly transfer the token to the anonymizer,
 and that transfer is indistinguishable from the pool's withdrawal.
 
 So a subject holding part of the threshold publicly and the rest privately can clear a
@@ -231,7 +231,7 @@ mechanism actually supports, and the residual is measured rather than described.
 
 ---
 
-## D-008 — Deposits use the official proving path; clearances use the Limen prover
+## D-008: Deposits use the official proving path; clearances use the Limen prover
 
 **Date:** 2026-08-25
 **Status:** accepted
@@ -242,8 +242,8 @@ response. Only the official proving deployment runs the proof-interceptor sideca
 the Elliptic partner credentials that produce it, and those credentials cannot be
 self-issued.
 
-A Limen clearance contains no `Deposit` action — it is `UseNote`, `CreateOpenNote`,
-`Withdraw`, `ComputeAndInvoke` — so it requires no attestation, and the Limen
+A Limen clearance contains no `Deposit` action. It is `UseNote`, `CreateOpenNote`,
+`Withdraw`, `ComputeAndInvoke`, so it requires no attestation, and the Limen
 self-hosted prover can produce a mainnet-accepted proof for it on its own.
 
 Limen therefore shields through the official path once, at setup, and proves every
@@ -252,7 +252,7 @@ proves, which is what makes the proving subsystem load-bearing rather than decor
 
 ---
 
-## D-009 — Mirrored protocol types rather than a dependency on the `privacy` package
+## D-009: Mirrored protocol types rather than a dependency on the `privacy` package
 
 **Date:** 2026-08-25
 **Status:** accepted
@@ -270,7 +270,7 @@ format, and the `MockPool` fixture deserializes Limen's return value with the sa
 
 ---
 
-## D-011 — The Limen Prover runs on a dedicated Linux host, not on Cloudflare
+## D-011: The Limen Prover runs on a dedicated Linux host, not on Cloudflare
 
 **Date:** 2026-08-25
 **Status:** accepted, after measurement
@@ -285,7 +285,7 @@ deployed there and reached a healthy state, reporting spec `0.10.3-rc.2`. It cou
 finish a proof. Across five distinct replayed mainnet transactions the container was
 killed 21–29 seconds into proving with `Container suddenly disconnected`, and the
 behaviour did not change with `PREFETCH_STATE=false` and
-`COMPILED_CLASS_CACHE_SIZE=32` — so the memory belongs to the Stwo prover core, not to
+`COMPILED_CLASS_CACHE_SIZE=32`, so the memory belongs to the Stwo prover core, not to
 tunable caches.
 
 For scale: upstream recommends a 48 vCPU / 96 GB machine, and the STRK20 skill cites
@@ -312,7 +312,7 @@ mandatory acceptance gate.
 
 ---
 
-## D-012 — The prover needs an RPC endpoint on spec 0.10.x, and most are not
+## D-012: The prover needs an RPC endpoint on spec 0.10.x, and most are not
 
 **Date:** 2026-08-25
 **Status:** accepted
@@ -320,7 +320,7 @@ mandatory acceptance gate.
 The prover re-executes each transaction against a finalized block, and it needs block
 data that older RPC spec versions do not carry. Pointed at
 `rpc.starknet.lava.build`, which advertises spec `0.10.2`, every proof failed with
-`missing field state_diff_commitment` — a message that gives no hint the RPC is at
+`missing field state_diff_commitment`, a message that gives no hint the RPC is at
 fault.
 
 Endpoints checked: `lava.build` (0.10.2, fails), `blastapi` (retired, now returns an
@@ -336,7 +336,7 @@ mid-proof failure.
 
 ---
 
-## D-015 — The pool fee is charged to shielded value on a relayed transfer
+## D-015: The pool fee is charged to shielded value on a relayed transfer
 
 **Date:** 2026-08-27
 **Status:** accepted, learned the expensive way
@@ -363,9 +363,9 @@ Practical consequences, which are not in the upstream docs:
 - To land N privately at a destination through shield-then-transfer, shield **N + 12**:
   one fee for the shield, one for the transfer.
 - Doing it in two shields costs a third fee. Shield once, as large as needed.
-- A shielded balance below the fee cannot be moved privately at all. It is not stuck —
+- A shielded balance below the fee cannot be moved privately at all. It is not stuck,
   it can still be spent by an account that submits its own transactions, which is what
-  Limen does — but a wallet cannot relay it.
+  Limen does, but a wallet cannot relay it.
 
 Limen's own clearances are unaffected: they are submitted directly from the Limen
 account, so the caller really is that account and the fee comes from its public balance.
@@ -377,7 +377,7 @@ SETUP.md now states the `amount + 6` rule directly.
 
 ---
 
-## D-013 — Clearing runs through the key-holding SDK route, because the Wallet API cannot reach it
+## D-013: Clearing runs through the key-holding SDK route, because the Wallet API cannot reach it
 
 **Date:** 2026-08-25
 **Status:** accepted, forced by upstream
@@ -397,7 +397,7 @@ challenge**, and clearances run through the Privacy SDK route instead.
 
 Falling back to plain `privacy_invoke` was considered and rejected. Without a compute
 leg there is no protocol-derived subject and no proof-bound balance snapshot, so the
-subject would be whatever the caller put in calldata — which is not a subject, and the
+subject would be whatever the caller put in calldata, which is not a subject, and the
 capital measurement would be forgeable. A weaker mechanism that still looked like the
 product would be worse than an honest limitation.
 
@@ -407,7 +407,7 @@ as CONTRIBUTIONS.md C-2 with a suggested action shape.
 
 ---
 
-## D-014 — Notes are discovered from the pool contract, not from an indexer
+## D-014: Notes are discovered from the pool contract, not from an indexer
 
 **Date:** 2026-08-25
 **Status:** accepted
@@ -437,12 +437,12 @@ constructor argument precisely so that swap is a one-line change.
 `ContractDiscoveryProvider` is built but not re-exported from the SDK's package root, so
 Limen imports it from the built internal path of its own pinned vendored build. That is
 a deliberate use of an unexported internal, pinned to a commit, and it would break on an
-SDK upgrade — which is acceptable because the upgrade would need re-verification anyway.
+SDK upgrade, which is acceptable because the upgrade would need re-verification anyway.
 The view adapter is verified against mainnet, not assumed.
 
 ---
 
-## D-010 — Bearer challenges are supported, and labelled
+## D-010: Bearer challenges are supported, and labelled
 
 **Date:** 2026-08-25
 **Status:** accepted

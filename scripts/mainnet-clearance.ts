@@ -11,8 +11,8 @@
  *     invalidating it between generation and submission, and the pool rejects proofs
  *     older than `proof_validity_blocks` anyway.
  *   - The SDK's proving client sends no Authorization header, and the Limen gateway
- *     requires a bearer token. Rather than weaken the gateway — it would otherwise be
- *     an open proving oracle — a loopback proxy adds the header. The token never
+ *     requires a bearer token. Rather than weaken the gateway, which would otherwise be
+ *     an open proving oracle, a loopback proxy adds the header. The token never
  *     leaves this process.
  *
  *   node --experimental-strip-types scripts/mainnet-clearance.ts
@@ -214,7 +214,7 @@ async function main() {
 
     // The transparent-state rule: everything the proof reads must already exist at the
     // proving base. `privacy_compute` reads the challenge, so proving before the base
-    // catches up to the creation block fails with LIMEN_CHALLENGE_NOT_FOUND — the
+    // catches up to the creation block fails with LIMEN_CHALLENGE_NOT_FOUND, because the
     // challenge is genuinely absent at that block.
     const createdAt = (await provider.getTransactionReceipt(challengeTx)) as unknown as {
       block_number?: number;
