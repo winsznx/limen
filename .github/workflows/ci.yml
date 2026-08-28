@@ -6,6 +6,9 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 # Every job here runs without credentials. Anything needing a key, funds, or the prover
 # host is deliberately out of CI: a pipeline that cannot run on a fork is not a check
 # anyone else can trust.
@@ -129,9 +132,10 @@ jobs:
   protocol-drift:
     name: Protocol drift
     runs-on: ubuntu-latest
-    # Reads mainnet through a public endpoint. It can fail for reasons outside the
-    # repository, so it reports without blocking a merge.
-    continue-on-error: true
+    # Reads mainnet through a public endpoint, so pull requests report drift without
+    # being blocked by an endpoint outage. Once code reaches main, a mismatch is a
+    # release blocker: the deploy script independently enforces the pool-class check.
+    continue-on-error: ${{ github.event_name == 'pull_request' }}
     steps:
       - uses: actions/checkout@v5
       # No version here on purpose: package.json's `packageManager` field pins pnpm
@@ -186,7 +190,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Scan tracked files for key material
+        with:
+          # Scan all reachable commits, not only the current tree. Removing a leaked
+          # key in a follow-up commit does not make the original exposure disappear.
+          fetch-depth: 0
+      - name: Scan repository history with Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check repository-specific secret patterns
         run: |
           # Signing keys, viewing keys and RPC credentials must never reach the tree.
           # Documentation and .env.example templates are allowed to name the variables.
