@@ -43,9 +43,8 @@ compiles today against the public repository.
 npm install @limenlabs/sdk
 ```
 
-Until that package is published, clone this repository and run `./scripts/bootstrap.sh`,
-then depend on `packages/limen-sdk` directly. The published-package path is the intended
-one and nothing in the SDK depends on the repository layout.
+Published on npm, along with `@limenlabs/protocol-config` and `@limenlabs/proving-core`,
+which it pulls in for you. Nothing in the SDK depends on this repository's layout.
 
 ---
 

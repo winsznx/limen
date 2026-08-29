@@ -21,7 +21,8 @@ the one condition it asked about and nothing else: not your balance, not your ot
 notes, not your address.
 
 **Live demo**: <https://limen.timjosh507.workers.dev> ·
-**Integrating**: [docs/INTEGRATING.md](docs/INTEGRATING.md)
+**Integrating**: [docs/INTEGRATING.md](docs/INTEGRATING.md) ·
+**SDK**: `npm install @limenlabs/sdk`
 
 ---
 
