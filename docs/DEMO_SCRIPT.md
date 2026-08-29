@@ -32,19 +32,21 @@ notifications. Open these **seven tabs in this exact order**:
 
 Now prepare each tab before recording:
 
-- **Tab 1:** press `Home`. The hero, the 50 STRK product panel, and the three statistics
-  must all be visible.
+- **Tab 1:** press `Home`. The hero, the 50 STRK product panel, the three statistics, and
+  the **Live now** row must all be visible.
 - **Tab 2:** scroll until **The mechanism** and **One atomic transaction, four things
-  happen** sit near the upper-left corner. All four cards, **Spend**, **Withdraw**,
-  **Execute**, and **Return**, must be visible at once.
+  happen** sit directly below the sticky navigation. The animated **Challenge → Prove →
+  Pool → Execute → Return** diagram must be completely visible. The four detail cards
+  may begin below it; they are not the focus of this shot.
 - **Tab 3:** scroll until **Privacy boundary** and **Stated precisely, because vague
   claims are worse than none** sit near the upper-left corner. Both **Becomes public**
   and **Stays private** cards must be visible together.
-- **Tab 4:** press `Home`. **Prove ≥ 4 STRK**, the green **Cleared** badge, the challenge
-  details on the left, and the cleared product panel on the right must be visible.
-- **Tab 5:** press `Home`. **Contracts and transactions**, all three transaction rows,
-  **100 deterministic cases**, and the zero counters should be visible. At 1920×1080
-  they fit on one screen.
+- **Tab 4:** press `Home`. The green **Cleared** badge above **Prove ≥ 4 STRK**, the
+  **What happened** timeline on the left, and the cleared product panel on the right
+  must all be visible.
+- **Tab 5:** scroll until **Contracts and transactions** sits directly below the sticky
+  navigation. All three contract addresses, all three transaction rows, **100
+  deterministic cases**, and both rows of result counters must be visible together.
 - **Tab 6:** scroll until the README heading **@limenlabs/sdk**, its one-sentence promise,
   and `npm install @limenlabs/sdk` are visible together. Leave **What it does** visible
   directly below if it fits.
@@ -97,17 +99,18 @@ and the evidence page already exposes every Mainnet transaction link.
 
 **Say**
 
-> In one transaction, exactly the threshold moves from private notes, the application's
-> action runs, and the capital returns to a shielded note. If the amount is not there,
-> nothing unlocks.
+> The challenge is published first. Then, in one transaction, exactly the threshold
+> moves from private notes, the application's action runs, and the capital returns to a
+> shielded note. If the amount is not there, nothing unlocks.
 
 **Exact screen actions**
 
 1. Press `⌘+2`. Do not scroll after switching.
-2. Confirm **One atomic transaction, four things happen** is above four cards.
-3. Move left to right across **Spend**, **Withdraw**, **Execute**, and **Return**, one card
-   per phrase.
-4. End on **Return**.
+2. Confirm **One atomic transaction, four things happen** is above the animated diagram.
+3. Begin on **Challenge** as you start speaking, then follow the animation across
+   **Prove**, **Pool**, **Execute**, and **Return**.
+4. End on the diagram's **Return, Capital back to a shielded note** node. Do not move
+   down into the four detail cards.
 
 ---
 
@@ -139,10 +142,13 @@ and the evidence page already exposes every Mainnet transaction link.
 **Exact screen actions**
 
 1. Press `⌘+4`. Do not scroll after switching.
-2. Point to **Prove ≥ 4 STRK** at the upper left.
-3. Move to the green **Cleared** badge beside it and pause after saying “cleared.”
-4. Move down the left details table to **Action, REGISTER_ALLOCATION**, then **Target**.
-5. End with the cursor on **REGISTER_ALLOCATION**.
+2. Point to **Prove ≥ 4 STRK** while saying “It required 4 STRK.”
+3. Move to the green **Cleared** badge beside the small **Capital challenge** label as
+   you say “it cleared,” then pause there.
+4. Follow the completed **What happened** timeline down the left: **Challenge**,
+   **Prove**, **Pool**, **Execute**, **Return**.
+5. Move right to **Target action, REGISTER_ALLOCATION** in the product panel as you say
+   “allocation action,” and end there.
 
 ---
 
@@ -174,8 +180,8 @@ and the evidence page already exposes every Mainnet transaction link.
 **Exact screen actions**
 
 1. Press `⌘+5`. Do not scroll after switching.
-2. Confirm **Contracts and transactions** is near the top and three transaction rows are
-   directly below the contract addresses.
+2. Confirm **Contracts and transactions** is directly below the navigation and three
+   transaction rows are directly below the contract addresses.
 3. Move across **STRK20 pool**, **Limen Anonymizer**, and **Capital Gate**.
 4. Move down the three transaction rows and stop on the third row's **View →** link.
 5. Do **not** click it. Clicking can open a Cloudflare verification screen and change
@@ -193,7 +199,8 @@ and the evidence page already exposes every Mainnet transaction link.
 
 **Exact screen actions**
 
-1. Stay on **Tab 5**. The **100 deterministic cases** grid is below the transactions.
+1. Stay on **Tab 5**. The **100 deterministic cases** grid is already visible below the
+   transactions. Do not scroll.
 2. Move to **Total cases, 100**.
 3. Point in order to **False clearances, 0**, **Successful replays, 0**, and **Funds
    stranded, 0** as you say each result.

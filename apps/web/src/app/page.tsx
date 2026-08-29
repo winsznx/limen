@@ -230,7 +230,7 @@ export default async function HomePage() {
               </ul>
             </Card>
 
-            <Card className="p-5 ring-1 ring-mint">
+            <Card className="p-5">
               <div className="mb-4 flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <Dot tone="green" />
@@ -258,7 +258,7 @@ export default async function HomePage() {
             </Card>
           </div>
 
-          <Card className="mt-4 border-l-2 border-l-tangerine p-5">
+          <Card className="mt-4 p-5">
             <h3 className="mb-3 flex items-center gap-2 text-[14px] font-medium text-charcoal">
               <Dot tone="orange" />
               And the parts that reduce privacy
