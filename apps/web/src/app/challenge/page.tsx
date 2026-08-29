@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { formatAmount, findToken, STRK_MAINNET } from "@limen/protocol-config";
+import { formatAmount, findToken, STRK_MAINNET } from "@limenlabs/protocol-config";
 import { Card, Dot, Field, NotLive, SectionHead, Tag, short } from "@/components/primitives";
 import { deploymentConfig, isDeployed } from "@/lib/config";
 import { readClient } from "@/lib/chain";
-import type { Challenge } from "@limen/sdk";
+import type { Challenge } from "@limenlabs/sdk";
 
 export const metadata: Metadata = { title: "Capital challenges" };
 export const dynamic = "force-dynamic";
@@ -77,7 +77,7 @@ export default async function ChallengeIndexPage() {
           behalf.
         </div>
         <pre className="mono overflow-x-auto p-4 text-[12px] leading-[1.7] text-charcoal">
-          {`import { LimenIssuer, LimenReadClient, randomNonce } from "@limen/sdk";
+          {`import { LimenIssuer, LimenReadClient, randomNonce } from "@limenlabs/sdk";
 
 const client = new LimenReadClient({ provider, deployment });
 const issuer = new LimenIssuer(account, client);

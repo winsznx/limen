@@ -1,5 +1,5 @@
 {
-  "name": "@limen/web",
+  "name": "@limenlabs/web",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -15,8 +15,8 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@limen/protocol-config": "workspace:*",
-    "@limen/sdk": "workspace:*",
+    "@limenlabs/protocol-config": "workspace:*",
+    "@limenlabs/sdk": "workspace:*",
     "next": "16.3.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

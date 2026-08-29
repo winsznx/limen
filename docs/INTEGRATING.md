@@ -40,7 +40,7 @@ compiles today against the public repository.
 **The TypeScript SDK**, for issuing challenges and verifying results:
 
 ```sh
-npm install @limen/sdk
+npm install @limenlabs/sdk
 ```
 
 Until that package is published, clone this repository and run `./scripts/bootstrap.sh`,
@@ -109,7 +109,7 @@ is bound to. Its identifier is derived, so both sides can compute it independent
 compare before anything is spent.
 
 ```ts
-import { computeChallengeId, deriveSubject, randomNonce } from "@limen/sdk";
+import { computeChallengeId, deriveSubject, randomNonce } from "@limenlabs/sdk";
 
 const params = {
   token: STRK,
@@ -140,7 +140,7 @@ claims, `verifyClearanceTransaction` rebuilds the mechanism from pool and contra
 without trusting the SDK that produced it:
 
 ```ts
-import { verifyClearanceTransaction } from "@limen/sdk";
+import { verifyClearanceTransaction } from "@limenlabs/sdk";
 
 const result = await verifyClearanceTransaction(provider, txHash, {
   poolAddress: POOL,
@@ -168,7 +168,7 @@ spent and credited straight back to a shielded note, which is the whole mechanis
 There is no `limen` binary. Clearing runs through the SDK:
 
 ```ts
-import { buildClearancePlan, LimenReadClient, deriveSubject } from "@limen/sdk";
+import { buildClearancePlan, LimenReadClient, deriveSubject } from "@limenlabs/sdk";
 
 const client = new LimenReadClient({ provider, deployment });
 const challenge = await client.getChallenge(challengeId);

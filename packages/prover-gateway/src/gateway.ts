@@ -1,4 +1,4 @@
-import { redactString, safeStringify } from "@limen/proving-core";
+import { redactString, safeStringify } from "@limenlabs/proving-core";
 import { Ledger } from "./ledger.js";
 import { validateProveParams } from "./validate.js";
 

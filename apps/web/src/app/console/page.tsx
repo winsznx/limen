@@ -3,7 +3,7 @@ import { Card, Dot, Field, NotLive, SectionHead, Tag } from "@/components/primit
 import { proverHealth, proverJobs, proverMetrics } from "@/lib/gateway";
 import { deploymentConfig } from "@/lib/config";
 import { poolSnapshot } from "@/lib/chain";
-import { formatAmount, STRK_MAINNET, UPSTREAM_PINS } from "@limen/protocol-config";
+import { formatAmount, STRK_MAINNET, UPSTREAM_PINS } from "@limenlabs/protocol-config";
 
 export const metadata: Metadata = { title: "Developer console" };
 // Operational data. Caching it would defeat the point.

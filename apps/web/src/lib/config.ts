@@ -1,5 +1,5 @@
 import "server-only";
-import { MAINNET, SEPOLIA, type NetworkConfig } from "@limen/protocol-config";
+import { MAINNET, SEPOLIA, type NetworkConfig } from "@limenlabs/protocol-config";
 
 /**
  * Server-side configuration.

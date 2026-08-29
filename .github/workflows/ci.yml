@@ -183,7 +183,7 @@ jobs:
       - run: ./scripts/vendor-sdk.sh
       - run: pnpm install --frozen-lockfile
       - run: pnpm -r --filter './packages/*' build
-      - run: pnpm --filter @limen/web exec next build
+      - run: pnpm --filter @limenlabs/web exec next build
 
   secrets:
     name: No secrets committed

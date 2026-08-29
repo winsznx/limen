@@ -23,7 +23,7 @@ import { readFileSync, mkdirSync, writeFileSync, existsSync } from "node:fs";
 import { createPrivateTransfers, Open } from "../.vendor/starknet-privacy/sdk/dist/index.js";
 import { ContractDiscoveryProvider } from "../.vendor/starknet-privacy/sdk/dist/internal/contract-discovery.js";
 import type { InvokeCalldataBuilderArgs } from "../.vendor/starknet-privacy/sdk/dist/interfaces.js";
-import { computeChallengeId, createPoolViews, deriveSubject, randomNonce } from "@limen/sdk";
+import { computeChallengeId, createPoolViews, deriveSubject, randomNonce } from "@limenlabs/sdk";
 
 const POOL = "0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a";
 const STRK = "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d";

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Card, Dot, SectionHead, Tag } from "@/components/primitives";
-import { MAINNET, UPSTREAM_PINS } from "@limen/protocol-config";
+import { MAINNET, UPSTREAM_PINS } from "@limenlabs/protocol-config";
 
 export const metadata: Metadata = { title: "Protocol" };
 

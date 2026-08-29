@@ -1,5 +1,5 @@
 import { hash, num, shortString } from "starknet";
-import { CHALLENGE_TAG } from "@limen/protocol-config";
+import { CHALLENGE_TAG } from "@limenlabs/protocol-config";
 
 /**
  * A capital-threshold challenge, as a verifier states it.

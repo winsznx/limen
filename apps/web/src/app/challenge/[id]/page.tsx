@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { formatAmount, findToken, STRK_MAINNET } from "@limen/protocol-config";
-import { disclosureFor } from "@limen/sdk";
+import { formatAmount, findToken, STRK_MAINNET } from "@limenlabs/protocol-config";
+import { disclosureFor } from "@limenlabs/sdk";
 import { ClearancePanel } from "@/components/clearance-panel";
 import { Card, Dot, Field, FeltLink, Row, SectionHead, Tag, short } from "@/components/primitives";
 import { deploymentConfig } from "@/lib/config";
@@ -200,7 +200,7 @@ export default async function ChallengePage({ params }: { params: Promise<{ id: 
                   API does not expose it yet.
                 </p>
                 <pre className="mono overflow-x-auto rounded-[8px] border border-ash bg-paper p-3 text-[11px] leading-[1.7] text-charcoal">
-                  {`import { buildClearancePlan } from "@limen/sdk";
+                  {`import { buildClearancePlan } from "@limenlabs/sdk";
 
 const plan = buildClearancePlan({
   challenge, notes, anonymizer,

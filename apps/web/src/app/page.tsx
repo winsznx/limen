@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formatAmount, STRK_MAINNET } from "@limen/protocol-config";
+import { formatAmount, STRK_MAINNET } from "@limenlabs/protocol-config";
 import { ClearancePanel } from "@/components/clearance-panel";
 import { ButtonLink, Card, Dot, Field, FeltLink, SectionHead, Tag } from "@/components/primitives";
 import { deploymentConfig, isDeployed } from "@/lib/config";

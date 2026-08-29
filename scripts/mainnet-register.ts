@@ -17,7 +17,7 @@
 import { Account, RpcProvider, constants, num, shortString } from "starknet";
 import { createPrivateTransfers } from "../.vendor/starknet-privacy/sdk/dist/index.js";
 import { ContractDiscoveryProvider } from "../.vendor/starknet-privacy/sdk/dist/internal/contract-discovery.js";
-import { LimenProvingProvider, createPoolViews } from "@limen/sdk";
+import { LimenProvingProvider, createPoolViews } from "@limenlabs/sdk";
 import { mkdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
 
 const POOL = "0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a";

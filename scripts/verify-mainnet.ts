@@ -18,7 +18,7 @@
  *   node --experimental-strip-types scripts/verify-mainnet.ts [0xhash ...]
  */
 import { RpcProvider, hash, shortString } from "starknet";
-import { verifyClearanceTransaction, type ClearanceVerification } from "@limen/sdk";
+import { verifyClearanceTransaction, type ClearanceVerification } from "@limenlabs/sdk";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
 const POOL = "0x040337b1af3c663e86e333bab5a4b28da8d4652a15a69beee2b677776ffe812a";

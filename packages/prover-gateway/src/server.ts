@@ -8,7 +8,7 @@
  */
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import { ProverGateway } from "./gateway.js";
-import { safeStringify } from "@limen/proving-core";
+import { safeStringify } from "@limenlabs/proving-core";
 
 const PORT = Number(process.env.PORT ?? "8787");
 const HOST = process.env.HOST ?? "0.0.0.0";

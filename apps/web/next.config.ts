@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   // The workspace packages ship TypeScript sources consumed directly, so Next has to
   // compile them rather than assume a prebuilt CommonJS bundle.
-  transpilePackages: ["@limen/sdk", "@limen/protocol-config"],
+  transpilePackages: ["@limenlabs/sdk", "@limenlabs/protocol-config"],
   headers: async () => [
     {
       source: "/:path*",

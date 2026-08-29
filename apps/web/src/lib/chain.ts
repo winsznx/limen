@@ -1,7 +1,7 @@
 import "server-only";
 import { RpcProvider } from "starknet";
-import { readPoolState, isOpenNoteDepositorBlocked, type PoolState } from "@limen/protocol-config";
-import { LimenReadClient, type Challenge } from "@limen/sdk";
+import { readPoolState, isOpenNoteDepositorBlocked, type PoolState } from "@limenlabs/protocol-config";
+import { LimenReadClient, type Challenge } from "@limenlabs/sdk";
 import { deploymentConfig, isDeployed, type LimenDeploymentConfig } from "./config";
 
 /**

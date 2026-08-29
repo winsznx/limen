@@ -10,7 +10,7 @@
  */
 import { CallData, ec, hash, num, stark, RpcProvider } from "starknet";
 import { appendFileSync, existsSync, readFileSync, chmodSync, writeFileSync } from "node:fs";
-import { OZ_ACCOUNT_CLASS_HASH } from "@limen/protocol-config";
+import { OZ_ACCOUNT_CLASS_HASH } from "@limenlabs/protocol-config";
 
 const ENV_PATH = ".env.local";
 

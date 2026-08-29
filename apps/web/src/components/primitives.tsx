@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { NetworkConfig } from "@limen/protocol-config";
+import type { NetworkConfig } from "@limenlabs/protocol-config";
 
 /**
  * The small vocabulary every Limen surface is built from.

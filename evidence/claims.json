@@ -135,7 +135,7 @@
       "id": "C14",
       "claim": "Proving requests cannot leak viewing-key material into logs, metrics or errors.",
       "mechanism": "Redaction at every emitting boundary, with tests asserting a viewing key cannot survive serialisation nested in calldata, inside errors, or past a depth bound.",
-      "reproduce": "pnpm --filter @limen/proving-core test",
+      "reproduce": "pnpm --filter @limenlabs/proving-core test",
       "mainnet": false,
       "status": "proven"
     },

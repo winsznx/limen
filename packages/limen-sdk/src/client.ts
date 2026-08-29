@@ -6,7 +6,7 @@ import {
   type LimenNetwork,
   type NetworkConfig,
   type PoolState,
-} from "@limen/protocol-config";
+} from "@limenlabs/protocol-config";
 import {
   challengeParamsCalldata,
   computeChallengeId,

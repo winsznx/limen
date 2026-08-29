@@ -11,10 +11,10 @@ importers:
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@9.39.5(jiti@2.7.0)(supports-color@10.2.2))
-      '@limen/protocol-config':
+      '@limenlabs/protocol-config':
         specifier: workspace:*
         version: link:packages/protocol-config
-      '@limen/sdk':
+      '@limenlabs/sdk':
         specifier: workspace:*
         version: link:packages/limen-sdk
       '@types/node':
@@ -35,10 +35,10 @@ importers:
 
   apps/web:
     dependencies:
-      '@limen/protocol-config':
+      '@limenlabs/protocol-config':
         specifier: workspace:*
         version: link:../../packages/protocol-config
-      '@limen/sdk':
+      '@limenlabs/sdk':
         specifier: workspace:*
         version: link:../../packages/limen-sdk
       next:
@@ -84,10 +84,10 @@ importers:
 
   packages/limen-sdk:
     dependencies:
-      '@limen/protocol-config':
+      '@limenlabs/protocol-config':
         specifier: workspace:*
         version: link:../protocol-config
-      '@limen/proving-core':
+      '@limenlabs/proving-core':
         specifier: workspace:*
         version: link:../proving-core
       starknet:
@@ -116,7 +116,7 @@ importers:
 
   packages/prover-gateway:
     dependencies:
-      '@limen/proving-core':
+      '@limenlabs/proving-core':
         specifier: workspace:*
         version: link:../proving-core
     devDependencies:
@@ -135,7 +135,7 @@ importers:
 
   packages/proving-core:
     dependencies:
-      '@limen/protocol-config':
+      '@limenlabs/protocol-config':
         specifier: workspace:*
         version: link:../protocol-config
     devDependencies:

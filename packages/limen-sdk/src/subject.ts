@@ -1,5 +1,5 @@
 import { hash, num, shortString } from "starknet";
-import { IDENTITY_KEY_TAG } from "@limen/protocol-config";
+import { IDENTITY_KEY_TAG } from "@limenlabs/protocol-config";
 
 /**
  * Derives a Limen subject identifier, which is the STRK20 pool's identity key for
