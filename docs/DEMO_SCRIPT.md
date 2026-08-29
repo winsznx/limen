@@ -1,181 +1,188 @@
 # Three-minute demo
 
-Everything shown is real: live mainnet reads, real transaction hashes, real verifier
-output. Nothing is staged, and no number on screen is invented.
+The goal is a clear product story: show the problem, demonstrate the experience, and
+finish with verifiable Mainnet evidence. Keep Limen on screen throughout. The full
+narration is intentionally short enough to leave room for pauses and cursor movement.
 
-Two rules while recording. Never show `.env.local` or a terminal that has echoed a
-secret. Never claim a capability on screen that the repository does not back.
+## Recording setup
 
----
+Preload these four tabs in this order:
 
-## Before you record
+1. **Home:** <https://limen.timjosh507.workers.dev>
+2. **Cleared challenge:** <https://limen.timjosh507.workers.dev/challenge/0x78e0b30dc72343243712064487c9aeffc76441532f7b2f1cb4de09bedca9ecf>
+3. **Evidence:** <https://limen.timjosh507.workers.dev/evidence>
+4. **Voyager transaction:** <https://voyager.online/tx/0x2277d769273da51bcc30a5ac41d0bb3fc45906a0a59917202d22f83d383e566>
 
-**Bring the prover up.** `/console` says *Unreachable* when it is down, which is honest
-but makes the proving section fall flat. It costs about $0.31/hour and takes ~2 minutes
-to boot.
-
-```sh
-./infra/fly/session.sh up
-```
-
-**Warm the commands.** Both live commands are fast, but the first run of anything pays
-for a cold module cache. Run each once before recording:
-
-```sh
-node --experimental-strip-types scripts/verify-mainnet.ts \
-  0x2277d769273da51bcc30a5ac41d0bb3fc45906a0a59917202d22f83d383e566   # ~1.5s
-node --experimental-strip-types scripts/run-campaign.ts                # ~1.3s
-```
-
-Naming a hash scopes the verifier to that transaction and leaves `strk20.json` alone, so
-running it on camera cannot disturb the submission manifest.
-
-**Set the stage.** 1920×1080, browser at 100% zoom with bookmarks hidden, terminal font
-large enough to read at 720p, both commands typed but unexecuted in separate tabs. Close
-anything with a notification badge.
-
-**Do not attempt a live clearance.** A proof takes 50–80 seconds, which is half the
-video, and the pool charges a flat 6 STRK fee from the public balance that would need
-topping up first. Verifying an existing clearance from chain is both faster and a
-stronger claim: it proves the transaction is real without trusting anything Limen built.
+Record at 1920×1080 with the browser at 100% zoom. Hide bookmarks, close anything
+with a notification badge, and load every tab before recording. Move the cursor slowly
+and deliberately. Do not start the prover or attempt a new clearance during the video.
 
 ---
 
-## 0:00–0:20 · The problem
+## 0:00–0:18 · The problem
 
-**Screen:** the landing page, <https://limen.timjosh507.workers.dev>
+**Say**
 
-> An application needs to know whether you have enough capital. Normally that means
-> showing it a wallet, and everything in it.
+> Imagine an app asks you to prove you have enough capital. Today, that usually means
+> connecting a wallet and revealing far more than the app needs. Limen changes that.
 
-Scroll so the hero panel is centred. Point at the balance field.
+**Show**
 
-> This is Limen's actual interface. The requirement is on the left. Where a balance
-> would normally sit, it says *not disclosed*, because Limen never learns it.
-
----
-
-## 0:20–0:50 · The mechanism
-
-**Screen:** scroll to the four-step strip.
-
-> One atomic transaction. Spend private notes. Withdraw exactly the threshold to the
-> Limen Anonymizer. The bound action runs. The capital returns to a shielded note.
-
-> If you can't supply the threshold, nothing clears. If a revert happens anywhere, no
-> capital moves and the challenge stays unused.
-
-**Screen:** the privacy boundary section.
-
-> Stated precisely, because a vague privacy claim is worse than none. The threshold and
-> the target are public. The balance, the notes, and the address are not.
-
-Hold briefly on the third column.
-
-> And this is what reduces privacy anyway. It's on the landing page, not buried.
+Start on the homepage hero. Keep the cursor still and make sure **Prove enough. Keep the
+rest private.** is visible.
 
 ---
 
-## 0:50–1:15 · Proving infrastructure
+## 0:18–0:38 · One answer, not a balance
 
-**Screen:** `/console`.
+**Say**
 
-> Limen runs its own proving. This is the pinned upstream STRK20 prover on a dedicated
-> host, not in a Worker, because a proof takes minutes of a whole machine.
+> The app asks for one threshold. Limen returns one answer. Here, the example
+> requirement is 50 STRK. The user's actual shielded balance stays exactly where it
+> should: not disclosed.
 
-Point at the image reference.
+**Show**
 
-> Pinned by digest. Though we had to rebuild it: the published image is compiled for one
-> CPU family and dies with an illegal-instruction fault on ordinary hardware. That's one
-> of three issues we filed upstream.
-
-Point at latency.
-
-> Real numbers from real proofs. When the prover is down this page says unreachable
-> rather than showing a green light.
+Move the cursor to **≥ 50 STRK**, then slowly from **Your shielded balance** to **Not
+disclosed**. Pause after saying “not disclosed.”
 
 ---
 
-## 1:15–2:10 · The mainnet clearance
+## 0:38–1:00 · How it works
 
-**Screen:** terminal, pre-typed but not yet run:
+**Say**
 
-```sh
-node --experimental-strip-types scripts/verify-mainnet.ts \
-  0x2277d769273da51bcc30a5ac41d0bb3fc45906a0a59917202d22f83d383e566
-```
+> The required amount moves from private funds. The application's action runs. Then the
+> capital returns to a shielded note, all in one transaction. If the amount isn't there,
+> nothing unlocks.
 
-> This is what the whole project is about, on Starknet Mainnet. This script doesn't trust
-> anything Limen produced. It re-reads the receipt and rebuilds the mechanism from the
-> pool's own events.
+**Show**
 
-**Run it.** Let the checks print.
-
-> Pool touched. Anonymizer invoked through compute-and-invoke. Challenge cleared. The
-> target action executed. Capital returned to a shielded note.
-
-Point at the last line.
-
-> And this one matters most. An ERC-20 balance carries no provenance, so the contract
-> can't prove the capital came from private notes. The pool publishes what it withdrew,
-> so we check that instead, and it matches the threshold exactly. That's a limitation we
-> found in our own design, wrote up, and made measurable rather than quietly dropped.
-
-**Screen:** Voyager, the same hash. Show it succeeded.
-
-> Three of these have cleared on mainnet. All three pass every check.
+Scroll smoothly to **One atomic transaction, four things happen.** Move across **Spend
+→ Withdraw → Execute → Return**, matching each step to the narration.
 
 ---
 
-## 2:10–2:35 · Failure is a first-class state
+## 1:00–1:15 · The privacy boundary
 
-**Screen:** terminal.
+**Say**
 
-```sh
-node --experimental-strip-types scripts/run-campaign.ts
-```
+> The application sees the requirement and the result. It does not receive your total
+> balance, your notes, your address, or your unrelated activity.
 
-> A hundred deterministic adversarial cases. Below-threshold, replays, expired, wrong
-> target, wrong token, wrong subject, direct-call bypass.
+**Show**
 
-Let it finish.
-
-> Zero false clearances. Zero successful replays. Zero funds stranded. Every adversarial
-> case asserts the exact error it must fail with, so failing for the wrong reason counts
-> as a failure.
+Scroll to the privacy-boundary section. Point to **Becomes public**, then **Stays
+private**. Do not read every item.
 
 ---
 
-## 2:35–3:00 · Close
+## 1:15–1:42 · A real Mainnet clearance
 
-**Screen:** `/evidence`.
+**Say**
 
-> Every claim maps to an artefact you can regenerate. Contracts, transactions, the
-> campaign, and the ledger. Every address and hash on the site links to the explorer.
+> And this is not a mockup. This challenge ran on Starknet Mainnet. The requirement was
+> 4 STRK. The result is cleared. Limen unlocked the allocation action for the Capital
+> Gate.
 
-**Screen:** the GitHub repository.
+**Show**
 
-> Open source, Apache-2.0. The contracts have no owner, no admin and no upgrade path.
-> Three upstream issues filed along the way, each with a reproduction.
-
-> Limen proves a bounded capital condition. Not identity anonymity, not solvency. Prove
-> enough, keep the rest private.
+Switch to the cleared-challenge tab. Keep **Prove ≥ 4 STRK** and the green **Cleared**
+state visible. Point to **REGISTER_ALLOCATION**, then the target. Pause after saying
+“cleared.”
 
 ---
 
-## Afterwards
+## 1:42–2:00 · The product moment
 
-```sh
-./infra/fly/session.sh down        # the prover bills while it runs
-```
+**Say**
 
-Then publish the video and put its URL in `strk20.json` under `demo_video`. That field is
-what the panel reads, and it is the last thing on the manifest.
+> Notice what is missing: no wallet address, no balance, and no list of holdings. Just a
+> scoped subject and proof that the requirement was met. That is the product.
 
-## Things not to say
+**Show**
 
-- "anonymous" or "untraceable". Limen is pseudonymous, and the boundary is documented
-- "proof of solvency". Explicitly not the claim
-- "audited". It is not
-- any suggestion a judge can clear a challenge from a browser wallet. The Wallet API
-  cannot express compute-and-invoke, which is why we filed types-js#77
+Move to the product panel. Point from **Your shielded balance** to **Not disclosed**,
+then trace **Proving → Accepted → Cleared**. End on **Capital returns to a shielded note.**
+Pause after saying “That is the product.”
+
+---
+
+## 2:00–2:20 · Evidence anyone can verify
+
+**Say**
+
+> Here are the deployed contracts and three Mainnet clearances. Every link opens the
+> transaction on Voyager, so nobody has to trust our dashboard or our word.
+
+**Show**
+
+Switch to the evidence page. Show the **STRK20 pool**, **Limen Anonymizer**, and
+**Capital Gate**. Move down to the transaction rows and click the third transaction. If
+the click is slow, switch directly to the preloaded Voyager tab.
+
+---
+
+## 2:20–2:34 · The transaction
+
+**Say**
+
+> This is the real transaction: successful, through the live STRK20 pool, with the
+> application action executed and the capital returned privately.
+
+**Show**
+
+Show Voyager's successful status and the transaction hash. Do not scroll through raw
+calldata. Hold the frame.
+
+---
+
+## 2:34–2:49 · Tested against failure
+
+**Say**
+
+> We also tried to break it a hundred different ways: too little capital, wrong token,
+> expired challenges, and replay attempts. Zero false clearances. Zero successful
+> replays. Zero stranded funds.
+
+**Show**
+
+Return to the evidence page and scroll to **100 deterministic cases**. Point to the
+three zero counters as you say them.
+
+---
+
+## 2:49–3:00 · Close
+
+**Say**
+
+> Private deals. Capital-gated allocations. Lending eligibility. Applications do not
+> need your financial life. They need one answer. Limen: prove enough, keep the rest
+> private.
+
+**Show**
+
+Return to the homepage hero. Move the cursor to the side and finish with the Limen
+name, tagline, and product panel visible. Hold the final frame for two seconds.
+
+## Delivery notes
+
+- Speak conversationally, as if explaining Limen to one curious person.
+- Pause after **not disclosed**, **cleared**, and **That is the product**.
+- Let each screen settle before moving the cursor. Never rush to catch the narration.
+- Say “this challenge ran on Mainnet,” not “I am running it now.”
+- If Voyager does not load, remain on the evidence page. Do not switch to a terminal.
+
+## Do not show or say
+
+- Do not show `/console`, source code, or a terminal. They distract from the product.
+- Do not explain the prover image, protocol limitations, or Wallet API gap.
+- Do not say “anonymous,” “untraceable,” “proof of solvency,” or “audited.”
+- Do not imply that a judge can run a fresh clearance from a browser wallet.
+- Do not claim that the displayed challenge is executing live during the recording.
+- Never show `.env.local`, secrets, or private keys.
+
+## After recording
+
+Publish the video, then put its URL in `strk20.json` under `demo_video`. That is the
+final submission-manifest step.

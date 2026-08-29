@@ -23,6 +23,32 @@ one function.
 
 ---
 
+## Installing
+
+Two halves, because a Limen integration is part Cairo and part TypeScript.
+
+**The Cairo interface**, for your gate contract. A git dependency, no registry needed:
+
+```toml
+[dependencies]
+limen_shared = { git = "https://github.com/winsznx/limen.git" }
+```
+
+That gives you `ILimenTarget`, `LimenClearance`, and the challenge types. It resolves and
+compiles today against the public repository.
+
+**The TypeScript SDK**, for issuing challenges and verifying results:
+
+```sh
+npm install @limen/sdk
+```
+
+Until that package is published, clone this repository and run `./scripts/bootstrap.sh`,
+then depend on `packages/limen-sdk` directly. The published-package path is the intended
+one and nothing in the SDK depends on the repository layout.
+
+---
+
 ## For an application
 
 ### 1. Implement the target interface
