@@ -261,6 +261,10 @@ and the evidence page already exposes every Mainnet transaction link.
 - Do not claim that the displayed challenge is executing live during the recording.
 - Never show `.env.local`, secrets, or private keys.
 
-## After recording
+## Recorded
 
-Publish the video, then put its URL in `strk20.json` under `demo_video`.
+<https://youtu.be/K8y9212NLWk>
+
+Recorded in `strk20.json` under `demo_video`, which completes the submission manifest.
+This script stays as the record of what the video claims, so any statement in it can be
+checked against the repository later.

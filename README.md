@@ -20,6 +20,7 @@ If you cannot supply the threshold, nothing clears. If you can, the application 
 the one condition it asked about and nothing else: not your balance, not your other
 notes, not your address.
 
+**Demo video**: <https://youtu.be/K8y9212NLWk> ·
 **Live demo**: <https://limen.timjosh507.workers.dev> ·
 **Integrating**: [docs/INTEGRATING.md](docs/INTEGRATING.md) ·
 **SDK**: `npm install @limenlabs/sdk`
