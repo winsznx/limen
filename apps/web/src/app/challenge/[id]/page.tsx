@@ -4,6 +4,7 @@ import { formatAmount, findToken, STRK_MAINNET } from "@limenlabs/protocol-confi
 import { disclosureFor } from "@limenlabs/sdk";
 import { ClearancePanel } from "@/components/clearance-panel";
 import { Card, Dot, Field, FeltLink, Row, SectionHead, Tag, short } from "@/components/primitives";
+import { MechanismSteps } from "@/components/mechanism";
 import { deploymentConfig } from "@/lib/config";
 import { challengeSnapshot, poolSnapshot } from "@/lib/chain";
 import { proverHealth } from "@/lib/gateway";
@@ -63,16 +64,33 @@ export default async function ChallengePage({ params }: { params: Promise<{ id: 
     <div className="mx-auto max-w-[1200px] px-5 py-12">
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,460px)]">
         <div>
-          <SectionHead
-            eyebrow="Capital challenge"
-            title={`Prove ≥ ${threshold} ${symbol}`}
-            aside={
+          <div className="mb-6">
+            <div className="mb-3 flex flex-wrap items-center gap-3">
+              <span className="text-[11px] uppercase tracking-[0.09em] text-fog">
+                Capital challenge
+              </span>
               <Tag tone={state === "cleared" ? "green" : state === "expired" ? "muted" : "accent"}>
                 <Dot tone={state === "cleared" ? "green" : state === "expired" ? "grey" : "accent"} />
                 {state === "cleared" ? "Cleared" : state === "expired" ? "Expired" : "Open"}
               </Tag>
-            }
-          />
+            </div>
+            <h1 className="display text-[40px] text-charcoal">
+              Prove ≥ {threshold}{" "}
+              <span className="text-[26px] font-normal text-steel">{symbol}</span>
+            </h1>
+            <p className="mt-3 max-w-[540px] text-[14px] leading-[1.6] text-fog">
+              {state === "cleared"
+                ? "This challenge cleared on mainnet. The subject mobilised the threshold and the bound action executed, without disclosing a balance."
+                : "Meeting this discloses that the threshold was met, and nothing else about what the subject holds."}
+            </p>
+          </div>
+
+          {state === "cleared" ? (
+            <Card className="mb-6 p-5">
+              <h3 className="mb-4 text-[13px] font-medium text-charcoal">What happened</h3>
+              <MechanismSteps current={4} />
+            </Card>
+          ) : null}
 
           <Card className="mb-6 px-4">
             <Row label="Challenge">

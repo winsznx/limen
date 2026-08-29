@@ -118,3 +118,67 @@ body {
 .pulse {
   animation: limen-pulse 1.6s ease-in-out infinite;
 }
+
+/*
+ * Explanatory motion.
+ *
+ * The mechanism is a sequence, and a sequence is easier to understand when it plays
+ * than when it is described. Everything below is CSS on inline SVG: no client
+ * JavaScript, no hydration, no bundle. The reduced-motion block above already stops
+ * all of it, which is why nothing here carries meaning that motion alone conveys.
+ *
+ * Timing is one shared 6s bar. Five stages at 1.2s each, so a stage index n starts at
+ * n * 1.2s and every element on that stage shares the same delay.
+ */
+@keyframes limen-draw {
+  from {
+    stroke-dashoffset: var(--limen-dash, 120);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes limen-stage-on {
+  0%,
+  8% {
+    opacity: 0.25;
+  }
+  16%,
+  92% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes limen-rise {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* A node in the mechanism diagram, lit in turn. */
+.stage {
+  animation: limen-stage-on 6s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * 1.2s);
+}
+
+/* A connector between two nodes, drawn as the flow reaches it. */
+.stage-path {
+  stroke-dasharray: var(--limen-dash, 120);
+  animation: limen-draw 1.1s ease-out infinite;
+  animation-delay: calc(var(--i, 0) * 1.2s);
+}
+
+/* Content that should arrive rather than appear. Used sparingly, once per surface. */
+.rise {
+  animation: limen-rise 0.5s ease-out both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}

@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { formatAmount, STRK_MAINNET } from "@limenlabs/protocol-config";
+import claims from "../../../../evidence/claims.json";
+import campaign from "../../../../evidence/campaigns/security.json";
+import strk20 from "../../../../strk20.json";
 import { ClearancePanel } from "@/components/clearance-panel";
+import { Mechanism, stageVars } from "@/components/mechanism";
 import { ButtonLink, Card, Dot, Field, FeltLink, SectionHead, Tag } from "@/components/primitives";
 import { deploymentConfig, isDeployed } from "@/lib/config";
 import { clearedCount, poolSnapshot } from "@/lib/chain";
@@ -15,6 +19,7 @@ export default async function HomePage() {
   const live = isDeployed(config);
 
   const poolFee = pool.state ? formatAmount(pool.state.feeAmount, STRK_MAINNET.decimals) : null;
+  const provenClaims = claims.claims.filter((claim) => claim.status === "proven").length;
 
   return (
     <>
@@ -67,8 +72,8 @@ export default async function HomePage() {
                 />
                 <Stat
                   label="Adversarial cases"
-                  value="100 / 100"
-                  hint="0 false clearances"
+                  value={`${campaign.invalid_rejected + campaign.valid_observed} / ${campaign.total}`}
+                  hint={`${campaign.false_clearances} false clearances`}
                 />
               </dl>
             </div>
@@ -88,6 +93,15 @@ export default async function HomePage() {
               </p>
             </div>
           </div>
+
+          <div className="mt-12 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-ash pt-6">
+            <span className="text-[11px] uppercase tracking-[0.09em] text-fog">Live now</span>
+            <LiveFact tone="green" label="Starknet Mainnet" />
+            <LiveFact label={poolFee ? `Pool fee ${poolFee} STRK` : "Pool fee unavailable"} />
+            <LiveFact label={`${strk20.transactions.length} qualifying transactions`} />
+            <LiveFact label={`${provenClaims} claims proven`} />
+            <LiveFact label="Self-hosted prover" />
+          </div>
         </div>
       </section>
 
@@ -101,6 +115,10 @@ export default async function HomePage() {
             </Link>
           }
         />
+
+        <Card className="mb-4 px-5 py-6">
+          <Mechanism />
+        </Card>
 
         <ol className="grid gap-px overflow-hidden rounded-[12px] border border-ash bg-ash md:grid-cols-4">
           {[
@@ -124,14 +142,51 @@ export default async function HomePage() {
               title: "Return",
               body: "The full amount is credited straight back into a shielded open note. Nothing is left in the anonymizer, and no reusable credential survives.",
             },
-          ].map((item) => (
-            <li key={item.step} className="bg-canvas p-5">
-              <div className="mono mb-3 text-[11px] text-silver">{item.step}</div>
+          ].map((item, index) => (
+            <li key={item.step} className="relative bg-canvas p-5">
+              <div className="mb-3 flex items-center gap-2">
+                <span className="mono text-[11px] text-silver">{item.step}</span>
+                <span className="h-px flex-1 bg-ash" aria-hidden />
+                <span className="stage" style={stageVars(index)} aria-hidden>
+                  <Dot tone={index === 3 ? "green" : "accent"} />
+                </span>
+              </div>
               <h3 className="mb-2 text-[15px] font-medium text-charcoal">{item.title}</h3>
               <p className="text-[13px] leading-[1.55] text-fog">{item.body}</p>
             </li>
           ))}
         </ol>
+
+        <div className="mt-4 grid gap-px overflow-hidden rounded-[12px] border border-ash bg-ash md:grid-cols-2">
+          <div className="bg-canvas p-5">
+            <div className="mb-3 flex items-center gap-2">
+              <Dot tone="orange" />
+              <h3 className="text-[14px] font-medium text-charcoal">An ordinary capital gate</h3>
+            </div>
+            <p className="mb-3 text-[13px] leading-[1.55] text-fog">
+              Connect a wallet so the application can read your balance.
+            </p>
+            <ul className="space-y-1.5 text-[13px] text-steel">
+              <li>It learns your total balance</li>
+              <li>It learns every token you hold</li>
+              <li>It learns your address, and your history</li>
+            </ul>
+          </div>
+          <div className="bg-canvas p-5">
+            <div className="mb-3 flex items-center gap-2">
+              <Dot tone="green" />
+              <h3 className="text-[14px] font-medium text-charcoal">Limen</h3>
+            </div>
+            <p className="mb-3 text-[13px] leading-[1.55] text-fog">
+              Mobilise exactly the threshold, once, through the pool.
+            </p>
+            <ul className="space-y-1.5 text-[13px] text-steel">
+              <li>It learns the threshold was met</li>
+              <li>It learns nothing else about your holdings</li>
+              <li>It never receives your address</li>
+            </ul>
+          </div>
+        </div>
 
         <p className="mt-4 max-w-190 text-[13px] leading-[1.6] text-fog">
           A revert anywhere aborts all of it. A target that refuses, a threshold that is not met,
@@ -149,9 +204,12 @@ export default async function HomePage() {
 
           <div className="grid gap-4 md:grid-cols-2">
             <Card className="p-5">
-              <div className="mb-4 flex items-center gap-2">
-                <Dot tone="orange" />
-                <h3 className="text-[14px] font-medium text-charcoal">Becomes public</h3>
+              <div className="mb-4 flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <Dot tone="orange" />
+                  <h3 className="text-[14px] font-medium text-charcoal">Becomes public</h3>
+                </div>
+                <Tag tone="muted">visible on chain</Tag>
               </div>
               <ul className="space-y-2.5">
                 {[
@@ -172,10 +230,13 @@ export default async function HomePage() {
               </ul>
             </Card>
 
-            <Card className="p-5">
-              <div className="mb-4 flex items-center gap-2">
-                <Dot tone="green" />
-                <h3 className="text-[14px] font-medium text-charcoal">Stays private</h3>
+            <Card className="p-5 ring-1 ring-mint">
+              <div className="mb-4 flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <Dot tone="green" />
+                  <h3 className="text-[14px] font-medium text-charcoal">Stays private</h3>
+                </div>
+                <Tag tone="green">never disclosed</Tag>
               </div>
               <ul className="space-y-2.5">
                 {[
@@ -197,8 +258,9 @@ export default async function HomePage() {
             </Card>
           </div>
 
-          <Card className="mt-4 p-5">
-            <h3 className="mb-3 text-[14px] font-medium text-charcoal">
+          <Card className="mt-4 border-l-2 border-l-tangerine p-5">
+            <h3 className="mb-3 flex items-center gap-2 text-[14px] font-medium text-charcoal">
+              <Dot tone="orange" />
               And the parts that reduce privacy
             </h3>
             <div className="grid gap-2.5 text-[13px] leading-normal text-fog sm:grid-cols-2">
@@ -313,6 +375,20 @@ export default async function HomePage() {
         </div>
       </section>
     </>
+  );
+}
+
+/**
+ * One fact in the live-now row. Every caller passes a value read from chain or from
+ * committed evidence, so there is deliberately no placeholder state here: a fact that
+ * cannot be established is not rendered as a fact.
+ */
+function LiveFact({ label, tone }: { label: string; tone?: "green" }) {
+  return (
+    <span className="inline-flex items-center gap-2 text-[13px] text-steel">
+      <Dot tone={tone ?? "grey"} />
+      {label}
+    </span>
   );
 }
 

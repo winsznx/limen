@@ -37,6 +37,18 @@ export default async function EvidencePage() {
         than being reworded into something weaker that would sound finished.
       </p>
 
+      <div className="mb-10 grid gap-px overflow-hidden rounded-[12px] border border-ash bg-ash sm:grid-cols-3 lg:grid-cols-5">
+        <ProofStat
+          label="Mainnet transactions"
+          value={String(strk20.transactions.length)}
+          hint="each re-verified from chain"
+        />
+        <ProofStat label="Claims proven" value={`${proven} / ${claims.claims.length}`} hint="every one regenerable" />
+        <ProofStat label="Adversarial cases" value={String(campaign.total)} hint="deterministic, seeded" />
+        <ProofStat label="False clearances" value={String(campaign.false_clearances)} hint="across all cases" tone="green" />
+        <ProofStat label="Funds stranded" value={String(campaign.funds_stranded)} hint="across all cases" tone="green" />
+      </div>
+
       <SectionHead eyebrow="On chain" title="Contracts and transactions" />
       <div className="mb-4 grid gap-px overflow-hidden rounded-[12px] border border-ash bg-ash sm:grid-cols-3">
         <div className="bg-canvas p-4">
@@ -252,5 +264,33 @@ function StatusTag({ status }: { status: ClaimStatus }) {
       <Dot tone="grey" />
       Not started
     </Tag>
+  );
+}
+
+/**
+ * A headline proof number. `tone` marks the counters where zero is the achievement,
+ * so a reader does not have to work out which direction is good.
+ */
+function ProofStat({
+  label,
+  value,
+  hint,
+  tone,
+}: {
+  label: string;
+  value: string;
+  hint: string;
+  tone?: "green";
+}) {
+  return (
+    <div className="bg-canvas px-4 py-4">
+      <div className="text-[11px] uppercase tracking-[0.07em] text-fog">{label}</div>
+      <div
+        className={`mt-1.5 text-[22px] font-medium ${tone === "green" ? "text-green" : "text-charcoal"}`}
+      >
+        {value}
+      </div>
+      <div className="mt-1 text-[11px] leading-4 text-fog">{hint}</div>
+    </div>
   );
 }

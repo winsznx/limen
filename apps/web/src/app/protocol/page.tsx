@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Card, Dot, SectionHead, Tag } from "@/components/primitives";
+import { Mechanism } from "@/components/mechanism";
 import { MAINNET, UPSTREAM_PINS } from "@limenlabs/protocol-config";
 
 export const metadata: Metadata = { title: "Protocol" };
@@ -9,11 +10,19 @@ export default function ProtocolPage() {
     <div className="mx-auto max-w-[900px] px-5 py-12">
       <SectionHead eyebrow="Protocol" title="How a clearance actually works" />
 
-      <p className="mb-10 text-[16px] leading-[1.65] text-steel">
+      <p className="mb-8 text-[16px] leading-[1.65] text-steel">
         Limen is one Cairo contract and one integration point. The interesting part is not the
         contract, it is which two properties come from the STRK20 pool itself rather than from
         anything a caller supplies.
       </p>
+
+      <Card className="mb-10 px-5 py-6">
+        <Mechanism />
+        <p className="mt-4 border-t border-ash pt-4 text-[13px] leading-[1.6] text-fog">
+          All five settle in a single pool transaction. A revert at any stage moves no capital
+          and leaves the challenge unconsumed.
+        </p>
+      </Card>
 
       <Card className="mb-10 overflow-hidden">
         <div className="border-b border-ash px-4 py-2.5 text-[12px] text-fog">

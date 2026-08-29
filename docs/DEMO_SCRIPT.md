@@ -1,174 +1,226 @@
 # Three-minute demo
 
-The goal is a clear product story: show the problem, demonstrate the experience, and
-finish with verifiable Mainnet evidence. Keep Limen on screen throughout. The full
-narration is intentionally short enough to leave room for pauses and cursor movement.
+This version is designed to be followed literally while recording. Every section says
+which numbered tab to open, what must be visible, where to move the cursor, and where to
+leave the screen.
 
-## Recording setup
+## What the product is
 
-Preload these four tabs in this order:
+Limen has two users:
 
-1. **Home:** <https://limen.timjosh507.workers.dev>
-2. **Cleared challenge:** <https://limen.timjosh507.workers.dev/challenge/0x78e0b30dc72343243712064487c9aeffc76441532f7b2f1cb4de09bedca9ecf>
-3. **Evidence:** <https://limen.timjosh507.workers.dev/evidence>
-4. **Voyager transaction:** <https://voyager.online/tx/0x2277d769273da51bcc30a5ac41d0bb3fc45906a0a59917202d22f83d383e566>
-5. **npm package:** <https://www.npmjs.com/package/@limenlabs/sdk>
+1. An application installs `@limenlabs/sdk`, chooses a capital threshold, and decides
+   what should unlock when that threshold is met.
+2. A person receives that challenge and clears it using shielded STRK20 capital. Limen
+   calls the application's action and returns the capital to a shielded note in the same
+   transaction.
 
-Record at 1920×1080 with the browser at 100% zoom. Hide bookmarks, close anything
-with a notification badge, and load every tab before recording. Move the cursor slowly
-and deliberately. Do not start the prover or attempt a new clearance during the video.
+The application receives the answer it needs. It does not receive the person's total
+balance, notes, address, or unrelated activity.
+
+## Set up the exact screens
+
+Use one browser window at 1920×1080 and 100% zoom. Hide the bookmarks bar and close all
+notifications. Open these **seven tabs in this exact order**:
+
+1. **Home, opening:** <https://limen.timjosh507.workers.dev>
+2. **Home, mechanism:** <https://limen.timjosh507.workers.dev>
+3. **Home, privacy:** <https://limen.timjosh507.workers.dev>
+4. **Cleared challenge:** <https://limen.timjosh507.workers.dev/challenge/0x78e0b30dc72343243712064487c9aeffc76441532f7b2f1cb4de09bedca9ecf>
+5. **Evidence:** <https://limen.timjosh507.workers.dev/evidence>
+6. **SDK:** <https://github.com/winsznx/limen/tree/main/packages/limen-sdk#readme>
+7. **Home, closing:** <https://limen.timjosh507.workers.dev>
+
+Now prepare each tab before recording:
+
+- **Tab 1:** press `Home`. The hero, the 50 STRK product panel, and the three statistics
+  must all be visible.
+- **Tab 2:** scroll until **The mechanism** and **One atomic transaction, four things
+  happen** sit near the upper-left corner. All four cards, **Spend**, **Withdraw**,
+  **Execute**, and **Return**, must be visible at once.
+- **Tab 3:** scroll until **Privacy boundary** and **Stated precisely, because vague
+  claims are worse than none** sit near the upper-left corner. Both **Becomes public**
+  and **Stays private** cards must be visible together.
+- **Tab 4:** press `Home`. **Prove ≥ 4 STRK**, the green **Cleared** badge, the challenge
+  details on the left, and the cleared product panel on the right must be visible.
+- **Tab 5:** press `Home`. **Contracts and transactions**, all three transaction rows,
+  **100 deterministic cases**, and the zero counters should be visible. At 1920×1080
+  they fit on one screen.
+- **Tab 6:** scroll until the README heading **@limenlabs/sdk**, its one-sentence promise,
+  and `npm install @limenlabs/sdk` are visible together. Leave **What it does** visible
+  directly below if it fits.
+- **Tab 7:** press `Home`. Match Tab 1's opening frame.
+
+Test `⌘+1` through `⌘+7` once. These shortcuts are the only navigation used during the
+recording. Put the cursor in empty space before you begin.
+
+Do not use npm or Voyager as required screens. Both can show a Cloudflare security page
+during recording. The SDK is genuinely published as `@limenlabs/sdk` version `0.1.2`,
+and the evidence page already exposes every Mainnet transaction link.
 
 ---
 
-## 0:00–0:18 · The problem
+## 0:00–0:17 · The problem
 
 **Say**
 
 > Imagine an app asks you to prove you have enough capital. Today, that usually means
 > connecting a wallet and revealing far more than the app needs. Limen changes that.
 
-**Show**
+**Exact screen actions**
 
-Start on the homepage hero. Keep the cursor still and make sure **Prove enough. Keep the
-rest private.** is visible.
-
----
-
-## 0:18–0:38 · One answer, not a balance
-
-**Say**
-
-> The app asks for one threshold. Limen returns one answer. Here, the example
-> requirement is 50 STRK. The user's actual shielded balance stays exactly where it
-> should: not disclosed.
-
-**Show**
-
-Move the cursor to **≥ 50 STRK**, then slowly from **Your shielded balance** to **Not
-disclosed**. Pause after saying “not disclosed.”
+1. Press `⌘+1`.
+2. Confirm the large **Prove enough. Keep the rest private.** headline is on the left
+   and the 50 STRK capital-challenge panel is on the right.
+3. Keep the cursor still in empty space below the headline.
+4. End on this same frame.
 
 ---
 
-## 0:38–1:00 · How it works
+## 0:17–0:35 · One answer, not a balance
 
 **Say**
 
-> The required amount moves from private funds. The application's action runs. Then the
-> capital returns to a shielded note, all in one transaction. If the amount isn't there,
+> The app asks for one threshold. Limen returns one answer. Here, the requirement is 50
+> STRK. The user's actual shielded balance stays exactly where it should: not disclosed.
+
+**Exact screen actions**
+
+1. Stay on **Tab 1**. Do not scroll.
+2. Move to **Requirement, ≥ 50 STRK** in the upper-left cell of the right-hand panel.
+3. Move horizontally to **Your shielded balance, Not disclosed** in the upper-right
+   cell.
+4. Pause there after saying “not disclosed.”
+
+---
+
+## 0:35–0:55 · What happens
+
+**Say**
+
+> In one transaction, exactly the threshold moves from private notes, the application's
+> action runs, and the capital returns to a shielded note. If the amount is not there,
 > nothing unlocks.
 
-**Show**
+**Exact screen actions**
 
-Scroll smoothly to **One atomic transaction, four things happen.** Move across **Spend
-→ Withdraw → Execute → Return**, matching each step to the narration.
+1. Press `⌘+2`. Do not scroll after switching.
+2. Confirm **One atomic transaction, four things happen** is above four cards.
+3. Move left to right across **Spend**, **Withdraw**, **Execute**, and **Return**, one card
+   per phrase.
+4. End on **Return**.
 
 ---
 
-## 1:00–1:15 · The privacy boundary
+## 0:55–1:10 · What stays private
 
 **Say**
 
 > The application sees the requirement and the result. It does not receive your total
 > balance, your notes, your address, or your unrelated activity.
 
-**Show**
+**Exact screen actions**
 
-Scroll to the privacy-boundary section. Point to **Becomes public**, then **Stays
-private**. Do not read every item.
+1. Press `⌘+3`. Do not scroll after switching.
+2. Confirm the orange **Becomes public** card is on the left and the green **Stays
+   private** card is on the right.
+3. Point briefly to **Becomes public**, then move to **Stays private** as you say what the
+   application does not receive.
+4. End on the **Stays private** heading. Do not read every bullet.
 
 ---
 
-## 1:15–1:42 · A real Mainnet clearance
+## 1:10–1:35 · The product working on Mainnet
 
 **Say**
 
-> And this is not a mockup. This challenge ran on Starknet Mainnet. The requirement was
-> 4 STRK. The result is cleared. Limen unlocked the allocation action for the Capital
-> Gate.
+> This is not a mockup. This challenge ran on Starknet Mainnet. It required 4 STRK, it
+> cleared, and Limen unlocked the allocation action for the Capital Gate.
 
-**Show**
+**Exact screen actions**
 
-Switch to the cleared-challenge tab. Keep **Prove ≥ 4 STRK** and the green **Cleared**
-state visible. Point to **REGISTER_ALLOCATION**, then the target. Pause after saying
-“cleared.”
+1. Press `⌘+4`. Do not scroll after switching.
+2. Point to **Prove ≥ 4 STRK** at the upper left.
+3. Move to the green **Cleared** badge beside it and pause after saying “cleared.”
+4. Move down the left details table to **Action, REGISTER_ALLOCATION**, then **Target**.
+5. End with the cursor on **REGISTER_ALLOCATION**.
 
 ---
 
-## 1:42–2:00 · The product moment
+## 1:35–1:55 · The privacy result
 
 **Say**
 
 > Notice what is missing: no wallet address, no balance, and no list of holdings. Just a
 > scoped subject and proof that the requirement was met. That is the product.
 
-**Show**
+**Exact screen actions**
 
-Move to the product panel. Point from **Your shielded balance** to **Not disclosed**,
-then trace **Proving → Accepted → Cleared**. End on **Capital returns to a shielded note.**
-Pause after saying “That is the product.”
+1. Stay on **Tab 4**. Do not scroll.
+2. Move to **Your shielded balance, Not disclosed** in the upper-right product panel.
+3. Move along the completed row **Proving**, **Accepted**, **Cleared**.
+4. End on **Capital returns to a shielded note in the same transaction** at the bottom
+   of that panel.
+5. Hold for one second after saying “That is the product.”
 
 ---
 
-## 2:00–2:20 · Evidence anyone can verify
+## 1:55–2:18 · Evidence, not promises
 
 **Say**
 
-> Here are the deployed contracts and three Mainnet clearances. Every link opens the
-> transaction on Voyager, so nobody has to trust our dashboard or our word.
+> Here are the deployed contracts and three Mainnet clearances. Every transaction links
+> to Voyager, so nobody has to trust our dashboard or our word.
 
-**Show**
+**Exact screen actions**
 
-Switch to the evidence page. Show the **STRK20 pool**, **Limen Anonymizer**, and
-**Capital Gate**. Move down to the transaction rows and click the third transaction. If
-the click is slow, switch directly to the preloaded Voyager tab.
+1. Press `⌘+5`. Do not scroll after switching.
+2. Confirm **Contracts and transactions** is near the top and three transaction rows are
+   directly below the contract addresses.
+3. Move across **STRK20 pool**, **Limen Anonymizer**, and **Capital Gate**.
+4. Move down the three transaction rows and stop on the third row's **View →** link.
+5. Do **not** click it. Clicking can open a Cloudflare verification screen and change
+   the tab order.
 
 ---
 
-## 2:20–2:34 · The transaction
+## 2:18–2:34 · Tested against failure
 
 **Say**
 
-> This is the real transaction: successful, through the live STRK20 pool, with the
-> application action executed and the capital returned privately.
+> We tried to break it a hundred different ways: too little capital, wrong tokens,
+> expired challenges, and replays. Zero false clearances. Zero successful replays. Zero
+> stranded funds.
 
-**Show**
+**Exact screen actions**
 
-Show Voyager's successful status and the transaction hash. Do not scroll through raw
-calldata. Hold the frame.
+1. Stay on **Tab 5**. The **100 deterministic cases** grid is below the transactions.
+2. Move to **Total cases, 100**.
+3. Point in order to **False clearances, 0**, **Successful replays, 0**, and **Funds
+   stranded, 0** as you say each result.
+4. End on the green **All cases as specified** badge.
 
 ---
 
-## 2:34–2:49 · Tested against failure
+## 2:34–2:49 · How applications use Limen
 
 **Say**
 
-> We also tried to break it a hundred different ways: too little capital, wrong token,
-> expired challenges, and replay attempts. Zero false clearances. Zero successful
-> replays. Zero stranded funds.
+> Now any Starknet application can build on it. Install the SDK, set the threshold, and
+> decide what a successful clearance unlocks. Limen handles the challenge and lets the
+> app verify the result from chain.
 
-**Show**
+**Exact screen actions**
 
-Return to the evidence page and scroll to **100 deterministic cases**. Point to the
-three zero counters as you say them.
-
----
-
-## 2:49–2:58 · Anyone can build on it
-
-**Say**
-
-> And this is not just our app. The SDK is published, so any Starknet application can add
-> a capital gate. They implement one function and install one package. Their only
-> dependency on us is a contract with no owner and no upgrade path.
-
-**Show**
-
-Switch to the npm tab. Keep **@limenlabs/sdk** and the install command visible. Do not
-scroll into the API list.
+1. Press `⌘+6`. Do not scroll after switching.
+2. Confirm **@limenlabs/sdk** and `npm install @limenlabs/sdk` are both visible.
+3. Point to the package name, then the install command.
+4. Move to the sentence explaining that the package derives challenges and subjects,
+   plans a clearance, and verifies a published clearance from chain.
+5. End on the install command.
 
 ---
 
-## 2:58–3:10 · Close
+## 2:49–3:00 · Close
 
 **Say**
 
@@ -176,24 +228,26 @@ scroll into the API list.
 > need your financial life. They need one answer. Limen: prove enough, keep the rest
 > private.
 
-**Show**
+**Exact screen actions**
 
-Return to the homepage hero. Move the cursor to the side and finish with the Limen
-name, tagline, and product panel visible. Hold the final frame for two seconds.
+1. Press `⌘+7` as you say “Applications do not need your financial life.”
+2. Confirm the homepage hero and the 50 STRK product panel are visible.
+3. Move the cursor into empty space at the far right.
+4. Hold the final frame for two seconds after the last word.
 
 ## Delivery notes
 
 - Speak conversationally, as if explaining Limen to one curious person.
 - Pause after **not disclosed**, **cleared**, and **That is the product**.
-- Let each screen settle before moving the cursor. Never rush to catch the narration.
+- Press each tab shortcut during the final word of the previous section so the next
+  screen has settled before its narration begins.
+- If any prepared tab is wrong, stop and restart the take. Do not search or improvise
+  while recording.
 - Say “this challenge ran on Mainnet,” not “I am running it now.”
-- If Voyager does not load, remain on the evidence page. Do not switch to a terminal.
 
 ## Do not show or say
 
-- Do not show `/console`, source code, or a terminal. The npm package page is the one
-  developer-facing screen, and it is there to show the product is consumable, not to
-  teach the API.
+- Do not show `/console`, npmjs.com, Voyager, source code, or a terminal in the main take.
 - Do not explain the prover image, protocol limitations, or Wallet API gap.
 - Do not say “anonymous,” “untraceable,” “proof of solvency,” or “audited.”
 - Do not imply that a judge can run a fresh clearance from a browser wallet.
@@ -202,5 +256,4 @@ name, tagline, and product panel visible. Hold the final frame for two seconds.
 
 ## After recording
 
-Publish the video, then put its URL in `strk20.json` under `demo_video`. That is the
-final submission-manifest step.
+Publish the video, then put its URL in `strk20.json` under `demo_video`.

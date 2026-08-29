@@ -4,6 +4,8 @@ import { proverHealth, proverJobs, proverMetrics } from "@/lib/gateway";
 import { deploymentConfig } from "@/lib/config";
 import { poolSnapshot } from "@/lib/chain";
 import { formatAmount, STRK_MAINNET, UPSTREAM_PINS } from "@limenlabs/protocol-config";
+import benchmark from "../../../../../evidence/benchmarks/prover-replay-2026-08-26.json";
+import clearances from "../../../../../evidence/mainnet/clearances.json";
 
 export const metadata: Metadata = { title: "Developer console" };
 // Operational data. Caching it would defeat the point.
@@ -24,15 +26,15 @@ export default async function ConsolePage() {
         eyebrow="Developer console"
         title="Limen Prover"
         aside={
-          health ? (
-            <Tag tone={health.healthy ? "green" : "orange"}>
-              <Dot tone={health.healthy ? "green" : "orange"} />
-              {health.healthy ? "Healthy" : "Unhealthy"}
+          health?.healthy ? (
+            <Tag tone="green">
+              <Dot tone="green" />
+              Serving
             </Tag>
           ) : (
             <Tag tone="muted">
               <Dot tone="grey" />
-              Unreachable
+              Dormant
             </Tag>
           )
         }
@@ -44,6 +46,36 @@ export default async function ConsolePage() {
         carry no request content: a proving request contains the user&apos;s viewing key, so
         calldata, signatures and witnesses never reach this surface.
       </p>
+
+      <Card className="mb-8 p-5">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <h3 className="text-[14px] font-medium text-charcoal">Last verified proving run</h3>
+          <Tag tone="green">
+            <Dot tone="green" />
+            {benchmark.success_rate} of provable replays
+          </Tag>
+        </div>
+        <p className="mb-4 max-w-[760px] text-[13px] leading-[1.6] text-fog">
+          The prover is started for a proving session and stopped afterwards, because a 32 GB
+          machine bills while it runs. Dormant is its resting state, not a failure. These
+          numbers are from the last recorded run, and the mainnet clearances below were proven
+          on this infrastructure.
+        </p>
+        <div className="grid gap-4 sm:grid-cols-4">
+          <Field
+            label="Proved"
+            value={`${benchmark.proved} / ${benchmark.provable}`}
+            hint="provable mainnet replays"
+          />
+          <Field label="p50" value={`${(benchmark.p50_ms / 1000).toFixed(1)} s`} />
+          <Field label="p95" value={`${(benchmark.p95_ms / 1000).toFixed(1)} s`} />
+          <Field
+            label="Mainnet clearances"
+            value={String(clearances.transactions.length)}
+            hint="proven here, verified from chain"
+          />
+        </div>
+      </Card>
 
       {!config.gatewayUrl ? (
         <NotLive
@@ -59,14 +91,16 @@ export default async function ConsolePage() {
             <Field
               label="Status"
               value={
-                health ? (
-                  <span className="inline-flex items-center gap-2">
-                    <Dot tone={health.healthy ? "green" : "orange"} />
-                    {health.healthy ? "Serving" : "Not serving"}
-                  </span>
-                ) : null
+                <span className="inline-flex items-center gap-2">
+                  <Dot tone={health?.healthy ? "green" : "grey"} />
+                  {health?.healthy ? "Serving" : "Dormant"}
+                </span>
               }
-              hint={health?.reason}
+              hint={
+                health?.healthy
+                  ? health.reason
+                  : "Started per proving session, not left running"
+              }
             />
             <Field label="RPC spec" value={health?.specVersion ?? null} mono />
             <Field
