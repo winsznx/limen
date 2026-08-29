@@ -154,6 +154,14 @@
       "reproduce": "./scripts/clean-room.sh",
       "mainnet": false,
       "status": "proven"
+    },
+    {
+      "id": "C17",
+      "claim": "An application can build on Limen without cloning this repository.",
+      "mechanism": "The Cairo interface resolves as a Scarb git dependency and the TypeScript SDK is published on npm. Both were verified from outside the workspace: an external package compiled against limen_shared, and @limenlabs/sdk was installed into an empty project and used to derive a subject and a challenge id.",
+      "reproduce": "npm install @limenlabs/sdk",
+      "mainnet": false,
+      "status": "proven"
     }
   ]
 }

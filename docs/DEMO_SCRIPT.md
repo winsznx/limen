@@ -12,6 +12,7 @@ Preload these four tabs in this order:
 2. **Cleared challenge:** <https://limen.timjosh507.workers.dev/challenge/0x78e0b30dc72343243712064487c9aeffc76441532f7b2f1cb4de09bedca9ecf>
 3. **Evidence:** <https://limen.timjosh507.workers.dev/evidence>
 4. **Voyager transaction:** <https://voyager.online/tx/0x2277d769273da51bcc30a5ac41d0bb3fc45906a0a59917202d22f83d383e566>
+5. **npm package:** <https://www.npmjs.com/package/@limenlabs/sdk>
 
 Record at 1920×1080 with the browser at 100% zoom. Hide bookmarks, close anything
 with a notification badge, and load every tab before recording. Move the cursor slowly
@@ -152,7 +153,22 @@ three zero counters as you say them.
 
 ---
 
-## 2:49–3:00 · Close
+## 2:49–2:58 · Anyone can build on it
+
+**Say**
+
+> And this is not just our app. The SDK is published, so any Starknet application can add
+> a capital gate. They implement one function and install one package. Their only
+> dependency on us is a contract with no owner and no upgrade path.
+
+**Show**
+
+Switch to the npm tab. Keep **@limenlabs/sdk** and the install command visible. Do not
+scroll into the API list.
+
+---
+
+## 2:58–3:10 · Close
 
 **Say**
 
@@ -175,7 +191,9 @@ name, tagline, and product panel visible. Hold the final frame for two seconds.
 
 ## Do not show or say
 
-- Do not show `/console`, source code, or a terminal. They distract from the product.
+- Do not show `/console`, source code, or a terminal. The npm package page is the one
+  developer-facing screen, and it is there to show the product is consumable, not to
+  teach the API.
 - Do not explain the prover image, protocol limitations, or Wallet API gap.
 - Do not say “anonymous,” “untraceable,” “proof of solvency,” or “audited.”
 - Do not imply that a judge can run a fresh clearance from a browser wallet.

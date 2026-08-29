@@ -64,6 +64,40 @@ shielded capital usable as a credential without unshielding it.
 
 ---
 
+## Building on Limen
+
+Limen is a primitive, so the point is that other people consume it. Both halves are
+installable today, and neither requires cloning this repository.
+
+```sh
+npm install @limenlabs/sdk        # issue challenges, verify clearances
+```
+
+```toml
+limen_shared = { git = "https://github.com/winsznx/limen.git" }   # the Cairo interface
+```
+
+**An application** implements one function, `limen_execute`, and enforces its own rules
+inside it. It issues challenges from its backend with the SDK, then reads the result out
+of its own storage. Its only runtime dependency on Limen is one immutable contract with
+no owner and no upgrade path, so if this project disappears, that gate keeps working.
+
+**A subject** clears a challenge with a key-holding client. `buildClearancePlan` refuses
+a consumed, expired or mismatched challenge before a fee is ever paid.
+
+**Anyone at all** can check a published clearance with `verifyClearanceTransaction`,
+which rebuilds the mechanism from pool and contract events and trusts nothing this
+project produced.
+
+Three packages are on npm: [`@limenlabs/sdk`](https://www.npmjs.com/package/@limenlabs/sdk),
+`@limenlabs/protocol-config` and `@limenlabs/proving-core`. The prover gateway stays
+private, because it is our service rather than a library.
+
+[docs/INTEGRATING.md](docs/INTEGRATING.md) is the full guide, including the parts that do
+not work yet and why.
+
+---
+
 ## Status
 
 Live on Starknet Mainnet.
@@ -78,7 +112,7 @@ Live on Starknet Mainnet.
 | Prover replay benchmark | 10/10 provable mainnet transactions, p50 49.1 s |
 | Tests | 166 Cairo + 70 TypeScript, 0 failures |
 
-`evidence/claims.json` is the full ledger: 16 claims, each with the artefact that proves
+`evidence/claims.json` is the full ledger: 17 claims, each with the artefact that proves
 it and the command to regenerate that artefact.
 
 ## Mainnet evidence

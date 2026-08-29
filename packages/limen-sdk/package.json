@@ -1,6 +1,6 @@
 {
   "name": "@limenlabs/sdk",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "license": "Apache-2.0",
   "main": "./dist/index.js",
@@ -36,5 +36,16 @@
     "url": "git+https://github.com/winsznx/limen.git",
     "directory": "packages/limen-sdk"
   },
-  "homepage": "https://github.com/winsznx/limen#readme"
+  "homepage": "https://github.com/winsznx/limen#readme",
+  "description": "Prove a capital threshold on Starknet without revealing your balance. Challenges, subjects, clearance planning and on-chain verification for STRK20.",
+  "keywords": [
+    "starknet",
+    "strk20",
+    "privacy",
+    "limen",
+    "zero-knowledge",
+    "capital",
+    "threshold",
+    "sdk"
+  ]
 }

@@ -1,6 +1,6 @@
 {
   "name": "@limenlabs/protocol-config",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "license": "Apache-2.0",
   "main": "./dist/index.js",
@@ -34,5 +34,14 @@
     "url": "git+https://github.com/winsznx/limen.git",
     "directory": "packages/protocol-config"
   },
-  "homepage": "https://github.com/winsznx/limen#readme"
+  "homepage": "https://github.com/winsznx/limen#readme",
+  "description": "Live STRK20 privacy pool state, exact token arithmetic, and pinned upstream revisions for Limen on Starknet.",
+  "keywords": [
+    "starknet",
+    "strk20",
+    "privacy",
+    "limen",
+    "pool",
+    "cairo"
+  ]
 }
