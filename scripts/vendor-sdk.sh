@@ -18,7 +18,12 @@ PINNED_COMMIT="74841caf0466d122117945e28ed983e2864c8fc1"
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 VENDOR_DIR="$ROOT/.vendor/starknet-privacy"
 
-if [ -d "$VENDOR_DIR/.git" ] && [ "$(git -C "$VENDOR_DIR" rev-parse HEAD)" = "$PINNED_COMMIT" ]; then
+# Ask git whether the checkout works rather than whether a path exists. `.git` is a
+# directory for a clone but a pointer file for a worktree, and a pointer into a
+# temporary directory goes stale the moment that directory is cleaned. Testing
+# usability means a broken checkout is re-fetched instead of failing every command
+# that touches it.
+if [ "$(git -C "$VENDOR_DIR" rev-parse HEAD 2>/dev/null)" = "$PINNED_COMMIT" ]; then
   echo "vendor: already at $PINNED_COMMIT"
 else
   rm -rf "$VENDOR_DIR"

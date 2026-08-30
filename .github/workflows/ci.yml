@@ -37,7 +37,7 @@ jobs:
       - name: Vendor the pinned STRK20 Privacy SDK
         # Not on the public npm registry, so it is built from the pinned upstream
         # revision. See DECISIONS.md D-001.
-        run: ./scripts/vendor-sdk.sh
+        run: ./scripts/ci-retry.sh ./scripts/vendor-sdk.sh
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm -r --filter './packages/*' build
@@ -57,6 +57,7 @@ jobs:
       - uses: software-mansion/setup-scarb@v1
         with:
           scarb-version: ${{ env.SCARB_VERSION }}
+          scarb-lock: contracts/Scarb.lock
 
       - uses: foundry-rs/setup-snfoundry@v4
         with:
@@ -65,7 +66,7 @@ jobs:
       - run: scarb fmt --check
         working-directory: contracts
 
-      - run: scarb build
+      - run: ../scripts/ci-retry.sh scarb build
         working-directory: contracts
 
       - name: Run the full suite, including the 100-case campaign
@@ -88,12 +89,19 @@ jobs:
       - uses: software-mansion/setup-scarb@v1
         with:
           scarb-version: ${{ env.SCARB_VERSION }}
+          scarb-lock: contracts/Scarb.lock
 
       - uses: foundry-rs/setup-snfoundry@v4
         with:
           starknet-foundry-version: ${{ env.FOUNDRY_VERSION }}
 
       - run: pnpm install --frozen-lockfile
+
+      - name: Fetch Cairo dependencies
+        # The first Cairo command in this job pulls the whole dependency tree from the
+        # package registry, which is the step that has actually flaked.
+        run: ../scripts/ci-retry.sh scarb build
+        working-directory: contracts
 
       - name: Regenerate the campaign and check it is unchanged
         # The vectors are seeded, so a diff here means someone edited generated output
@@ -149,17 +157,18 @@ jobs:
       - uses: software-mansion/setup-scarb@v1
         with:
           scarb-version: ${{ env.SCARB_VERSION }}
+          scarb-lock: contracts/Scarb.lock
 
       - run: pnpm install --frozen-lockfile
-      - run: ./scripts/vendor-sdk.sh
+      - run: ./scripts/ci-retry.sh ./scripts/vendor-sdk.sh
 
       - name: The pinned revision must still be what mainnet runs
         # If this fails, every interface assumption in Limen is suspect: the pool has
         # been upgraded and the protocol map needs re-deriving before anything ships.
-        run: node --experimental-strip-types tools/verify-pool-source.ts
+        run: ./scripts/ci-retry.sh node --experimental-strip-types tools/verify-pool-source.ts
 
       - name: Record live pool parameters
-        run: node --experimental-strip-types tools/probe-mainnet.ts
+        run: ./scripts/ci-retry.sh node --experimental-strip-types tools/probe-mainnet.ts
 
       - uses: actions/upload-artifact@v4
         if: always()
@@ -180,7 +189,7 @@ jobs:
           node-version: 24
           cache: pnpm
 
-      - run: ./scripts/vendor-sdk.sh
+      - run: ./scripts/ci-retry.sh ./scripts/vendor-sdk.sh
       - run: pnpm install --frozen-lockfile
       - run: pnpm -r --filter './packages/*' build
       - run: pnpm --filter @limenlabs/web exec next build
