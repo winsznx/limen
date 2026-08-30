@@ -40,6 +40,10 @@ export function ClearancePanel({
   poolFee?: string | null;
 }) {
   const activeIndex = STEPS.findIndex((step) => step.key === stage);
+  // "cleared" is terminal, so every step including the last one is finished. Without
+  // this the final step renders as still in progress, which makes a completed
+  // clearance look like it stalled on the last stage.
+  const completedThrough = stage === "cleared" ? STEPS.length : activeIndex;
 
   return (
     <div className="rounded-[16px] border border-ash bg-canvas shadow-[rgba(0,0,0,0.1)_0px_0px_0px_4px]">
@@ -85,8 +89,8 @@ export function ClearancePanel({
       <div className="border-t border-ash px-4 py-3">
         <div className="flex items-center gap-2">
           {STEPS.map((step, index) => {
-            const done = activeIndex > index;
-            const current = activeIndex === index;
+            const done = completedThrough > index;
+            const current = completedThrough === index;
             return (
               <div key={step.key} className="flex flex-1 items-center gap-2">
                 <span
@@ -95,7 +99,20 @@ export function ClearancePanel({
                   }`}
                 >
                   <span className={current ? "pulse" : undefined}>
-                    <Dot tone={done ? "green" : current ? "accent" : "grey"} />
+                    {done ? (
+                      <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden>
+                        <path
+                          d="M2.5 6.3l2.4 2.4 4.6-5"
+                          fill="none"
+                          stroke="var(--color-green)"
+                          strokeWidth="1.75"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    ) : (
+                      <Dot tone={current ? "accent" : "grey"} />
+                    )}
                   </span>
                   {step.label}
                 </span>

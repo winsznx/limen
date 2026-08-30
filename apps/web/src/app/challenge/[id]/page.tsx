@@ -4,7 +4,7 @@ import { formatAmount, findToken, STRK_MAINNET } from "@limenlabs/protocol-confi
 import { disclosureFor } from "@limenlabs/sdk";
 import { ClearancePanel } from "@/components/clearance-panel";
 import { Card, Dot, Field, FeltLink, Row, SectionHead, Tag, short } from "@/components/primitives";
-import { MechanismSteps } from "@/components/mechanism";
+import { MECHANISM_STAGES, MechanismSteps } from "@/components/mechanism";
 import { deploymentConfig } from "@/lib/config";
 import { challengeSnapshot, poolSnapshot } from "@/lib/chain";
 import { proverHealth } from "@/lib/gateway";
@@ -88,7 +88,7 @@ export default async function ChallengePage({ params }: { params: Promise<{ id: 
           {state === "cleared" ? (
             <Card className="mb-6 p-5">
               <h3 className="mb-4 text-[13px] font-medium text-charcoal">What happened</h3>
-              <MechanismSteps current={4} />
+              <MechanismSteps completed={MECHANISM_STAGES.length} />
             </Card>
           ) : null}
 
@@ -252,16 +252,29 @@ const plan = buildClearancePlan({
 
           <Card className="mt-4 p-5">
             <div className="mb-3 flex items-center justify-between">
-              <h3 className="text-[13px] font-medium text-charcoal">Proving provider</h3>
-              <Tag tone={health?.healthy ? "green" : "muted"}>
-                <Dot tone={health?.healthy ? "green" : "grey"} />
-                {health?.healthy ? "Ready" : "Unavailable"}
-              </Tag>
+              <h3 className="text-[13px] font-medium text-charcoal">
+                {state === "open" ? "Proving provider" : "Proven by"}
+              </h3>
+              {state === "open" ? (
+                <Tag tone={health?.healthy ? "green" : "muted"}>
+                  <Dot tone={health?.healthy ? "green" : "grey"} />
+                  {health?.healthy ? "Ready" : "Dormant"}
+                </Tag>
+              ) : (
+                <Tag tone="green">
+                  <Dot tone="green" />
+                  Complete
+                </Tag>
+              )}
             </div>
             <Field
               label="Provider"
               value="Limen Prover"
-              hint="self-hosted, pinned upstream image"
+              hint={
+                state === "open"
+                  ? "self-hosted, pinned upstream image"
+                  : "self-hosted, pinned upstream image. Started per session, so its state now says nothing about this run."
+              }
             />
           </Card>
         </div>

@@ -6,6 +6,13 @@ const NAV = [
   { href: "/evidence", label: "Evidence" },
 ];
 
+/**
+ * The SDK lives off-site, so it needs its own entry rather than being findable only
+ * through the repository. Limen is a primitive, and a primitive whose consumers cannot
+ * find the package is not really consumable.
+ */
+const BUILD_HREF = "https://github.com/winsznx/limen/blob/main/docs/INTEGRATING.md";
+
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-ash bg-canvas/90 backdrop-blur-[6px]">
@@ -25,6 +32,14 @@ export function SiteHeader() {
               {item.label}
             </Link>
           ))}
+          <a
+            href={BUILD_HREF}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="rounded-[9999px] px-4 py-1.5 text-[14px] text-charcoal transition-colors hover:bg-paper"
+          >
+            Build
+          </a>
         </nav>
 
         <div className="flex items-center gap-2">

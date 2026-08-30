@@ -127,25 +127,28 @@ export function Mechanism({
 
 /**
  * The same five stages as a vertical list, for narrow columns and for surfaces where a
- * specific stage is the current one.
+ * specific stage has been reached.
  *
- * `current` is an index. Passing it switches the component from explaining the
- * mechanism to reporting a position in it, so the animation stops: a live status must
- * not look like a loop.
+ * `completed` is a count, not an index, so passing MECHANISM_STAGES.length marks the
+ * whole sequence finished. That distinction matters: a cleared challenge has done all
+ * five, and showing the last one as merely in progress reads as unfinished.
+ *
+ * Passing it also switches the component from explaining the mechanism to reporting a
+ * position in it, so the animation stops. A settled status must not look like a loop.
  */
 export function MechanismSteps({
-  current,
+  completed,
   className = "",
 }: {
-  current?: number;
+  completed?: number;
   className?: string;
 }) {
-  const live = current !== undefined;
+  const live = completed !== undefined;
   return (
     <ol className={`flex flex-col gap-0 ${className}`}>
       {MECHANISM_STAGES.map((stage, index) => {
-        const done = live && index < current;
-        const active = live && index === current;
+        const done = live && index < completed;
+        const active = live && index === completed;
         const tone = done
           ? "var(--color-green)"
           : active
