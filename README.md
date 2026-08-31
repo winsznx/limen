@@ -112,6 +112,7 @@ Live on Starknet Mainnet.
 | Adversarial campaign | 100/100 as specified, 0 false clearances |
 | Prover replay benchmark | 10/10 provable mainnet transactions, p50 49.1 s |
 | Tests | 166 Cairo + 70 TypeScript, 0 failures |
+| Upstream issues filed | [3 open](#upstream-contributions), each with a reproduction |
 
 `evidence/claims.json` is the full ledger: 17 claims, each with the artefact that proves
 it and the command to regenerate that artefact.
