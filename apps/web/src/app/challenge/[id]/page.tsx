@@ -25,10 +25,9 @@ export default async function ChallengePage({ params }: { params: Promise<{ id: 
   if (!/^0x[0-9a-fA-F]{1,64}$/.test(id)) notFound();
 
   const config = deploymentConfig();
-  const [{ challenge, error }, pool, health] = await Promise.all([
+  const [{ challenge, error }, pool] = await Promise.all([
     challengeSnapshot(id),
     poolSnapshot(config),
-    proverHealth(),
   ]);
 
   if (!challenge) {
@@ -59,6 +58,9 @@ export default async function ChallengePage({ params }: { params: Promise<{ id: 
     : challenge.expiresAt <= now
       ? ("expired" as const)
       : ("open" as const);
+  // Live gateway health only affects a challenge that can still be cleared. Historical
+  // pages should neither wait for it nor make a completed proof look unhealthy today.
+  const health = state === "open" ? await proverHealth() : null;
 
   return (
     <div className="mx-auto max-w-[1200px] px-5 py-12">
@@ -250,33 +252,35 @@ const plan = buildClearancePlan({
             )}
           </Card>
 
-          <Card className="mt-4 p-5">
-            <div className="mb-3 flex items-center justify-between">
-              <h3 className="text-[13px] font-medium text-charcoal">
-                {state === "open" ? "Proving provider" : "Proven by"}
-              </h3>
-              {state === "open" ? (
-                <Tag tone={health?.healthy ? "green" : "muted"}>
-                  <Dot tone={health?.healthy ? "green" : "grey"} />
-                  {health?.healthy ? "Ready" : "Dormant"}
-                </Tag>
-              ) : (
-                <Tag tone="green">
-                  <Dot tone="green" />
-                  Complete
-                </Tag>
-              )}
-            </div>
-            <Field
-              label="Provider"
-              value="Limen Prover"
-              hint={
-                state === "open"
-                  ? "self-hosted, pinned upstream image"
-                  : "self-hosted, pinned upstream image. Started per session, so its state now says nothing about this run."
-              }
-            />
-          </Card>
+          {state !== "expired" ? (
+            <Card className="mt-4 p-5">
+              <div className="mb-3 flex items-center justify-between">
+                <h3 className="text-[13px] font-medium text-charcoal">
+                  {state === "cleared" ? "Proof completed" : "Proving provider"}
+                </h3>
+                {state === "cleared" ? (
+                  <Tag tone="green">
+                    <Dot tone="green" />
+                    Accepted
+                  </Tag>
+                ) : (
+                  <Tag tone={health?.healthy ? "green" : "muted"}>
+                    <Dot tone={health?.healthy ? "green" : "grey"} />
+                    {health?.healthy ? "Ready" : "Dormant"}
+                  </Tag>
+                )}
+              </div>
+              <Field
+                label={state === "cleared" ? "Result" : "Provider"}
+                value={state === "cleared" ? "Accepted on Starknet" : "Limen Prover"}
+                hint={
+                  state === "cleared"
+                    ? "This clearance is final. Current prover availability does not affect it."
+                    : "self-hosted, pinned upstream image"
+                }
+              />
+            </Card>
+          ) : null}
         </div>
       </div>
     </div>
