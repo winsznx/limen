@@ -38,7 +38,7 @@ export function SiteHeader() {
             rel="noreferrer noopener"
             className="rounded-[9999px] px-4 py-1.5 text-[14px] text-charcoal transition-colors hover:bg-paper"
           >
-            Build
+            SDK
           </a>
         </nav>
 
