@@ -56,23 +56,21 @@ export default async function HomePage() {
                 <ButtonLink href="/challenge" variant="primary">
                   Try a capital challenge
                 </ButtonLink>
-                <ButtonLink href="/protocol">View protocol</ButtonLink>
+                <ButtonLink
+                  href="https://github.com/winsznx/limen/blob/main/docs/INTEGRATING.md"
+                  external
+                >
+                  Build with the SDK
+                </ButtonLink>
               </div>
 
               {/* Limen is a primitive, so the way to consume it belongs above the fold
                   rather than at the end of a document somebody has to go looking for. */}
-              <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2">
+              <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2">
+                <span className="text-[11px] uppercase tracking-[0.07em] text-fog">Install</span>
                 <code className="mono rounded-[8px] border border-ash bg-paper px-3 py-2 text-[13px] text-charcoal">
                   npm install @limenlabs/sdk
                 </code>
-                <a
-                  href="https://github.com/winsznx/limen/blob/main/docs/INTEGRATING.md"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="text-[13px] text-accent hover:underline"
-                >
-                  Build with Limen →
-                </a>
               </div>
 
               <dl className="mt-10 grid max-w-130 grid-cols-3 gap-px overflow-hidden rounded-[12px] border border-ash bg-ash">
