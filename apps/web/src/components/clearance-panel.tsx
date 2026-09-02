@@ -80,9 +80,13 @@ export function ClearancePanel({
           <span className="mono text-[13px] text-charcoal">{action}</span>
           <span className="mt-0.5 block truncate text-[12px] text-fog">{target}</span>
         </Cell>
-        <Cell label="Proving provider">
-          <span className="text-[13px] text-charcoal">{provider}</span>
-          <span className="mt-0.5 block text-[12px] text-fog">Self-hosted</span>
+        <Cell label={stage === "cleared" ? "Proof status" : "Proving provider"}>
+          <span className="text-[13px] text-charcoal">
+            {stage === "cleared" ? "Accepted on Starknet" : provider}
+          </span>
+          <span className="mt-0.5 block text-[12px] text-fog">
+            {stage === "cleared" ? "Final" : "Self-hosted"}
+          </span>
         </Cell>
       </div>
 
